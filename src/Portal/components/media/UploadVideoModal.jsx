@@ -1,0 +1,219 @@
+import React, { useState, useRef } from 'react';
+
+const UploadVideoModal = ({ onClose }) => {
+    const [uploadType, setUploadType] = useState('url'); // 'url' or 'file'
+    const [file, setFile] = useState(null);
+    const [formData, setFormData] = useState({
+        title: '',
+        preacher: '',
+        date: '',
+        series: 'Sunday Service',
+        videoUrl: '',
+        description: ''
+    });
+    const fileInputRef = useRef(null);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleFileSelect = (e) => {
+        const selectedFile = e.target.files[0];
+        if (selectedFile) {
+            if (selectedFile.type.startsWith('video/')) {
+                setFile(selectedFile);
+            } else {
+                alert('Please upload a video file (MP4, MOV, etc.)');
+            }
+        }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (uploadType === 'file' && !file) {
+            alert('Please select a video file.');
+            return;
+        }
+        if (uploadType === 'url' && !formData.videoUrl) {
+            alert('Please enter a video URL.');
+            return;
+        }
+
+        alert('Video addition simulated: ' + JSON.stringify({
+            ...formData,
+            uploadType,
+            fileName: file ? file.name : null
+        }));
+        onClose();
+    };
+
+    const inputStyle = {
+        width: '100%',
+        padding: '0.75rem',
+        background: '#120D20',
+        border: '1px solid rgba(255,255,255,0.1)',
+        borderRadius: '0.5rem',
+        color: '#eff3c1',
+        fontSize: '0.9rem',
+        marginTop: '0.4rem'
+    };
+
+    const labelStyle = {
+        color: '#94a3b8',
+        fontSize: '0.85rem',
+        fontWeight: '500'
+    };
+
+    const tabStyle = (isActive) => ({
+        padding: '0.5rem 1rem',
+        cursor: 'pointer',
+        borderBottom: isActive ? '2px solid #22c1e6' : '2px solid transparent',
+        color: isActive ? '#eff3c1' : '#94a3b8',
+        fontWeight: isActive ? '600' : '400',
+        transition: 'all 0.2s'
+    });
+
+    return (
+        <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0,0,0,0.7)',
+            backdropFilter: 'blur(5px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1100
+        }}>
+            <div style={{
+                background: '#1A1625',
+                padding: '2rem',
+                borderRadius: '1rem',
+                width: '100%',
+                maxWidth: '600px',
+                border: '1px solid rgba(255,255,255,0.1)',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+            }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                    <h2 style={{ fontSize: '1.5rem', color: '#22c1e6', margin: 0 }}>Add Video Content</h2>
+                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
+                </div>
+
+                <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div style={tabStyle(uploadType === 'url')} onClick={() => setUploadType('url')}>Video URL (YouTube/Vimeo)</div>
+                    <div style={tabStyle(uploadType === 'file')} onClick={() => setUploadType('file')}>Upload Video File</div>
+                </div>
+
+                <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1.25rem' }}>
+
+                    {/* Video Source */}
+                    {uploadType === 'file' ? (
+                        <div
+                            onClick={() => fileInputRef.current.click()}
+                            style={{
+                                border: '2px dashed rgba(255,255,255,0.2)',
+                                borderRadius: '0.75rem',
+                                padding: '1.5rem',
+                                textAlign: 'center',
+                                cursor: 'pointer',
+                                background: 'rgba(255,255,255,0.02)'
+                            }}
+                        >
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                onChange={handleFileSelect}
+                                accept="video/*"
+                                style={{ display: 'none' }}
+                            />
+                            <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>📹</div>
+                            {file ? (
+                                <div style={{ color: '#22c1e6', fontWeight: '500' }}>{file.name}</div>
+                            ) : (
+                                <>
+                                    <div style={{ color: '#eff3c1', fontWeight: '500' }}>Click to select video file</div>
+                                    <div style={{ color: '#94a3b8', fontSize: '0.8rem', marginTop: '0.2rem' }}>MP4, MOV supported</div>
+                                </>
+                            )}
+                        </div>
+                    ) : (
+                        <div>
+                            <label style={labelStyle}>Video Link (YouTube / Vimeo)</label>
+                            <input
+                                type="url"
+                                name="videoUrl"
+                                value={formData.videoUrl}
+                                onChange={handleChange}
+                                placeholder="https://www.youtube.com/watch?v=..."
+                                style={inputStyle}
+                                required={uploadType === 'url'}
+                            />
+                        </div>
+                    )}
+
+                    {/* Title */}
+                    <div>
+                        <label style={labelStyle}>Video Title</label>
+                        <input type="text" name="title" value={formData.title} onChange={handleChange} placeholder="e.g. Sunday Service Live" style={inputStyle} required />
+                    </div>
+
+                    {/* Preacher & Date */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                        <div>
+                            <label style={labelStyle}>Preacher / Speaker</label>
+                            <input type="text" name="preacher" value={formData.preacher} onChange={handleChange} placeholder="e.g. Pst. John Doe" style={inputStyle} required />
+                        </div>
+                        <div>
+                            <label style={labelStyle}>Date Recorded</label>
+                            <input type="date" name="date" value={formData.date} onChange={handleChange} style={inputStyle} required />
+                        </div>
+                    </div>
+
+                    {/* Series */}
+                    <div>
+                        <label style={labelStyle}>Series / Category</label>
+                        <select name="series" value={formData.series} onChange={handleChange} style={inputStyle}>
+                            <option>Sunday Service</option>
+                            <option>Mid-Week Service</option>
+                            <option>Special Conference</option>
+                            <option>Youth Service</option>
+                            <option>Music Video</option>
+                        </select>
+                    </div>
+
+                    {/* Description */}
+                    <div>
+                        <label style={labelStyle}>Description / Notes</label>
+                        <textarea name="description" value={formData.description} onChange={handleChange} placeholder="Brief summary..." style={{ ...inputStyle, minHeight: '80px', resize: 'vertical' }} />
+                    </div>
+
+                    {/* Actions */}
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
+                        <button type="button" onClick={onClose} style={{
+                            padding: '0.75rem 1.5rem',
+                            borderRadius: '0.5rem',
+                            border: '1px solid rgba(255,255,255,0.1)',
+                            background: 'transparent',
+                            color: '#94a3b8',
+                            cursor: 'pointer'
+                        }}>Cancel</button>
+                        <button type="submit" style={{
+                            padding: '0.75rem 1.5rem',
+                            borderRadius: '0.5rem',
+                            border: 'none',
+                            background: '#22c1e6',
+                            color: '#120D20',
+                            fontWeight: '700',
+                            cursor: 'pointer'
+                        }}>Add Video</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+};
+
+export default UploadVideoModal;
