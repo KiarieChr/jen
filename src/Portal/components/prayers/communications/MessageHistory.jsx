@@ -66,7 +66,7 @@ const MessageHistory = () => {
 };
 
 const StatusBadge = ({ status }) => {
-    let color = '#94a3b8';
+    let color = 'var(--text-muted)';
     let bg = 'rgba(148, 163, 184, 0.1)';
 
     if (status === 'Sent') {

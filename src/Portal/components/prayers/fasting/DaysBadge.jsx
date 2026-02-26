@@ -28,9 +28,9 @@ const DaysBadge = ({ days = [] }) => {
                             justifyContent: 'center',
                             fontSize: '0.65rem',
                             fontWeight: '700',
-                            background: isActive ? '#22c55e' : 'rgba(255,255,255,0.1)',
-                            color: isActive ? 'white' : '#64748b',
-                            border: isActive ? 'none' : '1px solid rgba(255,255,255,0.05)',
+                            background: isActive ? '#22c55e' : 'var(--border-color)',
+                            color: isActive ? 'white' : 'var(--text-muted)',
+                            border: isActive ? 'none' : '1px solid var(--border-color)',
                         }}
                     >
                         {day}

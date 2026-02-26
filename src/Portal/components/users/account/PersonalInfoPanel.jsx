@@ -2,20 +2,20 @@ import React from 'react';
 
 const InfoField = ({ label, value }) => (
     <div>
-        <div style={{ color: '#94a3b8', fontSize: '0.75rem', marginBottom: '0.3rem' }}>{label}</div>
-        <div style={{ color: 'white', fontWeight: '500', fontSize: '1rem' }}>{value}</div>
+        <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem', marginBottom: '0.3rem' }}>{label}</div>
+        <div style={{ color: 'var(--text-color)', fontWeight: '500', fontSize: '1rem' }}>{value}</div>
     </div>
 );
 
 const PersonalInfoPanel = () => {
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
             padding: '2rem',
-            border: '1px solid rgba(255,255,255,0.05)'
+            border: '1px solid var(--border-color)'
         }}>
-            <h3 style={{ margin: '0 0 1.5rem 0', color: 'white', fontSize: '1.1rem' }}>Personal Information</h3>
+            <h3 style={{ margin: '0 0 1.5rem 0', color: 'var(--text-color)', fontSize: '1.1rem' }}>Personal Information</h3>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
                 <InfoField label="Email Address" value="timothy.mutisya@jen.org" />

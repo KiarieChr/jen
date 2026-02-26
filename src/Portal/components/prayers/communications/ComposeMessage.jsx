@@ -29,9 +29,9 @@ const ComposeMessage = () => {
                                     flex: 1,
                                     padding: '0.75rem',
                                     borderRadius: '0.5rem',
-                                    border: channel === c ? '1px solid #22c1e6' : '1px solid rgba(255,255,255,0.1)',
+                                    border: channel === c ? '1px solid #22c1e6' : '1px solid var(--border-color)',
                                     background: channel === c ? 'rgba(34, 193, 230, 0.1)' : 'transparent',
-                                    color: channel === c ? '#22c1e6' : '#94a3b8',
+                                    color: channel === c ? 'var(--primary)' : 'var(--text-muted)',
                                     fontWeight: '600',
                                     textTransform: 'uppercase',
                                     fontSize: '0.875rem',
@@ -84,7 +84,7 @@ const ComposeMessage = () => {
                     <button style={{
                         flex: 1,
                         padding: '1rem',
-                        background: '#22c1e6',
+                        background: 'var(--primary)',
                         color: '#0f172a',
                         border: 'none',
                         borderRadius: '0.75rem',
@@ -98,8 +98,8 @@ const ComposeMessage = () => {
                     <button style={{
                         padding: '1rem',
                         background: 'transparent',
-                        color: '#94a3b8',
-                        border: '1px solid rgba(255,255,255,0.1)',
+                        color: 'var(--text-muted)',
+                        border: '1px solid var(--border-color)',
                         borderRadius: '0.75rem',
                         cursor: 'pointer'
                     }} title="Schedule for later">

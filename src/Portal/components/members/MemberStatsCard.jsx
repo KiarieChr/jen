@@ -1,11 +1,11 @@
 import React from 'react';
 
-const StatCard = ({ title, value, label, description, icon, color = '#22c1e6' }) => (
+const StatCard = ({ title, value, label, description, icon, color = 'var(--primary)' }) => (
     <div style={{
-        background: '#1A1625',
+        background: 'var(--surface-1)',
         borderRadius: '1rem',
         padding: '1.25rem',
-        border: '1px solid rgba(255,255,255,0.05)',
+        border: '1px solid var(--border-color)',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -15,11 +15,11 @@ const StatCard = ({ title, value, label, description, icon, color = '#22c1e6' })
     }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
             <div>
-                <div style={{ fontSize: '0.9rem', color: '#94a3b8', fontWeight: '600' }}>{title}</div>
-                <div style={{ fontSize: '2rem', fontWeight: '800', color: '#eff3c1', margin: '0.2rem 0' }}>{value}</div>
+                <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: '600' }}>{title}</div>
+                <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--text-color)', margin: '0.2rem 0' }}>{value}</div>
             </div>
             <div style={{
-                background: `rgba(${color === '#22c1e6' ? '34, 193, 230' : (color === '#4ade80' ? '74, 222, 128' : (color === '#f59e0b' ? '245, 158, 11' : '168, 85, 247'))}, 0.1)`,
+                background: `rgba(${color === 'var(--primary)' ? '34, 193, 230' : (color === '#4ade80' ? '74, 222, 128' : (color === '#f59e0b' ? '245, 158, 11' : '168, 85, 247'))}, 0.1)`,
                 color: color,
                 borderRadius: '0.5rem',
                 padding: '0.5rem',
@@ -33,8 +33,8 @@ const StatCard = ({ title, value, label, description, icon, color = '#22c1e6' })
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: 'auto' }}>
-            {label && <span style={{ background: `rgba(${color === '#22c1e6' ? '34, 193, 230' : (color === '#4ade80' ? '74, 222, 128' : (color === '#f59e0b' ? '245, 158, 11' : '168, 85, 247'))}, 0.1)`, padding: '0.1rem 0.4rem', borderRadius: '4px', fontSize: '0.7rem', color: color, fontWeight: '600' }}>{label}</span>}
-            <span style={{ fontSize: '0.75rem', color: '#64748b' }}>{description}</span>
+            {label && <span style={{ background: `rgba(${color === 'var(--primary)' ? '34, 193, 230' : (color === '#4ade80' ? '74, 222, 128' : (color === '#f59e0b' ? '245, 158, 11' : '168, 85, 247'))}, 0.1)`, padding: '0.1rem 0.4rem', borderRadius: '4px', fontSize: '0.7rem', color: color, fontWeight: '600' }}>{label}</span>}
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{description}</span>
         </div>
     </div>
 );

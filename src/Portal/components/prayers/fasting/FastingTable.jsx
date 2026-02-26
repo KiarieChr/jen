@@ -13,16 +13,16 @@ const FastingTable = () => {
 
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1.5rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             overflow: 'hidden',
             marginBottom: '2rem'
         }}>
             <div style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', color: 'white' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', color: 'var(--text-color)' }}>
                     <thead>
-                        <tr style={{ background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                        <tr style={{ background: 'var(--surface-2)', borderBottom: '1px solid var(--border-color)' }}>
                             <th style={headerStyle}>ID</th>
                             <th style={headerStyle}>Name</th>
                             <th style={headerStyle}>Email</th>
@@ -115,9 +115,9 @@ const cellStyle = {
 const paginationBtnStyle = {
     padding: '0.5rem 1rem',
     background: 'transparent',
-    border: '1px solid rgba(255,255,255,0.1)',
+    border: '1px solid var(--border-color)',
     borderRadius: '0.5rem',
-    color: '#94a3b8',
+    color: 'var(--text-muted)',
     cursor: 'pointer',
     fontSize: '0.875rem'
 };

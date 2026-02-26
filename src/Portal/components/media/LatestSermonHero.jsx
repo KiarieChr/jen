@@ -26,8 +26,8 @@ const LatestSermonHero = () => {
             <div style={{ position: 'relative', zIndex: 2, maxWidth: '600px' }}>
                 <div style={{ display: 'flex', gap: '0.8rem', marginBottom: '1.2rem' }}>
                     <span style={{
-                        background: '#22c1e6',
-                        color: '#120D20',
+                        background: 'var(--primary)',
+                        color: 'var(--bg-color)',
                         padding: '0.3rem 0.8rem',
                         borderRadius: '0.4rem',
                         fontSize: '0.75rem',
@@ -38,7 +38,7 @@ const LatestSermonHero = () => {
                     </span>
                     <span style={{
                         background: 'rgba(0,0,0,0.4)',
-                        color: 'white',
+                        color: 'var(--text-color)',
                         padding: '0.3rem 0.8rem',
                         borderRadius: '0.4rem',
                         fontSize: '0.75rem',
@@ -49,7 +49,7 @@ const LatestSermonHero = () => {
                     </span>
                 </div>
 
-                <h2 style={{ fontSize: '3rem', fontWeight: '800', color: 'white', margin: '0 0 0.5rem 0', lineHeight: 1.1 }}>
+                <h2 style={{ fontSize: '3rem', fontWeight: '800', color: 'var(--text-color)', margin: '0 0 0.5rem 0', lineHeight: 1.1 }}>
                     The Power of Faith
                 </h2>
                 <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: '1rem', marginBottom: '2rem', fontWeight: '500' }}>
@@ -57,8 +57,8 @@ const LatestSermonHero = () => {
                 </p>
 
                 <button style={{
-                    background: '#22c1e6',
-                    color: '#120D20',
+                    background: 'var(--primary)',
+                    color: 'var(--bg-color)',
                     border: 'none',
                     borderRadius: '0.5rem',
                     padding: '0.8rem 2rem',
@@ -68,7 +68,7 @@ const LatestSermonHero = () => {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.6rem',
-                    boxShadow: '0 4px 6px rgba(0,0,0,0.2)'
+                    boxShadow: '0 4px 6px var(--surface-2)'
                 }}>
                     <span>▶</span> Watch Now
                 </button>

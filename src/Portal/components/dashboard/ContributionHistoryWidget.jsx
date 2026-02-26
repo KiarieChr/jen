@@ -10,13 +10,13 @@ const ContributionHistoryWidget = () => {
 
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
             padding: '1.5rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             height: '100%'
         }}>
-            <h3 style={{ color: '#22c1e6', fontSize: '0.9rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1.5rem' }}>
+            <h3 style={{ color: 'var(--primary)', fontSize: '0.9rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1.5rem' }}>
                 Latest Contributions
             </h3>
 
@@ -32,10 +32,10 @@ const ContributionHistoryWidget = () => {
                         borderLeft: i === 0 ? '3px solid #22c1e6' : '3px solid transparent'
                     }}>
                         <div>
-                            <div style={{ color: '#eff3c1', fontWeight: '600', fontSize: '0.95rem' }}>{item.type}</div>
-                            <div style={{ color: '#94a3b8', fontSize: '0.8rem' }}>{item.date} • {item.method}</div>
+                            <div style={{ color: 'var(--text-color)', fontWeight: '600', fontSize: '0.95rem' }}>{item.type}</div>
+                            <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{item.date} • {item.method}</div>
                         </div>
-                        <div style={{ color: '#eff3c1', fontWeight: '700', fontSize: '1rem' }}>
+                        <div style={{ color: 'var(--text-color)', fontWeight: '700', fontSize: '1rem' }}>
                             KES {item.amount}
                         </div>
                     </div>
@@ -47,9 +47,9 @@ const ContributionHistoryWidget = () => {
                 marginTop: '1.5rem',
                 padding: '0.75rem',
                 background: 'transparent',
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: '1px solid var(--border-color)',
                 borderRadius: '0.5rem',
-                color: '#22c1e6',
+                color: 'var(--primary)',
                 fontWeight: '600',
                 cursor: 'pointer'
             }}>

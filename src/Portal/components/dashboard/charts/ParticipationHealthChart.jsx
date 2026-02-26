@@ -14,23 +14,23 @@ const ParticipationHealthChart = () => {
 
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
             padding: '1.5rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             height: '100%'
         }}>
-            <h3 style={{ width: '100%', color: '#22c1e6', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', marginBottom: '1.5rem', textAlign: 'left' }}>
+            <h3 style={{ width: '100%', color: 'var(--primary)', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', marginBottom: '1.5rem', textAlign: 'left' }}>
                 My Participation Health
             </h3>
 
             <div style={{ position: 'relative', width: '200px', height: '120px', display: 'flex', justifyContent: 'center' }}>
                 <svg width="200" height="120" viewBox="0 0 200 120">
                     {/* Background Arc */}
-                    <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="12" strokeLinecap="round" />
+                    <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="var(--border-color)" strokeWidth="12" strokeLinecap="round" />
                     {/* Active Arc (82%) */}
                     {/* Calculate end point for 82% of 180 degrees = 147.6 degrees. Start is -180 (left). End is -32.4? */}
                     {/* svg path arc command: A rx ry x-axis-rotation large-arc-flag sweep-flag x y */}
@@ -39,9 +39,9 @@ const ParticipationHealthChart = () => {
                 </svg>
 
                 <div style={{ position: 'absolute', bottom: '0', textAlign: 'center' }}>
-                    <div style={{ fontSize: '2.5rem', fontWeight: '800', color: '#22c1e6', lineHeight: 1 }}>82%</div>
-                    <div style={{ fontSize: '0.9rem', fontWeight: '600', color: '#eff3c1', marginTop: '0.25rem' }}>Growing</div>
-                    <div style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', marginTop: '0.1rem' }}>Healthy</div>
+                    <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--primary)', lineHeight: 1 }}>82%</div>
+                    <div style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-color)', marginTop: '0.25rem' }}>Growing</div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginTop: '0.1rem' }}>Healthy</div>
                 </div>
             </div>
         </div>

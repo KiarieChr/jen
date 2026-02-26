@@ -7,9 +7,9 @@ const ActionButton = ({ icon, label, primary = false }) => (
         gap: '0.5rem',
         padding: '0.6rem 1rem',
         borderRadius: '0.5rem',
-        border: primary ? 'none' : '1px solid rgba(255,255,255,0.1)',
-        background: primary ? '#22c1e6' : 'rgba(255,255,255,0.05)',
-        color: primary ? '#120D20' : '#eff3c1',
+        border: primary ? 'none' : '1px solid var(--border-color)',
+        background: primary ? 'var(--primary)' : 'var(--border-color)',
+        color: primary ? 'var(--bg-color)' : 'var(--text-color)',
         fontWeight: primary ? '700' : '500',
         fontSize: '0.9rem',
         cursor: 'pointer',
@@ -22,10 +22,10 @@ const ActionButton = ({ icon, label, primary = false }) => (
 const UserActionsMenu = ({ onAddUser, onAssignRoles, onBulkDeactivate }) => {
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             padding: '1rem',
             borderRadius: '1rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             marginBottom: '1.5rem',
             display: 'flex',
             alignItems: 'center',
@@ -35,7 +35,7 @@ const UserActionsMenu = ({ onAddUser, onAssignRoles, onBulkDeactivate }) => {
             <div onClick={onAddUser}>
                 <ActionButton icon="➕" label="Add New User" primary={true} />
             </div>
-            <div style={{ width: '1px', height: '24px', background: 'rgba(255,255,255,0.1)' }}></div>
+            <div style={{ width: '1px', height: '24px', background: 'var(--border-color)' }}></div>
             <div onClick={onAssignRoles}>
                 <ActionButton icon="🛡️" label="Assign Roles" />
             </div>

@@ -18,27 +18,27 @@ const CalendarWidget = () => {
 
     return (
         <div style={{
-            background: '#1A1625',
-            border: '1px solid rgba(255,255,255,0.05)',
+            background: 'var(--surface-1)',
+            border: '1px solid var(--border-color)',
             borderRadius: '1rem',
             padding: '1.5rem',
             height: '100%'
         }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3 style={{ color: '#22c1e6', fontSize: '1.1rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <h3 style={{ color: 'var(--primary)', fontSize: '1.1rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                     📅 February 2026
                 </h3>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#22c1e6', display: 'inline-block' }}></span>
-                    <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Event</span>
-                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#eff3c1', display: 'inline-block' }}></span>
-                    <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Cell</span>
+                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--primary)', display: 'inline-block' }}></span>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Event</span>
+                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--text-color)', display: 'inline-block' }}></span>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Cell</span>
                 </div>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', textAlign: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
                 {days.map(d => (
-                    <div key={d} style={{ color: '#64748b', fontSize: '0.8rem', fontWeight: '600' }}>{d}</div>
+                    <div key={d} style={{ color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: '600' }}>{d}</div>
                 ))}
             </div>
 
@@ -54,27 +54,27 @@ const CalendarWidget = () => {
                         justifyContent: 'center',
                         borderRadius: '50%',
                         fontSize: '0.9rem',
-                        color: date === today ? '#120D20' : '#eff3c1',
-                        background: date === today ? '#eff3c1' : 'transparent',
+                        color: date === today ? 'var(--bg-color)' : 'var(--text-color)',
+                        background: date === today ? 'var(--text-color)' : 'transparent',
                         position: 'relative',
                         cursor: 'pointer',
                         fontWeight: date === today ? 'bold' : 'normal'
                     }}>
                         {date}
                         {isEvent(date) && (
-                            <div style={{ position: 'absolute', bottom: '2px', width: '4px', height: '4px', borderRadius: '50%', background: '#22c1e6' }}></div>
+                            <div style={{ position: 'absolute', bottom: '2px', width: '4px', height: '4px', borderRadius: '50%', background: 'var(--primary)' }}></div>
                         )}
                         {isCell(date) && (
-                            <div style={{ position: 'absolute', bottom: '2px', width: '4px', height: '4px', borderRadius: '50%', background: '#eff3c1' }}></div>
+                            <div style={{ position: 'absolute', bottom: '2px', width: '4px', height: '4px', borderRadius: '50%', background: 'var(--text-color)' }}></div>
                         )}
                     </div>
                 ))}
             </div>
 
             <div style={{ marginTop: '1.5rem', padding: '0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: '0.5rem' }}>
-                <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Upcoming</div>
-                <div style={{ color: '#eff3c1', fontSize: '0.9rem', fontWeight: '600' }}>Goshen Cell Meeting</div>
-                <div style={{ color: '#22c1e6', fontSize: '0.8rem' }}>Thursday, Feb 5th • 6:00 PM</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Upcoming</div>
+                <div style={{ color: 'var(--text-color)', fontSize: '0.9rem', fontWeight: '600' }}>Goshen Cell Meeting</div>
+                <div style={{ color: 'var(--primary)', fontSize: '0.8rem' }}>Thursday, Feb 5th • 6:00 PM</div>
             </div>
         </div>
     );

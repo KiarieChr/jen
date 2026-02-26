@@ -23,15 +23,15 @@ const AttendanceTrendChart = () => {
 
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
             padding: '1.5rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             position: 'relative',
             overflow: 'hidden',
             height: '100%'
         }}>
-            <h3 style={{ color: '#22c1e6', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
+            <h3 style={{ color: 'var(--primary)', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
                 Attendance Trend (Last 6 Months)
             </h3>
 
@@ -50,7 +50,7 @@ const AttendanceTrendChart = () => {
                 </svg>
 
                 {/* Labels */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem', color: '#64748b', fontSize: '0.75rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem', color: 'var(--text-muted)', fontSize: '0.75rem' }}>
                     <span>Sep</span>
                     <span>Oct</span>
                     <span>Nov</span>

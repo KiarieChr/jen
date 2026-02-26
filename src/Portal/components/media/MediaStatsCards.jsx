@@ -2,10 +2,10 @@ import React from 'react';
 
 const StatCard = ({ title, value, icon, iconBg, iconColor }) => (
     <div style={{
-        background: '#1A1625',
+        background: 'var(--surface-1)',
         borderRadius: '1rem',
         padding: '1.5rem',
-        border: '1px solid rgba(255,255,255,0.05)',
+        border: '1px solid var(--border-color)',
         display: 'flex',
         alignItems: 'center',
         gap: '1.5rem'
@@ -24,8 +24,8 @@ const StatCard = ({ title, value, icon, iconBg, iconColor }) => (
             {icon}
         </div>
         <div>
-            <div style={{ fontSize: '1.8rem', fontWeight: '800', color: 'white', lineHeight: 1 }}>{value}</div>
-            <div style={{ color: '#94a3b8', fontSize: '0.9rem', marginTop: '0.3rem' }}>{title}</div>
+            <div style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--text-color)', lineHeight: 1 }}>{value}</div>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '0.3rem' }}>{title}</div>
         </div>
     </div>
 );

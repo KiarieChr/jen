@@ -1,11 +1,11 @@
 import React from 'react';
 
-const StatCard = ({ title, value, icon, color = '#22c1e6', subtext }) => (
+const StatCard = ({ title, value, icon, color = 'var(--primary)', subtext }) => (
     <div style={{
-        background: '#1A1625',
+        background: 'var(--surface-1)',
         borderRadius: '1rem',
         padding: '1.25rem',
-        border: '1px solid rgba(255,255,255,0.05)',
+        border: '1px solid var(--border-color)',
         display: 'flex',
         alignItems: 'center',
         gap: '1rem'
@@ -14,7 +14,7 @@ const StatCard = ({ title, value, icon, color = '#22c1e6', subtext }) => (
             width: '48px',
             height: '48px',
             borderRadius: '10px',
-            background: `rgba(${color === '#22c1e6' ? '34, 193, 230' : (color === '#4ade80' ? '74, 222, 128' : (color === '#ef4444' ? '239, 68, 68' : '168, 85, 247'))}, 0.1)`,
+            background: `rgba(${color === 'var(--primary)' ? '34, 193, 230' : (color === '#4ade80' ? '74, 222, 128' : (color === '#ef4444' ? '239, 68, 68' : '168, 85, 247'))}, 0.1)`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -24,8 +24,8 @@ const StatCard = ({ title, value, icon, color = '#22c1e6', subtext }) => (
             {icon}
         </div>
         <div>
-            <div style={{ fontSize: '1.5rem', fontWeight: '700', color: '#eff3c1', lineHeight: 1 }}>{value}</div>
-            <div style={{ color: '#94a3b8', fontSize: '0.8rem', fontWeight: '500', marginTop: '0.2rem' }}>{title}</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--text-color)', lineHeight: 1 }}>{value}</div>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', fontWeight: '500', marginTop: '0.2rem' }}>{title}</div>
             {subtext && <div style={{ fontSize: '0.7rem', color: color, marginTop: '2px' }}>{subtext}</div>}
         </div>
     </div>

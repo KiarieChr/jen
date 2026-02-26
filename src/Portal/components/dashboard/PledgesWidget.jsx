@@ -13,8 +13,8 @@ const PledgesWidget = () => {
 
     return (
         <div style={{
-            background: '#1A1625',
-            border: '1px solid rgba(255,255,255,0.05)',
+            background: 'var(--surface-1)',
+            border: '1px solid var(--border-color)',
             borderRadius: '1rem',
             padding: '1.5rem',
             height: '100%',
@@ -22,20 +22,20 @@ const PledgesWidget = () => {
             flexDirection: 'column',
             justifyContent: 'center'
         }}>
-            <h3 style={{ color: '#22c1e6', fontSize: '1.1rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1.5rem' }}>
+            <h3 style={{ color: 'var(--primary)', fontSize: '1.1rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1.5rem' }}>
                 🤝 My Partnership
             </h3>
 
             <div style={{ marginBottom: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', alignItems: 'flex-end' }}>
-                    <div style={{ color: '#eff3c1', fontWeight: '600' }}>{pledgeData.campaign}</div>
-                    <div style={{ color: '#22c1e6', fontWeight: '700', fontSize: '1.25rem' }}>{percentage}%</div>
+                    <div style={{ color: 'var(--text-color)', fontWeight: '600' }}>{pledgeData.campaign}</div>
+                    <div style={{ color: 'var(--primary)', fontWeight: '700', fontSize: '1.25rem' }}>{percentage}%</div>
                 </div>
 
                 {/* Progress Bar */}
                 <div style={{
                     height: '12px',
-                    background: 'rgba(255,255,255,0.1)',
+                    background: 'var(--border-color)',
                     borderRadius: '6px',
                     overflow: 'hidden',
                     marginBottom: '1rem'
@@ -48,8 +48,8 @@ const PledgesWidget = () => {
                     }}></div>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: '#94a3b8' }}>
-                    <div>Fulfilled: <span style={{ color: '#eff3c1' }}>{pledgeData.currency} {pledgeData.fulfilled.toLocaleString()}</span></div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                    <div>Fulfilled: <span style={{ color: 'var(--text-color)' }}>{pledgeData.currency} {pledgeData.fulfilled.toLocaleString()}</span></div>
                     <div>Pledged: {pledgeData.currency} {pledgeData.pledged.toLocaleString()}</div>
                 </div>
             </div>
@@ -64,8 +64,8 @@ const PledgesWidget = () => {
             }}>
                 <div style={{ fontSize: '1.5rem' }}>✨</div>
                 <div>
-                    <div style={{ color: '#eff3c1', fontSize: '0.9rem', fontWeight: '600' }}>Almost there!</div>
-                    <div style={{ color: '#94a3b8', fontSize: '0.8rem' }}>Only {pledgeData.currency} {balance.toLocaleString()} to go. Thank you for your faithfulness.</div>
+                    <div style={{ color: 'var(--text-color)', fontSize: '0.9rem', fontWeight: '600' }}>Almost there!</div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>Only {pledgeData.currency} {balance.toLocaleString()} to go. Thank you for your faithfulness.</div>
                 </div>
             </div>
         </div>

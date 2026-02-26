@@ -10,20 +10,20 @@ const AttendanceWidget = () => {
     ];
 
     const getStatusColor = (status) => {
-        if (status === 'Present') return '#22c1e6'; // Primary accent
+        if (status === 'Present') return 'var(--primary)'; // Primary accent
         if (status === 'Absent') return '#ef4444'; // Red
         return '#a8a29e'; // Grey
     };
 
     return (
         <div style={{
-            background: '#1A1625',
-            border: '1px solid rgba(255,255,255,0.05)',
+            background: 'var(--surface-1)',
+            border: '1px solid var(--border-color)',
             borderRadius: '1rem',
             padding: '1.5rem',
             height: '100%'
         }}>
-            <h3 style={{ color: '#22c1e6', fontSize: '1.1rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1.5rem' }}>
+            <h3 style={{ color: 'var(--primary)', fontSize: '1.1rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1.5rem' }}>
                 ✅ Recent Attendance
             </h3>
 
@@ -39,8 +39,8 @@ const AttendanceWidget = () => {
                         borderLeft: `3px solid ${getStatusColor(record.status)}`
                     }}>
                         <div>
-                            <div style={{ color: '#eff3c1', fontSize: '0.9rem', fontWeight: '600' }}>{record.event}</div>
-                            <div style={{ color: '#94a3b8', fontSize: '0.75rem' }}>{record.date}</div>
+                            <div style={{ color: 'var(--text-color)', fontSize: '0.9rem', fontWeight: '600' }}>{record.event}</div>
+                            <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>{record.date}</div>
                         </div>
                         <div style={{
                             display: 'flex',
@@ -60,7 +60,7 @@ const AttendanceWidget = () => {
             </div>
 
             <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-                <button style={{ background: 'transparent', color: '#94a3b8', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.5rem', padding: '0.5rem 1rem', fontSize: '0.85rem', cursor: 'pointer', width: '100%' }}>
+                <button style={{ background: 'transparent', color: 'var(--text-muted)', border: '1px solid var(--border-color)', borderRadius: '0.5rem', padding: '0.5rem 1rem', fontSize: '0.85rem', cursor: 'pointer', width: '100%' }}>
                     View Full History
                 </button>
             </div>

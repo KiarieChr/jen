@@ -39,17 +39,17 @@ const AssignRolesModal = ({ onClose }) => {
     const inputStyle = {
         width: '100%',
         padding: '0.75rem',
-        background: '#120D20',
-        border: '1px solid rgba(255,255,255,0.1)',
+        background: 'var(--bg-color)',
+        border: '1px solid var(--border-color)',
         borderRadius: '0.5rem',
-        color: '#eff3c1',
+        color: 'var(--text-color)',
         fontSize: '0.9rem',
         marginTop: '0.4rem',
         outline: 'none'
     };
 
     const labelStyle = {
-        color: '#94a3b8',
+        color: 'var(--text-muted)',
         fontSize: '0.85rem',
         fontWeight: '500',
         marginBottom: '0.5rem',
@@ -71,17 +71,17 @@ const AssignRolesModal = ({ onClose }) => {
             zIndex: 1100
         }}>
             <div style={{
-                background: '#1A1625',
+                background: 'var(--surface-1)',
                 padding: '2rem',
                 borderRadius: '1rem',
                 width: '100%',
                 maxWidth: '500px',
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: '1px solid var(--border-color)',
                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                    <h2 style={{ fontSize: '1.5rem', color: '#22c1e6', margin: 0 }}>Assign Roles</h2>
-                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
+                    <h2 style={{ fontSize: '1.5rem', color: 'var(--primary)', margin: 0 }}>Assign Roles</h2>
+                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
                 </div>
 
                 <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1.5rem' }}>
@@ -113,8 +113,8 @@ const AssignRolesModal = ({ onClose }) => {
                                     alignItems: 'center',
                                     gap: '0.75rem',
                                     padding: '0.75rem',
-                                    background: formData.role === role.label ? 'rgba(34, 193, 230, 0.1)' : 'rgba(255,255,255,0.02)',
-                                    border: formData.role === role.label ? '1px solid #22c1e6' : '1px solid rgba(255,255,255,0.05)',
+                                    background: formData.role === role.label ? 'rgba(34, 193, 230, 0.1)' : 'var(--surface-2)',
+                                    border: formData.role === role.label ? '1px solid #22c1e6' : '1px solid var(--border-color)',
                                     borderRadius: '0.5rem',
                                     cursor: 'pointer',
                                     transition: 'all 0.2s'
@@ -125,11 +125,11 @@ const AssignRolesModal = ({ onClose }) => {
                                         value={role.label}
                                         checked={formData.role === role.label}
                                         onChange={handleChange}
-                                        style={{ accentColor: '#22c1e6' }}
+                                        style={{ accentColor: 'var(--primary)' }}
                                     />
                                     <div>
-                                        <div style={{ color: '#eff3c1', fontWeight: '500' }}>{role.label}</div>
-                                        <div style={{ color: '#94a3b8', fontSize: '0.8rem' }}>{role.desc}</div>
+                                        <div style={{ color: 'var(--text-color)', fontWeight: '500' }}>{role.label}</div>
+                                        <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{role.desc}</div>
                                     </div>
                                 </label>
                             ))}
@@ -141,17 +141,17 @@ const AssignRolesModal = ({ onClose }) => {
                         <button type="button" onClick={onClose} style={{
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            border: '1px solid var(--border-color)',
                             background: 'transparent',
-                            color: '#94a3b8',
+                            color: 'var(--text-muted)',
                             cursor: 'pointer'
                         }}>Cancel</button>
                         <button type="submit" style={{
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
                             border: 'none',
-                            background: '#22c1e6',
-                            color: '#120D20',
+                            background: 'var(--primary)',
+                            color: 'var(--bg-color)',
                             fontWeight: '700',
                             cursor: 'pointer',
                             opacity: formData.userId ? 1 : 0.5,

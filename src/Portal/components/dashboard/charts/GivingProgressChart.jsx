@@ -13,22 +13,22 @@ const GivingProgressChart = () => {
 
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
             padding: '1.5rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             height: '100%'
         }}>
-            <h3 style={{ color: '#22c1e6', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+            <h3 style={{ color: 'var(--primary)', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
                 Giving & Pledges Progress
             </h3>
 
             <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', fontSize: '0.7rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#64748b' }}>
-                    <span style={{ width: '8px', height: '8px', background: '#22c1e6' }}></span> Fulfilled
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--text-muted)' }}>
+                    <span style={{ width: '8px', height: '8px', background: 'var(--primary)' }}></span> Fulfilled
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#64748b' }}>
-                    <span style={{ width: '8px', height: '8px', background: 'rgba(255,255,255,0.1)' }}></span> Target Pledged
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--text-muted)' }}>
+                    <span style={{ width: '8px', height: '8px', background: 'var(--border-color)' }}></span> Target Pledged
                 </div>
             </div>
 
@@ -40,19 +40,19 @@ const GivingProgressChart = () => {
                             <div style={{
                                 width: '12px',
                                 height: `${(item.pledged / maxVal) * 100}%`,
-                                background: 'rgba(255,255,255,0.1)',
+                                background: 'var(--border-color)',
                                 borderRadius: '2px 2px 0 0'
                             }}></div>
                             {/* Fulfilled Bar */}
                             <div style={{
                                 width: '20px',
                                 height: `${(item.fulfilled / maxVal) * 100}%`,
-                                background: '#22c1e6',
+                                background: 'var(--primary)',
                                 borderRadius: '4px 4px 0 0',
                                 boxShadow: '0 0 10px rgba(34, 193, 230, 0.2)'
                             }}></div>
                         </div>
-                        <div style={{ color: '#64748b', fontSize: '0.75rem' }}>{item.label}</div>
+                        <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>{item.label}</div>
                     </div>
                 ))}
             </div>

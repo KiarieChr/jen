@@ -3,11 +3,11 @@ import React from 'react';
 const ProfileHeader = ({ onEditProfilePic, onEditProfile }) => {
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
             overflow: 'hidden',
             marginBottom: '1.5rem',
-            border: '1px solid rgba(255,255,255,0.05)'
+            border: '1px solid var(--border-color)'
         }}>
             {/* Cover Image */}
             <div style={{
@@ -30,14 +30,14 @@ const ProfileHeader = ({ onEditProfilePic, onEditProfile }) => {
                     <div style={{
                         width: '120px',
                         height: '120px',
-                        background: '#22c1e6',
+                        background: 'var(--primary)',
                         borderRadius: '0.8rem',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         fontSize: '3rem',
                         fontWeight: '600',
-                        color: '#120D20',
+                        color: 'var(--bg-color)',
                         border: '4px solid #1A1625'
                     }}>
                         TM
@@ -46,7 +46,7 @@ const ProfileHeader = ({ onEditProfilePic, onEditProfile }) => {
                         onClick={onEditProfilePic}
                         style={{
                             background: '#4f46e5', // Indigo color from image
-                            color: 'white',
+                            color: 'var(--text-color)',
                             border: 'none',
                             padding: '0.4rem 1rem',
                             borderRadius: '0.4rem',
@@ -64,18 +64,18 @@ const ProfileHeader = ({ onEditProfilePic, onEditProfile }) => {
                 <div style={{ marginLeft: '140px', paddingTop: '0.5rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                         <div>
-                            <h1 style={{ fontSize: '1.8rem', fontWeight: '800', color: 'white', margin: '0 0 0.5rem 0' }}>Timothy Mutisya</h1>
+                            <h1 style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--text-color)', margin: '0 0 0.5rem 0' }}>Timothy Mutisya</h1>
 
                             <div style={{ marginBottom: '1rem' }}>
-                                <div style={{ color: '#eff3c1', fontSize: '0.9rem', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                <div style={{ color: 'var(--text-color)', fontSize: '0.9rem', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                     About Me <span onClick={onEditProfile} style={{ color: '#6366f1', fontSize: '0.75rem', cursor: 'pointer' }}>✎ Edit</span>
                                 </div>
-                                <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: '0.2rem 0', maxWidth: '600px' }}>
+                                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', margin: '0.2rem 0', maxWidth: '600px' }}>
                                     Passionate about serving the community and technical administration.
                                 </p>
                             </div>
 
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', fontSize: '0.85rem', color: '#cbd5e1' }}>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', fontSize: '0.85rem', color: 'var(--text-color)' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                                     <span>📅</span> Born on September 10th, 2001 <span onClick={onEditProfile} style={{ color: '#6366f1', marginLeft: '2px', cursor: 'pointer' }}>✎</span>
                                 </div>
@@ -87,7 +87,7 @@ const ProfileHeader = ({ onEditProfilePic, onEditProfile }) => {
                                 </div>
                             </div>
 
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', color: '#cbd5e1', marginTop: '0.5rem' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', color: 'var(--text-color)', marginTop: '0.5rem' }}>
                                 <span>🗓️</span> Joined On August 5th, 2025
                             </div>
                         </div>
@@ -95,7 +95,7 @@ const ProfileHeader = ({ onEditProfilePic, onEditProfile }) => {
                         <div style={{ marginTop: '1rem' }}>
                             <span style={{
                                 background: '#4f46e5', // Indigo
-                                color: 'white',
+                                color: 'var(--text-color)',
                                 padding: '0.3rem 0.8rem',
                                 borderRadius: '2rem',
                                 fontSize: '0.8rem',

@@ -11,12 +11,12 @@ const SimpleBarChart = ({ data }) => {
                     <div style={{
                         width: '100%',
                         height: `${(d.value / max) * 100}%`,
-                        background: d.color || '#22c1e6',
+                        background: d.color || 'var(--primary)',
                         borderRadius: '4px 4px 0 0',
                         opacity: 0.8,
                         transition: 'height 0.5s ease'
                     }}></div>
-                    <div style={{ fontSize: '0.7rem', color: '#94a3b8', transform: 'rotate(-45deg)', transformOrigin: 'left top', marginTop: '10px', whiteSpace: 'nowrap' }}>{d.label}</div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', transform: 'rotate(-45deg)', transformOrigin: 'left top', marginTop: '10px', whiteSpace: 'nowrap' }}>{d.label}</div>
                 </div>
             ))}
         </div>
@@ -25,11 +25,11 @@ const SimpleBarChart = ({ data }) => {
 
 const EventAnalytics = () => {
     const attendanceData = [
-        { label: 'Jan 1', value: 450, color: '#22c1e6' },
-        { label: 'Jan 8', value: 470, color: '#22c1e6' },
-        { label: 'Jan 15', value: 420, color: '#22c1e6' },
-        { label: 'Jan 22', value: 490, color: '#22c1e6' },
-        { label: 'Jan 29', value: 510, color: '#22c1e6' },
+        { label: 'Jan 1', value: 450, color: 'var(--primary)' },
+        { label: 'Jan 8', value: 470, color: 'var(--primary)' },
+        { label: 'Jan 15', value: 420, color: 'var(--primary)' },
+        { label: 'Jan 22', value: 490, color: 'var(--primary)' },
+        { label: 'Jan 29', value: 510, color: 'var(--primary)' },
     ];
 
     const categoryData = [
@@ -42,31 +42,31 @@ const EventAnalytics = () => {
     return (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
             <div style={{
-                background: '#1A1625',
+                background: 'var(--surface-1)',
                 borderRadius: '1rem',
                 padding: '1.5rem',
-                border: '1px solid rgba(255,255,255,0.05)'
+                border: '1px solid var(--border-color)'
             }}>
-                <h3 style={{ margin: '0 0 1rem 0', color: '#eff3c1', fontSize: '1rem' }}>Attendance Trend (Jan)</h3>
+                <h3 style={{ margin: '0 0 1rem 0', color: 'var(--text-color)', fontSize: '1rem' }}>Attendance Trend (Jan)</h3>
                 <SimpleBarChart data={attendanceData} />
             </div>
 
             <div style={{
-                background: '#1A1625',
+                background: 'var(--surface-1)',
                 borderRadius: '1rem',
                 padding: '1.5rem',
-                border: '1px solid rgba(255,255,255,0.05)'
+                border: '1px solid var(--border-color)'
             }}>
-                <h3 style={{ margin: '0 0 1rem 0', color: '#eff3c1', fontSize: '1rem' }}>Attendance by Category</h3>
+                <h3 style={{ margin: '0 0 1rem 0', color: 'var(--text-color)', fontSize: '1rem' }}>Attendance by Category</h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                     {categoryData.map((cat, idx) => (
                         <div key={idx}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '0.2rem', color: '#cbd5e1' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '0.2rem', color: 'var(--text-color)' }}>
                                 <span>{cat.label}</span>
                                 <span>{cat.value}</span>
                             </div>
-                            <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.05)', borderRadius: '3px', overflow: 'hidden' }}>
-                                <div style={{ width: `${(cat.value / 2500) * 100}%`, height: '100%', background: idx % 2 === 0 ? '#a855f7' : '#f59e0b' }}></div>
+                            <div style={{ width: '100%', height: '6px', background: 'var(--border-color)', borderRadius: '3px', overflow: 'hidden' }}>
+                                <div style={{ width: `${(cat.value / 2500) * 100}%`, height: '100%', background: idx % 2 === 0 ? 'var(--secondary)' : '#f59e0b' }}></div>
                             </div>
                         </div>
                     ))}

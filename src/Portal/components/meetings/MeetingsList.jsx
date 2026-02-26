@@ -21,18 +21,18 @@ const MeetingsList = () => {
 
     const getStatusColor = (status) => {
         switch (status) {
-            case 'Upcoming': return '#22c1e6';
+            case 'Upcoming': return 'var(--primary)';
             case 'Completed': return '#4ade80';
-            case 'Cancelled': return '#94a3b8';
-            default: return '#eff3c1';
+            case 'Cancelled': return 'var(--text-muted)';
+            default: return 'var(--text-color)';
         }
     };
 
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             display: 'flex',
             flexDirection: 'column',
             overflow: 'hidden',
@@ -41,7 +41,7 @@ const MeetingsList = () => {
             {/* Toolbar */}
             <div style={{
                 padding: '1.25rem',
-                borderBottom: '1px solid rgba(255,255,255,0.05)',
+                borderBottom: '1px solid var(--border-color)',
                 display: 'flex',
                 flexWrap: 'wrap',
                 gap: '1rem',
@@ -52,7 +52,7 @@ const MeetingsList = () => {
                     {['All', 'Upcoming', 'Completed', 'Cancelled'].map(f => (
                         <button key={f} onClick={() => setFilter(f)} style={{
                             background: filter === f ? 'rgba(34, 193, 230, 0.1)' : 'transparent',
-                            color: filter === f ? '#22c1e6' : '#94a3b8',
+                            color: filter === f ? 'var(--primary)' : 'var(--text-muted)',
                             border: filter === f ? '1px solid rgba(34, 193, 230, 0.3)' : '1px solid transparent',
                             borderRadius: '0.5rem',
                             padding: '0.3rem 0.8rem',
@@ -70,10 +70,10 @@ const MeetingsList = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         style={{
                             padding: '0.5rem 1rem',
-                            background: '#120D20',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            background: 'var(--bg-color)',
+                            border: '1px solid var(--border-color)',
                             borderRadius: '0.5rem',
-                            color: '#eff3c1',
+                            color: 'var(--text-color)',
                             outline: 'none',
                             fontSize: '0.9rem'
                         }}
@@ -85,26 +85,26 @@ const MeetingsList = () => {
             <div style={{ padding: '0' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', color: '#e2e8f0', fontSize: '0.9rem' }}>
                     <thead>
-                        <tr style={{ background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                            <th style={{ textAlign: 'left', padding: '1rem', color: '#94a3b8', fontWeight: '600' }}>Event / Meeting</th>
-                            <th style={{ textAlign: 'left', padding: '1rem', color: '#94a3b8', fontWeight: '600' }}>Date & Time</th>
-                            <th style={{ textAlign: 'left', padding: '1rem', color: '#94a3b8', fontWeight: '600' }}>Location</th>
-                            <th style={{ textAlign: 'left', padding: '1rem', color: '#94a3b8', fontWeight: '600' }}>Category</th>
-                            <th style={{ textAlign: 'left', padding: '1rem', color: '#94a3b8', fontWeight: '600' }}>Status</th>
-                            <th style={{ textAlign: 'right', padding: '1rem', color: '#94a3b8', fontWeight: '600' }}>Actions</th>
+                        <tr style={{ background: 'var(--surface-2)', borderBottom: '1px solid var(--border-color)' }}>
+                            <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-muted)', fontWeight: '600' }}>Event / Meeting</th>
+                            <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-muted)', fontWeight: '600' }}>Date & Time</th>
+                            <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-muted)', fontWeight: '600' }}>Location</th>
+                            <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-muted)', fontWeight: '600' }}>Category</th>
+                            <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-muted)', fontWeight: '600' }}>Status</th>
+                            <th style={{ textAlign: 'right', padding: '1rem', color: 'var(--text-muted)', fontWeight: '600' }}>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredMeetings.length > 0 ? filteredMeetings.map(m => (
-                            <tr key={m.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', transition: 'background 0.2s' }}>
-                                <td style={{ padding: '1rem', fontWeight: '500', color: '#eff3c1' }}>{m.title}</td>
+                            <tr key={m.id} style={{ borderBottom: '1px solid var(--border-color)', transition: 'background 0.2s' }}>
+                                <td style={{ padding: '1rem', fontWeight: '500', color: 'var(--text-color)' }}>{m.title}</td>
                                 <td style={{ padding: '1rem' }}>
                                     <div>{m.date}</div>
-                                    <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{m.time}</div>
+                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{m.time}</div>
                                 </td>
-                                <td style={{ padding: '1rem', color: '#cbd5e1' }}>{m.location}</td>
+                                <td style={{ padding: '1rem', color: 'var(--text-color)' }}>{m.location}</td>
                                 <td style={{ padding: '1rem' }}>
-                                    <span style={{ background: 'rgba(255,255,255,0.05)', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', color: '#94a3b8' }}>{m.category}</span>
+                                    <span style={{ background: 'var(--border-color)', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', color: 'var(--text-muted)' }}>{m.category}</span>
                                 </td>
                                 <td style={{ padding: '1rem' }}>
                                     <span style={{ color: getStatusColor(m.status), display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem' }}>
@@ -113,12 +113,12 @@ const MeetingsList = () => {
                                     </span>
                                 </td>
                                 <td style={{ padding: '1rem', textAlign: 'right' }}>
-                                    <button style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', fontSize: '1rem' }}>⋮</button>
+                                    <button style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '1rem' }}>⋮</button>
                                 </td>
                             </tr>
                         )) : (
                             <tr>
-                                <td colSpan="6" style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>
+                                <td colSpan="6" style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
                                     No meetings found matching your criteria.
                                 </td>
                             </tr>

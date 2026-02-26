@@ -17,17 +17,17 @@ const CellMembersList = () => {
 
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
             padding: '1.5rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             height: '100%',
             display: 'flex',
             flexDirection: 'column'
         }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3 style={{ color: '#eff3c1', fontSize: '1rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    🧑‍🤝‍🧑 Fellow Members <span style={{ background: 'rgba(255,255,255,0.1)', padding: '0.2rem 0.5rem', borderRadius: '1rem', fontSize: '0.7rem' }}>{members.length}</span>
+                <h3 style={{ color: 'var(--text-color)', fontSize: '1rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    🧑‍🤝‍🧑 Fellow Members <span style={{ background: 'var(--border-color)', padding: '0.2rem 0.5rem', borderRadius: '1rem', fontSize: '0.7rem' }}>{members.length}</span>
                 </h3>
                 <div style={{ position: 'relative' }}>
                     <input
@@ -37,10 +37,10 @@ const CellMembersList = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         style={{
                             padding: '0.4rem 0.8rem 0.4rem 2rem',
-                            background: '#120D20',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            background: 'var(--bg-color)',
+                            border: '1px solid var(--border-color)',
                             borderRadius: '2rem',
-                            color: '#eff3c1',
+                            color: 'var(--text-color)',
                             fontSize: '0.8rem',
                             width: '120px',
                             outline: 'none'
@@ -53,7 +53,7 @@ const CellMembersList = () => {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '1rem', overflowY: 'auto' }}>
                 {filtered.map(member => (
                     <div key={member.id} style={{
-                        background: 'rgba(255,255,255,0.02)',
+                        background: 'var(--surface-2)',
                         borderRadius: '0.75rem',
                         padding: '1rem',
                         display: 'flex',
@@ -65,8 +65,8 @@ const CellMembersList = () => {
                         cursor: 'default',
                         border: '1px solid transparent'
                     }}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--border-color)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--surface-2)'; e.currentTarget.style.transform = 'translateY(0)'; }}
                     >
                         <div style={{
                             width: '40px',
@@ -76,15 +76,15 @@ const CellMembersList = () => {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            color: '#fff',
+                            color: 'var(--text-color)',
                             fontWeight: '600',
                             marginBottom: '0.5rem',
                             fontSize: '0.9rem'
                         }}>
                             {member.name.charAt(0)}
                         </div>
-                        <div style={{ color: '#eff3c1', fontSize: '0.85rem', fontWeight: '500' }}>{member.name}</div>
-                        <div style={{ color: '#64748b', fontSize: '0.7rem' }}>{member.role}</div>
+                        <div style={{ color: 'var(--text-color)', fontSize: '0.85rem', fontWeight: '500' }}>{member.name}</div>
+                        <div style={{ color: 'var(--text-muted)', fontSize: '0.7rem' }}>{member.role}</div>
                     </div>
                 ))}
             </div>

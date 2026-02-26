@@ -12,21 +12,21 @@ const MembersInvitedPanel = () => {
 
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
             padding: '2rem',
-            border: '1px solid rgba(255,255,255,0.05)'
+            border: '1px solid var(--border-color)'
         }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                 <div>
-                    <h3 style={{ margin: 0, color: 'white', fontSize: '1.1rem' }}>Members I Invited</h3>
-                    <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginTop: '0.3rem' }}>Track the people you have introduced to the community.</p>
+                    <h3 style={{ margin: 0, color: 'var(--text-color)', fontSize: '1.1rem' }}>Members I Invited</h3>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '0.3rem' }}>Track the people you have introduced to the community.</p>
                 </div>
                 <button
                     onClick={() => setIsInviteModalOpen(true)}
                     style={{
-                        background: '#22c1e6',
-                        color: '#120D20',
+                        background: 'var(--primary)',
+                        color: 'var(--bg-color)',
                         border: 'none',
                         borderRadius: '0.4rem',
                         padding: '0.6rem 1.2rem',
@@ -46,27 +46,27 @@ const MembersInvitedPanel = () => {
                 {invitedMembers.length > 0 ? (
                     invitedMembers.map(member => (
                         <div key={member.id} style={{
-                            background: 'rgba(255,255,255,0.02)',
+                            background: 'var(--surface-2)',
                             borderRadius: '0.8rem',
                             padding: '1rem',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'space-between',
-                            border: '1px solid rgba(255,255,255,0.05)'
+                            border: '1px solid var(--border-color)'
                         }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                 <div style={{
                                     width: '40px', height: '40px',
                                     borderRadius: '50%',
-                                    background: 'rgba(255,255,255,0.1)',
+                                    background: 'var(--border-color)',
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    color: '#eff3c1', fontWeight: '600'
+                                    color: 'var(--text-color)', fontWeight: '600'
                                 }}>
                                     {member.name.charAt(0)}
                                 </div>
                                 <div>
-                                    <div style={{ color: '#eff3c1', fontWeight: '500' }}>{member.name}</div>
-                                    <div style={{ color: '#94a3b8', fontSize: '0.8rem' }}>{member.contact}</div>
+                                    <div style={{ color: 'var(--text-color)', fontWeight: '500' }}>{member.name}</div>
+                                    <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{member.contact}</div>
                                 </div>
                             </div>
                             <div style={{ textAlign: 'right' }}>
@@ -82,12 +82,12 @@ const MembersInvitedPanel = () => {
                                 }}>
                                     {member.status}
                                 </div>
-                                <div style={{ color: '#64748b', fontSize: '0.75rem' }}>Invited on {member.date}</div>
+                                <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>Invited on {member.date}</div>
                             </div>
                         </div>
                     ))
                 ) : (
-                    <div style={{ textAlign: 'center', padding: '3rem', color: '#94a3b8' }}>
+                    <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                         You haven't invited anyone yet. Start building the community!
                     </div>
                 )}
@@ -103,50 +103,50 @@ const MembersInvitedPanel = () => {
                     zIndex: 1000
                 }}>
                     <div style={{
-                        background: '#1A1625',
+                        background: 'var(--surface-1)',
                         borderRadius: '1rem',
                         padding: '2rem',
                         width: '100%',
                         maxWidth: '500px',
-                        border: '1px solid rgba(255,255,255,0.1)',
+                        border: '1px solid var(--border-color)',
                         boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)'
                     }}>
-                        <h2 style={{ color: '#eff3c1', margin: '0 0 1.5rem 0' }}>Invite New Member</h2>
+                        <h2 style={{ color: 'var(--text-color)', margin: '0 0 1.5rem 0' }}>Invite New Member</h2>
 
                         <div style={{ display: 'grid', gap: '1rem' }}>
                             <div>
-                                <label style={{ display: 'block', color: '#94a3b8', marginBottom: '0.5rem', fontSize: '0.9rem' }}>Full Name</label>
+                                <label style={{ display: 'block', color: 'var(--text-muted)', marginBottom: '0.5rem', fontSize: '0.9rem' }}>Full Name</label>
                                 <input type="text" placeholder="e.g. John Doe" style={{
                                     width: '100%',
                                     padding: '0.75rem',
-                                    background: 'rgba(255,255,255,0.05)',
-                                    border: '1px solid rgba(255,255,255,0.1)',
+                                    background: 'var(--border-color)',
+                                    border: '1px solid var(--border-color)',
                                     borderRadius: '0.5rem',
-                                    color: 'white',
+                                    color: 'var(--text-color)',
                                     outline: 'none'
                                 }} />
                             </div>
                             <div>
-                                <label style={{ display: 'block', color: '#94a3b8', marginBottom: '0.5rem', fontSize: '0.9rem' }}>Email or Phone Number</label>
+                                <label style={{ display: 'block', color: 'var(--text-muted)', marginBottom: '0.5rem', fontSize: '0.9rem' }}>Email or Phone Number</label>
                                 <input type="text" placeholder="e.g. john@example.com or 0712..." style={{
                                     width: '100%',
                                     padding: '0.75rem',
-                                    background: 'rgba(255,255,255,0.05)',
-                                    border: '1px solid rgba(255,255,255,0.1)',
+                                    background: 'var(--border-color)',
+                                    border: '1px solid var(--border-color)',
                                     borderRadius: '0.5rem',
-                                    color: 'white',
+                                    color: 'var(--text-color)',
                                     outline: 'none'
                                 }} />
                             </div>
                             <div>
-                                <label style={{ display: 'block', color: '#94a3b8', marginBottom: '0.5rem', fontSize: '0.9rem' }}>Invitation Message (Optional)</label>
+                                <label style={{ display: 'block', color: 'var(--text-muted)', marginBottom: '0.5rem', fontSize: '0.9rem' }}>Invitation Message (Optional)</label>
                                 <textarea rows="3" placeholder="Write a personal message..." style={{
                                     width: '100%',
                                     padding: '0.75rem',
-                                    background: 'rgba(255,255,255,0.05)',
-                                    border: '1px solid rgba(255,255,255,0.1)',
+                                    background: 'var(--border-color)',
+                                    border: '1px solid var(--border-color)',
                                     borderRadius: '0.5rem',
-                                    color: 'white',
+                                    color: 'var(--text-color)',
                                     outline: 'none',
                                     fontFamily: 'inherit'
                                 }}></textarea>
@@ -160,8 +160,8 @@ const MembersInvitedPanel = () => {
                                     flex: 1,
                                     padding: '0.75rem',
                                     background: 'transparent',
-                                    border: '1px solid rgba(255,255,255,0.1)',
-                                    color: '#cbd5e1',
+                                    border: '1px solid var(--border-color)',
+                                    color: 'var(--text-color)',
                                     borderRadius: '0.5rem',
                                     cursor: 'pointer',
                                     fontWeight: '600'
@@ -177,9 +177,9 @@ const MembersInvitedPanel = () => {
                                 style={{
                                     flex: 1,
                                     padding: '0.75rem',
-                                    background: '#22c1e6',
+                                    background: 'var(--primary)',
                                     border: 'none',
-                                    color: '#120D20',
+                                    color: 'var(--bg-color)',
                                     borderRadius: '0.5rem',
                                     cursor: 'pointer',
                                     fontWeight: '700'

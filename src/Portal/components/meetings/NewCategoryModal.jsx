@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 const NewCategoryModal = ({ onClose }) => {
     const [formData, setFormData] = useState({
         name: '',
-        color: '#22c1e6'
+        color: 'var(--primary)'
     });
 
     const colors = [
-        '#22c1e6', // Cyan
-        '#a855f7', // Purple
+        'var(--primary)', // Cyan
+        'var(--secondary)', // Purple
         '#f59e0b', // Orange
         '#ef4444', // Red
         '#4ade80', // Green
@@ -35,16 +35,16 @@ const NewCategoryModal = ({ onClose }) => {
     const inputStyle = {
         width: '100%',
         padding: '0.75rem',
-        background: '#120D20',
-        border: '1px solid rgba(255,255,255,0.1)',
+        background: 'var(--bg-color)',
+        border: '1px solid var(--border-color)',
         borderRadius: '0.5rem',
-        color: '#eff3c1',
+        color: 'var(--text-color)',
         fontSize: '0.9rem',
         marginTop: '0.4rem'
     };
 
     const labelStyle = {
-        color: '#94a3b8',
+        color: 'var(--text-muted)',
         fontSize: '0.85rem',
         fontWeight: '500'
     };
@@ -64,17 +64,17 @@ const NewCategoryModal = ({ onClose }) => {
             zIndex: 1100
         }}>
             <div style={{
-                background: '#1A1625',
+                background: 'var(--surface-1)',
                 padding: '2rem',
                 borderRadius: '1rem',
                 width: '100%',
                 maxWidth: '450px',
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: '1px solid var(--border-color)',
                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                    <h2 style={{ fontSize: '1.5rem', color: '#eff3c1', margin: 0 }}>New Category</h2>
-                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
+                    <h2 style={{ fontSize: '1.5rem', color: 'var(--text-color)', margin: 0 }}>New Category</h2>
+                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
                 </div>
 
                 <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1.5rem' }}>
@@ -119,17 +119,17 @@ const NewCategoryModal = ({ onClose }) => {
                         <button type="button" onClick={onClose} style={{
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            border: '1px solid var(--border-color)',
                             background: 'transparent',
-                            color: '#94a3b8',
+                            color: 'var(--text-muted)',
                             cursor: 'pointer'
                         }}>Cancel</button>
                         <button type="submit" style={{
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
                             border: 'none',
-                            background: '#22c1e6',
-                            color: '#120D20',
+                            background: 'var(--primary)',
+                            color: 'var(--bg-color)',
                             fontWeight: '600',
                             cursor: 'pointer'
                         }}>Create Category</button>

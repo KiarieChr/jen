@@ -4,8 +4,8 @@ const QuickActionItem = ({ icon, label, onClick, primary = false }) => (
     <button
         onClick={onClick}
         style={{
-            background: primary ? '#22c1e6' : 'rgba(255,255,255,0.03)',
-            border: primary ? 'none' : '1px solid rgba(255,255,255,0.05)',
+            background: primary ? 'var(--primary)' : 'rgba(255,255,255,0.03)',
+            border: primary ? 'none' : '1px solid var(--border-color)',
             borderRadius: '0.75rem',
             padding: '1rem',
             display: 'flex',
@@ -16,7 +16,7 @@ const QuickActionItem = ({ icon, label, onClick, primary = false }) => (
             cursor: 'pointer',
             transition: 'all 0.2s',
             width: '100%',
-            color: primary ? '#120D20' : '#eff3c1'
+            color: primary ? 'var(--bg-color)' : 'var(--text-color)'
         }}
     >
         <div style={{ fontSize: '1.5rem' }}>{icon}</div>
@@ -45,17 +45,17 @@ const CellMembersModal = ({ onClose }) => {
             zIndex: 10000
         }}>
             <div style={{
-                background: '#1A1625',
+                background: 'var(--surface-1)',
                 borderRadius: '1.5rem',
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: '1px solid var(--border-color)',
                 width: '90%',
                 maxWidth: '500px',
                 padding: '2rem',
                 boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)'
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                    <h3 style={{ color: '#eff3c1', margin: 0, fontSize: '1.25rem' }}>View Cell Members</h3>
-                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '1.5rem', cursor: 'pointer' }}>&times;</button>
+                    <h3 style={{ color: 'var(--text-color)', margin: 0, fontSize: '1.25rem' }}>View Cell Members</h3>
+                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer' }}>&times;</button>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '300px', overflowY: 'auto' }}>
@@ -67,22 +67,22 @@ const CellMembersModal = ({ onClose }) => {
                             padding: '1rem',
                             background: 'rgba(255,255,255,0.03)',
                             borderRadius: '0.75rem',
-                            border: '1px solid rgba(255,255,255,0.05)'
+                            border: '1px solid var(--border-color)'
                         }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                 <div style={{
                                     width: '36px', height: '36px',
                                     borderRadius: '50%',
-                                    background: '#22c1e6',
+                                    background: 'var(--primary)',
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                                     fontWeight: 'bold',
-                                    color: '#120D20'
+                                    color: 'var(--bg-color)'
                                 }}>
                                     {member.name.charAt(0)}
                                 </div>
                                 <div>
-                                    <div style={{ color: 'white', fontWeight: '600' }}>{member.name}</div>
-                                    <div style={{ color: '#94a3b8', fontSize: '0.8rem' }}>{member.role}</div>
+                                    <div style={{ color: 'var(--text-color)', fontWeight: '600' }}>{member.name}</div>
+                                    <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{member.role}</div>
                                 </div>
                             </div>
                             <span style={{
@@ -100,8 +100,8 @@ const CellMembersModal = ({ onClose }) => {
 
                 <div style={{ marginTop: '1.5rem', textAlign: 'right' }}>
                     <button onClick={onClose} style={{
-                        background: '#22c1e6',
-                        color: '#120D20',
+                        background: 'var(--primary)',
+                        color: 'var(--bg-color)',
                         border: 'none',
                         padding: '0.6rem 1.5rem',
                         borderRadius: '0.5rem',
@@ -136,17 +136,17 @@ const LatestMeetingsModal = ({ onClose }) => {
             zIndex: 10000
         }}>
             <div style={{
-                background: '#1A1625',
+                background: 'var(--surface-1)',
                 borderRadius: '1.5rem',
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: '1px solid var(--border-color)',
                 width: '90%',
                 maxWidth: '500px',
                 padding: '2rem',
                 boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)'
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                    <h3 style={{ color: '#eff3c1', margin: 0, fontSize: '1.25rem' }}>Latest Meetings</h3>
-                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '1.5rem', cursor: 'pointer' }}>&times;</button>
+                    <h3 style={{ color: 'var(--text-color)', margin: 0, fontSize: '1.25rem' }}>Latest Meetings</h3>
+                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer' }}>&times;</button>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '300px', overflowY: 'auto' }}>
@@ -158,15 +158,15 @@ const LatestMeetingsModal = ({ onClose }) => {
                             padding: '1rem',
                             background: 'rgba(255,255,255,0.03)',
                             borderRadius: '0.75rem',
-                            border: '1px solid rgba(255,255,255,0.05)'
+                            border: '1px solid var(--border-color)'
                         }}>
                             <div>
-                                <div style={{ color: 'white', fontWeight: '600' }}>{meeting.type}</div>
-                                <div style={{ color: '#94a3b8', fontSize: '0.8rem' }}>{meeting.date}</div>
+                                <div style={{ color: 'var(--text-color)', fontWeight: '600' }}>{meeting.type}</div>
+                                <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{meeting.date}</div>
                             </div>
                             <div style={{ textAlign: 'right' }}>
-                                <div style={{ color: '#22c1e6', fontWeight: '700', fontSize: '1.1rem' }}>{meeting.attendance}</div>
-                                <div style={{ color: '#64748b', fontSize: '0.7rem' }}>Attendees</div>
+                                <div style={{ color: 'var(--primary)', fontWeight: '700', fontSize: '1.1rem' }}>{meeting.attendance}</div>
+                                <div style={{ color: 'var(--text-muted)', fontSize: '0.7rem' }}>Attendees</div>
                             </div>
                         </div>
                     ))}
@@ -174,8 +174,8 @@ const LatestMeetingsModal = ({ onClose }) => {
 
                 <div style={{ marginTop: '1.5rem', textAlign: 'right' }}>
                     <button onClick={onClose} style={{
-                        background: '#22c1e6',
-                        color: '#120D20',
+                        background: 'var(--primary)',
+                        color: 'var(--bg-color)',
                         border: 'none',
                         padding: '0.6rem 1.5rem',
                         borderRadius: '0.5rem',
@@ -203,69 +203,69 @@ const CreateMeetingModal = ({ onClose }) => {
             zIndex: 10000
         }}>
             <div style={{
-                background: '#1A1625',
+                background: 'var(--surface-1)',
                 borderRadius: '1.5rem',
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: '1px solid var(--border-color)',
                 width: '90%',
                 maxWidth: '500px',
                 padding: '2rem',
                 boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)'
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                    <h3 style={{ color: '#eff3c1', margin: 0, fontSize: '1.25rem' }}>Create New Meeting</h3>
-                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '1.5rem', cursor: 'pointer' }}>&times;</button>
+                    <h3 style={{ color: 'var(--text-color)', margin: 0, fontSize: '1.25rem' }}>Create New Meeting</h3>
+                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer' }}>&times;</button>
                 </div>
 
                 <form onSubmit={(e) => { e.preventDefault(); onClose(); }} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <div>
-                        <label style={{ display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Meeting Title</label>
+                        <label style={{ display: 'block', color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Meeting Title</label>
                         <input type="text" placeholder="e.g. Weekly Prayer" style={{
                             width: '93%',
                             padding: '0.75rem',
                             background: 'rgba(255,255,255,0.03)',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            border: '1px solid var(--border-color)',
                             borderRadius: '0.5rem',
-                            color: 'white',
+                            color: 'var(--text-color)',
                             outline: 'none'
                         }} />
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                         <div>
-                            <label style={{ display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Date</label>
+                            <label style={{ display: 'block', color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Date</label>
                             <input type="date" style={{
                                 width: '85%',
                                 padding: '0.75rem',
                                 background: 'rgba(255,255,255,0.03)',
-                                border: '1px solid rgba(255,255,255,0.1)',
+                                border: '1px solid var(--border-color)',
                                 borderRadius: '0.5rem',
-                                color: 'white',
+                                color: 'var(--text-color)',
                                 outline: 'none'
                             }} />
                         </div>
                         <div>
-                            <label style={{ display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Time</label>
+                            <label style={{ display: 'block', color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Time</label>
                             <input type="time" style={{
                                 width: '85%',
                                 padding: '0.75rem',
                                 background: 'rgba(255,255,255,0.03)',
-                                border: '1px solid rgba(255,255,255,0.1)',
+                                border: '1px solid var(--border-color)',
                                 borderRadius: '0.5rem',
-                                color: 'white',
+                                color: 'var(--text-color)',
                                 outline: 'none'
                             }} />
                         </div>
                     </div>
 
                     <div>
-                        <label style={{ display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Type</label>
+                        <label style={{ display: 'block', color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Type</label>
                         <select style={{
                             width: '100%',
                             padding: '0.75rem',
                             background: 'rgba(255,255,255,0.03)',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            border: '1px solid var(--border-color)',
                             borderRadius: '0.5rem',
-                            color: 'white',
+                            color: 'var(--text-color)',
                             outline: 'none'
                         }}>
                             <option>Prayer Meeting</option>
@@ -276,14 +276,14 @@ const CreateMeetingModal = ({ onClose }) => {
                     </div>
 
                     <div>
-                        <label style={{ display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Location / Link</label>
+                        <label style={{ display: 'block', color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Location / Link</label>
                         <input type="text" placeholder="Zoom Link or Physical Address" style={{
                             width: '93%',
                             padding: '0.75rem',
                             background: 'rgba(255,255,255,0.03)',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            border: '1px solid var(--border-color)',
                             borderRadius: '0.5rem',
-                            color: 'white',
+                            color: 'var(--text-color)',
                             outline: 'none'
                         }} />
                     </div>
@@ -291,8 +291,8 @@ const CreateMeetingModal = ({ onClose }) => {
                     <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
                         <button type="button" onClick={onClose} style={{
                             background: 'transparent',
-                            color: '#94a3b8',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            color: 'var(--text-muted)',
+                            border: '1px solid var(--border-color)',
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
                             fontWeight: '600',
@@ -301,8 +301,8 @@ const CreateMeetingModal = ({ onClose }) => {
                             Cancel
                         </button>
                         <button type="submit" style={{
-                            background: '#22c1e6',
-                            color: '#120D20',
+                            background: 'var(--primary)',
+                            color: 'var(--bg-color)',
                             border: 'none',
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
@@ -331,82 +331,82 @@ const CreateEventModal = ({ onClose }) => {
             zIndex: 10000
         }}>
             <div style={{
-                background: '#1A1625',
+                background: 'var(--surface-1)',
                 borderRadius: '1.5rem',
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: '1px solid var(--border-color)',
                 width: '90%',
                 maxWidth: '500px',
                 padding: '2rem',
                 boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)'
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                    <h3 style={{ color: '#eff3c1', margin: 0, fontSize: '1.25rem' }}>Create New Event</h3>
-                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '1.5rem', cursor: 'pointer' }}>&times;</button>
+                    <h3 style={{ color: 'var(--text-color)', margin: 0, fontSize: '1.25rem' }}>Create New Event</h3>
+                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer' }}>&times;</button>
                 </div>
 
                 <form onSubmit={(e) => { e.preventDefault(); onClose(); }} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <div>
-                        <label style={{ display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Event Title</label>
+                        <label style={{ display: 'block', color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Event Title</label>
                         <input type="text" placeholder="e.g. Community Outreach" style={{
                             width: '93%',
                             padding: '0.75rem',
                             background: 'rgba(255,255,255,0.03)',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            border: '1px solid var(--border-color)',
                             borderRadius: '0.5rem',
-                            color: 'white',
+                            color: 'var(--text-color)',
                             outline: 'none'
                         }} />
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                         <div>
-                            <label style={{ display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Date</label>
+                            <label style={{ display: 'block', color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Date</label>
                             <input type="date" style={{
                                 width: '85%',
                                 padding: '0.75rem',
                                 background: 'rgba(255,255,255,0.03)',
-                                border: '1px solid rgba(255,255,255,0.1)',
+                                border: '1px solid var(--border-color)',
                                 borderRadius: '0.5rem',
-                                color: 'white',
+                                color: 'var(--text-color)',
                                 outline: 'none'
                             }} />
                         </div>
                         <div>
-                            <label style={{ display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Time</label>
+                            <label style={{ display: 'block', color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Time</label>
                             <input type="time" style={{
                                 width: '85%',
                                 padding: '0.75rem',
                                 background: 'rgba(255,255,255,0.03)',
-                                border: '1px solid rgba(255,255,255,0.1)',
+                                border: '1px solid var(--border-color)',
                                 borderRadius: '0.5rem',
-                                color: 'white',
+                                color: 'var(--text-color)',
                                 outline: 'none'
                             }} />
                         </div>
                     </div>
 
                     <div>
-                        <label style={{ display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Location</label>
+                        <label style={{ display: 'block', color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Location</label>
                         <input type="text" placeholder="Location" style={{
                             width: '93%',
                             padding: '0.75rem',
                             background: 'rgba(255,255,255,0.03)',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            border: '1px solid var(--border-color)',
                             borderRadius: '0.5rem',
-                            color: 'white',
+                            color: 'var(--text-color)',
                             outline: 'none'
                         }} />
                     </div>
 
                     <div>
-                        <label style={{ display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Description</label>
+                        <label style={{ display: 'block', color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Description</label>
                         <textarea placeholder="Event details..." style={{
                             width: '93%',
                             padding: '0.75rem',
                             background: 'rgba(255,255,255,0.03)',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            border: '1px solid var(--border-color)',
                             borderRadius: '0.5rem',
-                            color: 'white',
+                            color: 'var(--text-color)',
                             outline: 'none',
                             minHeight: '80px',
                             fontFamily: 'inherit'
@@ -416,8 +416,8 @@ const CreateEventModal = ({ onClose }) => {
                     <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
                         <button type="button" onClick={onClose} style={{
                             background: 'transparent',
-                            color: '#94a3b8',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            color: 'var(--text-muted)',
+                            border: '1px solid var(--border-color)',
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
                             fontWeight: '600',
@@ -426,8 +426,8 @@ const CreateEventModal = ({ onClose }) => {
                             Cancel
                         </button>
                         <button type="submit" style={{
-                            background: '#22c1e6',
-                            color: '#120D20',
+                            background: 'var(--primary)',
+                            color: 'var(--bg-color)',
                             border: 'none',
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
@@ -456,55 +456,55 @@ const RecordGivingModal = ({ onClose }) => {
             zIndex: 10000
         }}>
             <div style={{
-                background: '#1A1625',
+                background: 'var(--surface-1)',
                 borderRadius: '1.5rem',
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: '1px solid var(--border-color)',
                 width: '90%',
                 maxWidth: '500px',
                 padding: '2rem',
                 boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)'
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                    <h3 style={{ color: '#eff3c1', margin: 0, fontSize: '1.25rem' }}>Record Giving</h3>
-                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '1.5rem', cursor: 'pointer' }}>&times;</button>
+                    <h3 style={{ color: 'var(--text-color)', margin: 0, fontSize: '1.25rem' }}>Record Giving</h3>
+                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer' }}>&times;</button>
                 </div>
 
                 <form onSubmit={(e) => { e.preventDefault(); onClose(); }} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <div>
-                        <label style={{ display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Donor Name</label>
+                        <label style={{ display: 'block', color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Donor Name</label>
                         <input type="text" placeholder="Search member..." style={{
                             width: '93%',
                             padding: '0.75rem',
                             background: 'rgba(255,255,255,0.03)',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            border: '1px solid var(--border-color)',
                             borderRadius: '0.5rem',
-                            color: 'white',
+                            color: 'var(--text-color)',
                             outline: 'none'
                         }} />
                     </div>
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                         <div>
-                            <label style={{ display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Amount</label>
+                            <label style={{ display: 'block', color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Amount</label>
                             <input type="number" placeholder="0.00" style={{
                                 width: '85%',
                                 padding: '0.75rem',
                                 background: 'rgba(255,255,255,0.03)',
-                                border: '1px solid rgba(255,255,255,0.1)',
+                                border: '1px solid var(--border-color)',
                                 borderRadius: '0.5rem',
-                                color: 'white',
+                                color: 'var(--text-color)',
                                 outline: 'none'
                             }} />
                         </div>
                         <div>
-                            <label style={{ display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Date</label>
+                            <label style={{ display: 'block', color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Date</label>
                             <input type="date" style={{
                                 width: '85%',
                                 padding: '0.75rem',
                                 background: 'rgba(255,255,255,0.03)',
-                                border: '1px solid rgba(255,255,255,0.1)',
+                                border: '1px solid var(--border-color)',
                                 borderRadius: '0.5rem',
-                                color: 'white',
+                                color: 'var(--text-color)',
                                 outline: 'none'
                             }} />
                         </div>
@@ -512,14 +512,14 @@ const RecordGivingModal = ({ onClose }) => {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                         <div>
-                            <label style={{ display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Type</label>
+                            <label style={{ display: 'block', color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Type</label>
                             <select style={{
                                 width: '100%',
                                 padding: '0.75rem',
                                 background: 'rgba(255,255,255,0.03)',
-                                border: '1px solid rgba(255,255,255,0.1)',
+                                border: '1px solid var(--border-color)',
                                 borderRadius: '0.5rem',
-                                color: 'white',
+                                color: 'var(--text-color)',
                                 outline: 'none'
                             }}>
                                 <option>Tithes</option>
@@ -530,14 +530,14 @@ const RecordGivingModal = ({ onClose }) => {
                             </select>
                         </div>
                         <div>
-                            <label style={{ display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Method</label>
+                            <label style={{ display: 'block', color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Method</label>
                             <select style={{
                                 width: '100%',
                                 padding: '0.75rem',
                                 background: 'rgba(255,255,255,0.03)',
-                                border: '1px solid rgba(255,255,255,0.1)',
+                                border: '1px solid var(--border-color)',
                                 borderRadius: '0.5rem',
-                                color: 'white',
+                                color: 'var(--text-color)',
                                 outline: 'none'
                             }}>
                                 <option>M-Pesa</option>
@@ -549,14 +549,14 @@ const RecordGivingModal = ({ onClose }) => {
                     </div>
 
                     <div>
-                        <label style={{ display: 'block', color: '#94a3b8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Reference / Notes</label>
+                        <label style={{ display: 'block', color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '0.5rem' }}>Reference / Notes</label>
                         <input type="text" placeholder="Transaction ID or notes" style={{
                             width: '93%',
                             padding: '0.75rem',
                             background: 'rgba(255,255,255,0.03)',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            border: '1px solid var(--border-color)',
                             borderRadius: '0.5rem',
-                            color: 'white',
+                            color: 'var(--text-color)',
                             outline: 'none'
                         }} />
                     </div>
@@ -564,8 +564,8 @@ const RecordGivingModal = ({ onClose }) => {
                     <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
                         <button type="button" onClick={onClose} style={{
                             background: 'transparent',
-                            color: '#94a3b8',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            color: 'var(--text-muted)',
+                            border: '1px solid var(--border-color)',
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
                             fontWeight: '600',
@@ -574,8 +574,8 @@ const RecordGivingModal = ({ onClose }) => {
                             Cancel
                         </button>
                         <button type="submit" style={{
-                            background: '#22c1e6',
-                            color: '#120D20',
+                            background: 'var(--primary)',
+                            color: 'var(--bg-color)',
                             border: 'none',
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
@@ -600,13 +600,13 @@ const QuickActionsWidget = () => {
 
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
             padding: '1.5rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             height: '100%'
         }}>
-            <h3 style={{ color: '#22c1e6', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
+            <h3 style={{ color: 'var(--primary)', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
                 📌 Quick Actions
             </h3>
 

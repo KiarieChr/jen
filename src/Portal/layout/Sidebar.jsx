@@ -48,15 +48,15 @@ const SidebarItem = ({ icon, label, path, active, hovered, setHovered, subItems,
                             to={sub.path}
                             style={{
                                 textDecoration: 'none',
-                                color: '#94a3b8',
+                                color: 'var(--text-muted)',
                                 fontSize: '0.9rem',
                                 padding: '0.5rem',
                                 borderRadius: '0.5rem',
                                 display: 'block',
                                 transition: 'color 0.2s',
                             }}
-                            onMouseEnter={(e) => e.target.style.color = '#22c1e6'}
-                            onMouseLeave={(e) => e.target.style.color = '#94a3b8'}
+                            onMouseEnter={(e) => e.target.style.color = 'var(--primary)'}
+                            onMouseLeave={(e) => e.target.style.color = 'var(--text-muted)'}
                         >
                             {sub.label}
                         </Link>
@@ -146,7 +146,7 @@ const Sidebar = () => {
             {/* Brand Header */}
             <div style={{
                 padding: '2rem 1.5rem',
-                borderBottom: '1px solid rgba(255,255,255,0.05)',
+                borderBottom: '1px solid var(--border-color)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.75rem',
@@ -170,7 +170,7 @@ const Sidebar = () => {
 
             {/* Navigation Menu */}
             <div style={{ flex: 1, padding: '0 1rem', overflowY: 'auto' }}>
-                <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: '#64748b', marginBottom: '0.75rem', paddingLeft: '1rem', fontWeight: '600' }}>
+                <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.75rem', paddingLeft: '1rem', fontWeight: '600' }}>
                     Main Menu
                 </div>
                 {menuItems.map((item) => (
@@ -189,8 +189,8 @@ const Sidebar = () => {
             {/* Footer Section */}
             <div style={{
                 padding: '1.5rem',
-                borderTop: '1px solid rgba(255,255,255,0.05)',
-                background: 'rgba(0,0,0,0.2)'
+                borderTop: '1px solid var(--border-color)',
+                background: 'var(--surface-2)'
             }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                     <div style={{

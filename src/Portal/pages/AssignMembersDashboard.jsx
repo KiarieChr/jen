@@ -24,8 +24,8 @@ const AssignMembersDashboard = () => {
     return (
         <div style={{ maxWidth: '1400px', margin: '0 auto', height: 'calc(100vh - 100px)', display: 'flex', flexDirection: 'column' }}>
             <div style={{ marginBottom: '1.5rem' }}>
-                <h1 style={{ fontSize: '1.8rem', fontWeight: '800', margin: 0, color: '#eff3c1' }}>Assign Members</h1>
-                <p style={{ color: '#94a3b8', marginTop: '0.5rem' }}>Match unassigned members to suitable cell groups.</p>
+                <h1 style={{ fontSize: '1.8rem', fontWeight: '800', margin: 0, color: 'var(--text-color)' }}>Assign Members</h1>
+                <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>Match unassigned members to suitable cell groups.</p>
             </div>
 
             <AssignmentStatsCards />

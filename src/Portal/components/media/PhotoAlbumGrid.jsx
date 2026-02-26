@@ -2,16 +2,16 @@ import React from 'react';
 
 const AlbumCard = ({ title, count, cover }) => (
     <div style={{
-        background: '#1A1625',
+        background: 'var(--surface-1)',
         borderRadius: '1rem',
         overflow: 'hidden',
-        border: '1px solid rgba(255,255,255,0.05)',
+        border: '1px solid var(--border-color)',
         cursor: 'pointer'
     }}>
         <div style={{ height: '200px', background: `url(${cover})`, backgroundSize: 'cover' }}></div>
         <div style={{ padding: '1rem' }}>
-            <h3 style={{ color: '#eff3c1', fontSize: '1.1rem', margin: '0 0 0.3rem 0' }}>{title}</h3>
-            <div style={{ color: '#94a3b8', fontSize: '0.85rem' }}>{count} Photos</div>
+            <h3 style={{ color: 'var(--text-color)', fontSize: '1.1rem', margin: '0 0 0.3rem 0' }}>{title}</h3>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{count} Photos</div>
         </div>
     </div>
 );

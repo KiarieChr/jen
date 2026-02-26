@@ -20,9 +20,9 @@ const CellsList = () => {
 
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             display: 'flex',
             flexDirection: 'column',
             overflow: 'hidden'
@@ -30,7 +30,7 @@ const CellsList = () => {
             {/* Toolbar */}
             <div style={{
                 padding: '1.5rem',
-                borderBottom: '1px solid rgba(255,255,255,0.05)',
+                borderBottom: '1px solid var(--border-color)',
                 display: 'flex',
                 flexWrap: 'wrap',
                 gap: '1rem',
@@ -38,8 +38,8 @@ const CellsList = () => {
                 alignItems: 'center'
             }}>
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                    <h3 style={{ margin: 0, color: '#eff3c1', fontSize: '1.1rem' }}>All Cells</h3>
-                    <span style={{ background: 'rgba(255,255,255,0.1)', padding: '0.2rem 0.6rem', borderRadius: '1rem', fontSize: '0.8rem', color: '#94a3b8' }}>{filteredCells.length}</span>
+                    <h3 style={{ margin: 0, color: 'var(--text-color)', fontSize: '1.1rem' }}>All Cells</h3>
+                    <span style={{ background: 'var(--border-color)', padding: '0.2rem 0.6rem', borderRadius: '1rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>{filteredCells.length}</span>
                 </div>
 
                 <div style={{ display: 'flex', gap: '1rem', flex: 1, justifyContent: 'flex-end', minWidth: '300px' }}>
@@ -53,22 +53,22 @@ const CellsList = () => {
                             style={{
                                 width: '100%',
                                 padding: '0.6rem 1rem 0.6rem 2.5rem',
-                                background: '#120D20',
-                                border: '1px solid rgba(255,255,255,0.1)',
+                                background: 'var(--bg-color)',
+                                border: '1px solid var(--border-color)',
                                 borderRadius: '2rem',
-                                color: '#eff3c1',
+                                color: 'var(--text-color)',
                                 outline: 'none'
                             }}
                         />
                     </div>
 
-                    <div style={{ display: 'flex', background: '#120D20', borderRadius: '0.5rem', padding: '0.2rem', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div style={{ display: 'flex', background: 'var(--bg-color)', borderRadius: '0.5rem', padding: '0.2rem', border: '1px solid var(--border-color)' }}>
                         <button
                             onClick={() => setViewMode('grid')}
                             style={{
-                                background: viewMode === 'grid' ? 'rgba(255,255,255,0.1)' : 'transparent',
+                                background: viewMode === 'grid' ? 'var(--border-color)' : 'transparent',
                                 border: 'none',
-                                color: viewMode === 'grid' ? '#eff3c1' : '#64748b',
+                                color: viewMode === 'grid' ? 'var(--text-color)' : 'var(--text-muted)',
                                 padding: '0.4rem 0.8rem',
                                 borderRadius: '0.3rem',
                                 cursor: 'pointer'
@@ -79,9 +79,9 @@ const CellsList = () => {
                         <button
                             onClick={() => setViewMode('table')}
                             style={{
-                                background: viewMode === 'table' ? 'rgba(255,255,255,0.1)' : 'transparent',
+                                background: viewMode === 'table' ? 'var(--border-color)' : 'transparent',
                                 border: 'none',
-                                color: viewMode === 'table' ? '#eff3c1' : '#64748b',
+                                color: viewMode === 'table' ? 'var(--text-color)' : 'var(--text-muted)',
                                 padding: '0.4rem 0.8rem',
                                 borderRadius: '0.3rem',
                                 cursor: 'pointer'
@@ -99,10 +99,10 @@ const CellsList = () => {
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
                         {filteredCells.map(cell => (
                             <div key={cell.id} style={{
-                                background: '#120D20',
+                                background: 'var(--bg-color)',
                                 borderRadius: '0.75rem',
                                 padding: '1.25rem',
-                                border: '1px solid rgba(255,255,255,0.05)',
+                                border: '1px solid var(--border-color)',
                                 display: 'flex',
                                 flexDirection: 'column',
                                 gap: '0.75rem',
@@ -110,10 +110,10 @@ const CellsList = () => {
                                 cursor: 'pointer'
                             }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
-                                    <div style={{ fontWeight: '700', color: '#eff3c1', fontSize: '1.1rem' }}>{cell.name}</div>
+                                    <div style={{ fontWeight: '700', color: 'var(--text-color)', fontSize: '1.1rem' }}>{cell.name}</div>
                                     <span style={{
                                         background: cell.status === 'Active' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(148, 163, 184, 0.2)',
-                                        color: cell.status === 'Active' ? '#4ade80' : '#94a3b8',
+                                        color: cell.status === 'Active' ? '#4ade80' : 'var(--text-muted)',
                                         fontSize: '0.7rem',
                                         padding: '0.2rem 0.5rem',
                                         borderRadius: '0.25rem',
@@ -124,25 +124,25 @@ const CellsList = () => {
                                     </span>
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#22c1e6', color: '#120D20', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
+                                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--primary)', color: 'var(--bg-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
                                         {cell.leader.charAt(0)}
                                     </div>
                                     <div>
                                         <div style={{ fontSize: '0.9rem', color: '#e2e8f0' }}>{cell.leader}</div>
-                                        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Leader</div>
+                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Leader</div>
                                     </div>
                                 </div>
-                                <div style={{ borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '0.75rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                                <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '0.75rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
                                     <div>
-                                        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Members</div>
-                                        <div style={{ color: '#eff3c1' }}>{cell.members}</div>
+                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Members</div>
+                                        <div style={{ color: 'var(--text-color)' }}>{cell.members}</div>
                                     </div>
                                     <div>
-                                        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Meeting</div>
-                                        <div style={{ color: '#eff3c1', fontSize: '0.9rem' }}>{cell.day}</div>
+                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Meeting</div>
+                                        <div style={{ color: 'var(--text-color)', fontSize: '0.9rem' }}>{cell.day}</div>
                                     </div>
                                 </div>
-                                <button style={{ marginTop: '0.5rem', width: '100%', padding: '0.5rem', background: 'rgba(255,255,255,0.05)', border: 'none', borderRadius: '0.5rem', color: '#22c1e6', fontSize: '0.85rem', cursor: 'pointer' }}>
+                                <button style={{ marginTop: '0.5rem', width: '100%', padding: '0.5rem', background: 'var(--border-color)', border: 'none', borderRadius: '0.5rem', color: 'var(--primary)', fontSize: '0.85rem', cursor: 'pointer' }}>
                                     View Details
                                 </button>
                             </div>
@@ -151,19 +151,19 @@ const CellsList = () => {
                 ) : (
                     <table style={{ width: '100%', borderCollapse: 'collapse', color: '#e2e8f0' }}>
                         <thead>
-                            <tr style={{ background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                                <th style={{ textAlign: 'left', padding: '1rem', color: '#94a3b8', fontWeight: '600', fontSize: '0.85rem' }}>Name</th>
-                                <th style={{ textAlign: 'left', padding: '1rem', color: '#94a3b8', fontWeight: '600', fontSize: '0.85rem' }}>Leader</th>
-                                <th style={{ textAlign: 'left', padding: '1rem', color: '#94a3b8', fontWeight: '600', fontSize: '0.85rem' }}>Members</th>
-                                <th style={{ textAlign: 'left', padding: '1rem', color: '#94a3b8', fontWeight: '600', fontSize: '0.85rem' }}>Location</th>
-                                <th style={{ textAlign: 'left', padding: '1rem', color: '#94a3b8', fontWeight: '600', fontSize: '0.85rem' }}>Schedule</th>
-                                <th style={{ textAlign: 'left', padding: '1rem', color: '#94a3b8', fontWeight: '600', fontSize: '0.85rem' }}>Status</th>
-                                <th style={{ textAlign: 'right', padding: '1rem', color: '#94a3b8', fontWeight: '600', fontSize: '0.85rem' }}>Actions</th>
+                            <tr style={{ background: 'var(--surface-2)', borderBottom: '1px solid var(--border-color)' }}>
+                                <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-muted)', fontWeight: '600', fontSize: '0.85rem' }}>Name</th>
+                                <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-muted)', fontWeight: '600', fontSize: '0.85rem' }}>Leader</th>
+                                <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-muted)', fontWeight: '600', fontSize: '0.85rem' }}>Members</th>
+                                <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-muted)', fontWeight: '600', fontSize: '0.85rem' }}>Location</th>
+                                <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-muted)', fontWeight: '600', fontSize: '0.85rem' }}>Schedule</th>
+                                <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-muted)', fontWeight: '600', fontSize: '0.85rem' }}>Status</th>
+                                <th style={{ textAlign: 'right', padding: '1rem', color: 'var(--text-muted)', fontWeight: '600', fontSize: '0.85rem' }}>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filteredCells.map(cell => (
-                                <tr key={cell.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                <tr key={cell.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
                                     <td style={{ padding: '1rem', fontWeight: '500' }}>{cell.name}</td>
                                     <td style={{ padding: '1rem' }}>{cell.leader}</td>
                                     <td style={{ padding: '1rem' }}>{cell.members}</td>
@@ -172,7 +172,7 @@ const CellsList = () => {
                                     <td style={{ padding: '1rem' }}>
                                         <span style={{
                                             background: cell.status === 'Active' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(148, 163, 184, 0.1)',
-                                            color: cell.status === 'Active' ? '#4ade80' : '#94a3b8',
+                                            color: cell.status === 'Active' ? '#4ade80' : 'var(--text-muted)',
                                             fontSize: '0.75rem',
                                             padding: '0.2rem 0.5rem',
                                             borderRadius: '0.25rem'
@@ -181,7 +181,7 @@ const CellsList = () => {
                                         </span>
                                     </td>
                                     <td style={{ padding: '1rem', textAlign: 'right' }}>
-                                        <button style={{ background: 'transparent', border: 'none', color: '#22c1e6', cursor: 'pointer', marginRight: '0.5rem' }}>Edit</button>
+                                        <button style={{ background: 'transparent', border: 'none', color: 'var(--primary)', cursor: 'pointer', marginRight: '0.5rem' }}>Edit</button>
                                     </td>
                                 </tr>
                             ))}

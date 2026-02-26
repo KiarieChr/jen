@@ -47,18 +47,18 @@ const EditProfilePictureModal = ({ onClose }) => {
             zIndex: 1100
         }}>
             <div style={{
-                background: '#1A1625',
+                background: 'var(--surface-1)',
                 padding: '2rem',
                 borderRadius: '1rem',
                 width: '100%',
                 maxWidth: '450px',
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: '1px solid var(--border-color)',
                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
                 textAlign: 'center'
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                    <h2 style={{ fontSize: '1.5rem', color: '#22c1e6', margin: 0 }}>Edit Profile Picture</h2>
-                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
+                    <h2 style={{ fontSize: '1.5rem', color: 'var(--primary)', margin: 0 }}>Edit Profile Picture</h2>
+                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
                 </div>
 
                 <form onSubmit={handleSubmit}>
@@ -69,7 +69,7 @@ const EditProfilePictureModal = ({ onClose }) => {
                             width: '150px',
                             height: '150px',
                             borderRadius: '50%',
-                            background: '#120D20',
+                            background: 'var(--bg-color)',
                             border: '4px solid #22c1e6',
                             margin: '0 auto',
                             overflow: 'hidden',
@@ -81,7 +81,7 @@ const EditProfilePictureModal = ({ onClose }) => {
                             {previewUrl ? (
                                 <img src={previewUrl} alt="Profile Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                             ) : (
-                                <span style={{ fontSize: '3rem', color: '#eff3c1' }}>TM</span> // Initials or default generic avatar
+                                <span style={{ fontSize: '3rem', color: 'var(--text-color)' }}>TM</span> // Initials or default generic avatar
                             )}
                         </div>
                     </div>
@@ -94,9 +94,9 @@ const EditProfilePictureModal = ({ onClose }) => {
                             style={{
                                 padding: '0.75rem',
                                 borderRadius: '0.5rem',
-                                border: '1px solid rgba(255,255,255,0.1)',
-                                background: 'rgba(255,255,255,0.05)',
-                                color: '#eff3c1',
+                                border: '1px solid var(--border-color)',
+                                background: 'var(--border-color)',
+                                color: 'var(--text-color)',
                                 cursor: 'pointer',
                                 fontWeight: '600'
                             }}
@@ -134,17 +134,17 @@ const EditProfilePictureModal = ({ onClose }) => {
                         <button type="button" onClick={onClose} style={{
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            border: '1px solid var(--border-color)',
                             background: 'transparent',
-                            color: '#94a3b8',
+                            color: 'var(--text-muted)',
                             cursor: 'pointer'
                         }}>Cancel</button>
                         <button type="submit" style={{
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
                             border: 'none',
-                            background: '#22c1e6',
-                            color: '#120D20',
+                            background: 'var(--primary)',
+                            color: 'var(--bg-color)',
                             fontWeight: '700',
                             cursor: 'pointer'
                         }}>Save Changes</button>

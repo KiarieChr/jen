@@ -24,7 +24,7 @@ const ManageEventModal = ({ event, onClose, onUpdate }) => {
         padding: '0.75rem 1.5rem',
         cursor: 'pointer',
         borderBottom: isActive ? '2px solid #22c1e6' : '2px solid transparent',
-        color: isActive ? '#eff3c1' : '#94a3b8',
+        color: isActive ? 'var(--text-color)' : 'var(--text-muted)',
         background: 'transparent',
         border: 'none',
         fontSize: '1rem',
@@ -34,16 +34,16 @@ const ManageEventModal = ({ event, onClose, onUpdate }) => {
     const inputStyle = {
         width: '100%',
         padding: '0.75rem',
-        background: '#120D20',
-        border: '1px solid rgba(255,255,255,0.1)',
+        background: 'var(--bg-color)',
+        border: '1px solid var(--border-color)',
         borderRadius: '0.5rem',
-        color: '#eff3c1',
+        color: 'var(--text-color)',
         fontSize: '0.9rem',
         marginTop: '0.4rem'
     };
 
     const labelStyle = {
-        color: '#94a3b8',
+        color: 'var(--text-muted)',
         fontSize: '0.85rem',
         fontWeight: '500'
     };
@@ -63,22 +63,22 @@ const ManageEventModal = ({ event, onClose, onUpdate }) => {
             zIndex: 1100
         }}>
             <div style={{
-                background: '#1A1625',
+                background: 'var(--surface-1)',
                 padding: '2rem',
                 borderRadius: '1rem',
                 width: '100%',
                 maxWidth: '700px',
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: '1px solid var(--border-color)',
                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
                 maxHeight: '90vh',
                 overflowY: 'auto'
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                    <h2 style={{ fontSize: '1.5rem', color: '#eff3c1', margin: 0 }}>Manage Event: {event.name}</h2>
-                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
+                    <h2 style={{ fontSize: '1.5rem', color: 'var(--text-color)', margin: 0 }}>Manage Event: {event.name}</h2>
+                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
                 </div>
 
-                <div style={{ display: 'flex', borderBottom: '1px solid rgba(255,255,255,0.1)', marginBottom: '1.5rem' }}>
+                <div style={{ display: 'flex', borderBottom: '1px solid var(--border-color)', marginBottom: '1.5rem' }}>
                     <button style={tabStyle(activeTab === 'overview')} onClick={() => setActiveTab('overview')}>Overview</button>
                     <button style={tabStyle(activeTab === 'registration')} onClick={() => setActiveTab('registration')}>Registration</button>
                     <button style={tabStyle(activeTab === 'registrants')} onClick={() => setActiveTab('registrants')}>Registrants ({event.registrations?.length || 0})</button>
@@ -109,8 +109,8 @@ const ManageEventModal = ({ event, onClose, onUpdate }) => {
                                 padding: '0.75rem 1.5rem',
                                 borderRadius: '0.5rem',
                                 border: 'none',
-                                background: '#22c1e6',
-                                color: '#120D20',
+                                background: 'var(--primary)',
+                                color: 'var(--bg-color)',
                                 fontWeight: '600',
                                 cursor: 'pointer'
                             }}>Save Changes</button>
@@ -121,13 +121,13 @@ const ManageEventModal = ({ event, onClose, onUpdate }) => {
                 {activeTab === 'registration' && (
                     <div>
                         <div style={{ background: 'rgba(34, 193, 230, 0.1)', padding: '1rem', borderRadius: '0.5rem', marginBottom: '1.5rem', border: '1px solid rgba(34, 193, 230, 0.2)' }}>
-                            <h4 style={{ color: '#22c1e6', margin: '0 0 0.5rem 0' }}>Shareable Link</h4>
-                            <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '0.5rem' }}>Share this link with attendees to let them register for the event.</p>
+                            <h4 style={{ color: 'var(--primary)', margin: '0 0 0.5rem 0' }}>Shareable Link</h4>
+                            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '0.5rem' }}>Share this link with attendees to let them register for the event.</p>
                             <div style={{ display: 'flex', gap: '0.5rem' }}>
                                 <input type="text" value={`${window.location.origin}/events/${event.id}/register`} readOnly style={{ ...inputStyle, marginTop: 0 }} />
                                 <button onClick={copyLink} style={{
-                                    background: '#22c1e6',
-                                    color: '#120D20',
+                                    background: 'var(--primary)',
+                                    color: 'var(--bg-color)',
                                     border: 'none',
                                     borderRadius: '0.5rem',
                                     padding: '0 1rem',
@@ -138,7 +138,7 @@ const ManageEventModal = ({ event, onClose, onUpdate }) => {
                         </div>
 
                         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                            <label style={{ color: '#eff3c1', fontWeight: '500' }}>Registration Status: </label>
+                            <label style={{ color: 'var(--text-color)', fontWeight: '500' }}>Registration Status: </label>
                             <select name="status" value={formData.status} onChange={handleChange} style={{ ...inputStyle, width: 'auto', marginTop: 0 }}>
                                 <option value="Upcoming">Upcoming (Closed)</option>
                                 <option value="Registration Open">Open</option>
@@ -148,8 +148,8 @@ const ManageEventModal = ({ event, onClose, onUpdate }) => {
                                 padding: '0.5rem 1rem',
                                 borderRadius: '0.5rem',
                                 border: 'none',
-                                background: '#22c1e6',
-                                color: '#120D20',
+                                background: 'var(--primary)',
+                                color: 'var(--bg-color)',
                                 fontWeight: '600',
                                 cursor: 'pointer',
                                 marginLeft: 'auto'
@@ -160,9 +160,9 @@ const ManageEventModal = ({ event, onClose, onUpdate }) => {
 
                 {activeTab === 'registrants' && (
                     <div style={{ overflowX: 'auto' }}>
-                        <table style={{ width: '100%', borderCollapse: 'collapse', color: '#eff3c1', fontSize: '0.9rem' }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse', color: 'var(--text-color)', fontSize: '0.9rem' }}>
                             <thead>
-                                <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', textAlign: 'left' }}>
+                                <tr style={{ borderBottom: '1px solid var(--border-color)', textAlign: 'left' }}>
                                     <th style={{ padding: '0.75rem' }}>Name</th>
                                     <th style={{ padding: '0.75rem' }}>Email</th>
                                     <th style={{ padding: '0.75rem' }}>Phone</th>
@@ -172,7 +172,7 @@ const ManageEventModal = ({ event, onClose, onUpdate }) => {
                             <tbody>
                                 {event.registrations && event.registrations.length > 0 ? (
                                     event.registrations.map((reg, index) => (
-                                        <tr key={index} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                        <tr key={index} style={{ borderBottom: '1px solid var(--border-color)' }}>
                                             <td style={{ padding: '0.75rem' }}>{reg.name}</td>
                                             <td style={{ padding: '0.75rem' }}>{reg.email}</td>
                                             <td style={{ padding: '0.75rem' }}>{reg.phone}</td>
@@ -181,7 +181,7 @@ const ManageEventModal = ({ event, onClose, onUpdate }) => {
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="4" style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>No registrations yet.</td>
+                                        <td colSpan="4" style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>No registrations yet.</td>
                                     </tr>
                                 )}
                             </tbody>

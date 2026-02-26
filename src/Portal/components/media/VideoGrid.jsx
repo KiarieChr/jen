@@ -2,10 +2,10 @@ import React from 'react';
 
 const VideoCard = ({ title, date, thumbnail }) => (
     <div style={{
-        background: '#1A1625',
+        background: 'var(--surface-1)',
         borderRadius: '1rem',
         overflow: 'hidden',
-        border: '1px solid rgba(255,255,255,0.05)',
+        border: '1px solid var(--border-color)',
         cursor: 'pointer',
         transition: 'transform 0.2s'
     }}>
@@ -25,13 +25,13 @@ const VideoCard = ({ title, date, thumbnail }) => (
                     borderRadius: '50%',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     border: '2px solid white',
-                    color: 'white'
+                    color: 'var(--text-color)'
                 }}>▶</div>
             </div>
         </div>
         <div style={{ padding: '1rem' }}>
-            <h3 style={{ color: '#eff3c1', fontSize: '1rem', margin: '0 0 0.5rem 0' }}>{title}</h3>
-            <div style={{ color: '#94a3b8', fontSize: '0.8rem' }}>{date}</div>
+            <h3 style={{ color: 'var(--text-color)', fontSize: '1rem', margin: '0 0 0.5rem 0' }}>{title}</h3>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{date}</div>
         </div>
     </div>
 );

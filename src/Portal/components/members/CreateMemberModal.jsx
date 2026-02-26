@@ -25,17 +25,17 @@ const CreateMemberModal = ({ onClose, initialStatus = 'Regular Member' }) => {
     const inputStyle = {
         width: '100%',
         padding: '0.75rem',
-        background: '#120D20',
-        border: '1px solid rgba(255,255,255,0.1)',
+        background: 'var(--bg-color)',
+        border: '1px solid var(--border-color)',
         borderRadius: '0.5rem',
-        color: '#eff3c1',
+        color: 'var(--text-color)',
         fontSize: '0.9rem',
         marginTop: '0.4rem',
         outline: 'none'
     };
 
     const labelStyle = {
-        color: '#94a3b8',
+        color: 'var(--text-muted)',
         fontSize: '0.85rem',
         fontWeight: '500',
         display: 'flex',
@@ -58,19 +58,19 @@ const CreateMemberModal = ({ onClose, initialStatus = 'Regular Member' }) => {
             zIndex: 1100
         }}>
             <div style={{
-                background: '#1A1625',
+                background: 'var(--surface-1)',
                 padding: '2rem',
                 borderRadius: '1rem',
                 width: '100%',
                 maxWidth: '600px',
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: '1px solid var(--border-color)',
                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                    <h2 style={{ fontSize: '1.5rem', color: '#22c1e6', margin: 0 }}>
+                    <h2 style={{ fontSize: '1.5rem', color: 'var(--primary)', margin: 0 }}>
                         {initialStatus === 'Committed Member' ? 'Register Committed Member' : 'Register New Member'}
                     </h2>
-                    <button onClick={onClose} style={{ background: 'rgba(255,255,255,0.05)', border: 'none', color: '#94a3b8', fontSize: '1.2rem', borderRadius: '50%', width: '32px', height: '32px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>×</button>
+                    <button onClick={onClose} style={{ background: 'var(--border-color)', border: 'none', color: 'var(--text-muted)', fontSize: '1.2rem', borderRadius: '50%', width: '32px', height: '32px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>×</button>
                 </div>
 
                 <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1.2rem' }}>
@@ -121,25 +121,25 @@ const CreateMemberModal = ({ onClose, initialStatus = 'Regular Member' }) => {
                     <div>
                         <label style={labelStyle}>♡ Commitment Status</label>
                         <div style={{ display: 'flex', gap: '2rem', marginTop: '0.5rem' }}>
-                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', color: formData.commitmentStatus === 'Regular Member' ? '#22c1e6' : '#94a3b8' }}>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', color: formData.commitmentStatus === 'Regular Member' ? 'var(--primary)' : 'var(--text-muted)' }}>
                                 <input
                                     type="radio"
                                     name="commitmentStatus"
                                     value="Regular Member"
                                     checked={formData.commitmentStatus === 'Regular Member'}
                                     onChange={handleChange}
-                                    style={{ accentColor: '#22c1e6' }}
+                                    style={{ accentColor: 'var(--primary)' }}
                                 />
                                 Regular Member
                             </label>
-                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', color: formData.commitmentStatus === 'Committed Member' ? '#22c1e6' : '#94a3b8' }}>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', color: formData.commitmentStatus === 'Committed Member' ? 'var(--primary)' : 'var(--text-muted)' }}>
                                 <input
                                     type="radio"
                                     name="commitmentStatus"
                                     value="Committed Member"
                                     checked={formData.commitmentStatus === 'Committed Member'}
                                     onChange={handleChange}
-                                    style={{ accentColor: '#22c1e6' }}
+                                    style={{ accentColor: 'var(--primary)' }}
                                 />
                                 Committed Member
                             </label>
@@ -157,17 +157,17 @@ const CreateMemberModal = ({ onClose, initialStatus = 'Regular Member' }) => {
                         <button type="button" onClick={onClose} style={{
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            border: '1px solid var(--border-color)',
                             background: 'transparent',
-                            color: '#eff3c1',
+                            color: 'var(--text-color)',
                             cursor: 'pointer'
                         }}>Cancel</button>
                         <button type="submit" style={{
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
                             border: 'none',
-                            background: '#22c1e6',
-                            color: '#120D20',
+                            background: 'var(--primary)',
+                            color: 'var(--bg-color)',
                             fontWeight: '700',
                             cursor: 'pointer',
                             boxShadow: '0 4px 12px rgba(34, 193, 230, 0.3)'

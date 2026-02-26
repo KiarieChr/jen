@@ -4,7 +4,7 @@ import AudioPlayer from '../components/media/AudioPlayer';
 const AudioSermons = () => {
     return (
         <div style={{ maxWidth: '1000px', margin: '0 auto', paddingBottom: '2rem' }}>
-            <h1 style={{ fontSize: '1.8rem', fontWeight: '800', color: '#eff3c1', marginBottom: '2rem' }}>Audio Sermons Archive</h1>
+            <h1 style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--text-color)', marginBottom: '2rem' }}>Audio Sermons Archive</h1>
 
             <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
                 <input
@@ -12,17 +12,17 @@ const AudioSermons = () => {
                     placeholder="Search sermons..."
                     style={{
                         flex: 1,
-                        background: '#1A1625',
-                        border: '1px solid rgba(255,255,255,0.1)',
+                        background: 'var(--surface-1)',
+                        border: '1px solid var(--border-color)',
                         padding: '0.8rem 1.5rem',
                         borderRadius: '0.5rem',
-                        color: 'white'
+                        color: 'var(--text-color)'
                     }}
                 />
-                <select style={{ background: '#1A1625', border: '1px solid rgba(255,255,255,0.1)', color: 'white', padding: '0 1rem', borderRadius: '0.5rem' }}>
+                <select style={{ background: 'var(--surface-1)', border: '1px solid var(--border-color)', color: 'var(--text-color)', padding: '0 1rem', borderRadius: '0.5rem' }}>
                     <option>All Speakers</option>
                 </select>
-                <select style={{ background: '#1A1625', border: '1px solid rgba(255,255,255,0.1)', color: 'white', padding: '0 1rem', borderRadius: '0.5rem' }}>
+                <select style={{ background: 'var(--surface-1)', border: '1px solid var(--border-color)', color: 'var(--text-color)', padding: '0 1rem', borderRadius: '0.5rem' }}>
                     <option>All Topics</option>
                 </select>
             </div>

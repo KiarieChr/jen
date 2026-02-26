@@ -10,13 +10,13 @@ const UpcomingEventsList = () => {
 
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
             padding: '1.5rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             height: '100%'
         }}>
-            <h3 style={{ color: '#22c1e6', fontSize: '1.1rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1.5rem' }}>
+            <h3 style={{ color: 'var(--primary)', fontSize: '1.1rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1.5rem' }}>
                 📅 Upcoming Events
             </h3>
 
@@ -32,19 +32,19 @@ const UpcomingEventsList = () => {
                         borderLeft: '3px solid #22c1e6'
                     }}>
                         <div style={{ flex: 1 }}>
-                            <div style={{ color: '#eff3c1', fontWeight: '600', fontSize: '0.95rem', marginBottom: '0.2rem' }}>
+                            <div style={{ color: 'var(--text-color)', fontWeight: '600', fontSize: '0.95rem', marginBottom: '0.2rem' }}>
                                 {event.title}
                             </div>
-                            <div style={{ color: '#94a3b8', fontSize: '0.8rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                            <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                                 <span>{event.date}</span>
-                                <span style={{ width: '4px', height: '4px', background: '#64748b', borderRadius: '50%' }}></span>
+                                <span style={{ width: '4px', height: '4px', background: 'var(--text-muted)', borderRadius: '50%' }}></span>
                                 <span>{event.location}</span>
                             </div>
                         </div>
                         <div style={{ marginLeft: '1rem' }}>
                             <span style={{
                                 background: 'rgba(34, 193, 230, 0.1)',
-                                color: '#22c1e6',
+                                color: 'var(--primary)',
                                 padding: '0.25rem 0.75rem',
                                 borderRadius: '1rem',
                                 fontSize: '0.7rem',
@@ -63,9 +63,9 @@ const UpcomingEventsList = () => {
                 marginTop: '1.5rem',
                 padding: '0.75rem',
                 background: 'transparent',
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: '1px solid var(--border-color)',
                 borderRadius: '0.5rem',
-                color: '#22c1e6',
+                color: 'var(--primary)',
                 fontWeight: '600',
                 cursor: 'pointer',
                 transition: 'all 0.2s'

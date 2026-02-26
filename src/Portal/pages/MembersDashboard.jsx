@@ -18,8 +18,8 @@ const MembersDashboard = () => {
         <div style={{ maxWidth: '1400px', margin: '0 auto', paddingBottom: '2rem' }}>
             {/* Header */}
             <div style={{ marginBottom: '2rem' }}>
-                <h1 style={{ fontSize: '1.8rem', fontWeight: '800', margin: 0, color: '#eff3c1' }}>Members Database</h1>
-                <p style={{ color: '#94a3b8', marginTop: '0.5rem' }}>View, manage, and track all ministry members.</p>
+                <h1 style={{ fontSize: '1.8rem', fontWeight: '800', margin: 0, color: 'var(--text-color)' }}>Members Database</h1>
+                <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>View, manage, and track all ministry members.</p>
             </div>
 
             {/* Smart Alerts (Optional Enhancement) */}

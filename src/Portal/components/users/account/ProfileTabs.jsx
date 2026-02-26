@@ -3,10 +3,10 @@ import React from 'react';
 const ProfileTabs = ({ activeTab, onTabChange }) => {
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
             padding: '0 2rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             marginBottom: '1.5rem',
             display: 'flex',
             gap: '2rem'
@@ -23,7 +23,7 @@ const TabItem = ({ label, icon, active, onClick }) => (
         onClick={onClick}
         style={{
             padding: '1rem 0',
-            color: active ? '#22c1e6' : '#94a3b8',
+            color: active ? 'var(--primary)' : 'var(--text-muted)',
             borderBottom: active ? '2px solid #22c1e6' : '2px solid transparent',
             cursor: 'pointer',
             display: 'flex',

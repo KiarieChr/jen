@@ -15,28 +15,28 @@ const UsersTable = () => {
     const getStatusColor = (status) => {
         switch (status) {
             case 'Active': return '#4ade80';
-            case 'Inactive': return '#94a3b8';
+            case 'Inactive': return 'var(--text-muted)';
             case 'Locked': return '#ef4444';
-            default: return '#cbd5e1';
+            default: return 'var(--text-color)';
         }
     };
 
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             overflow: 'hidden',
             display: 'flex',
             flexDirection: 'column'
         }}>
             {/* Table Controls */}
-            <div style={{ padding: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+            <div style={{ padding: '1rem', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                     <select
                         value={filterRole}
                         onChange={(e) => setFilterRole(e.target.value)}
-                        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#eff3c1', borderRadius: '0.4rem', padding: '0.4rem 0.8rem', fontSize: '0.9rem' }}
+                        style={{ background: 'var(--border-color)', border: '1px solid var(--border-color)', color: 'var(--text-color)', borderRadius: '0.4rem', padding: '0.4rem 0.8rem', fontSize: '0.9rem' }}
                     >
                         <option value="All">All Roles</option>
                         <option value="Admin">Admin</option>
@@ -44,7 +44,7 @@ const UsersTable = () => {
                         <option value="Cell Leader">Cell Leader</option>
                         <option value="Member">Member</option>
                     </select>
-                    <button style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8', borderRadius: '0.4rem', padding: '0.4rem 0.8rem', cursor: 'pointer' }}>
+                    <button style={{ background: 'transparent', border: '1px solid var(--border-color)', color: 'var(--text-muted)', borderRadius: '0.4rem', padding: '0.4rem 0.8rem', cursor: 'pointer' }}>
                         Filter Status
                     </button>
                 </div>
@@ -53,9 +53,9 @@ const UsersTable = () => {
                         type="text"
                         placeholder="Search users..."
                         style={{
-                            background: 'rgba(0,0,0,0.2)',
-                            border: '1px solid rgba(255,255,255,0.1)',
-                            color: '#eff3c1',
+                            background: 'var(--surface-2)',
+                            border: '1px solid var(--border-color)',
+                            color: 'var(--text-color)',
                             padding: '0.4rem 1rem 0.4rem 2rem',
                             borderRadius: '0.4rem',
                             fontSize: '0.9rem',
@@ -70,7 +70,7 @@ const UsersTable = () => {
             <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
                     <thead>
-                        <tr style={{ color: '#94a3b8', borderBottom: '1px solid rgba(255,255,255,0.05)', background: 'rgba(255,255,255,0.02)' }}>
+                        <tr style={{ color: 'var(--text-muted)', borderBottom: '1px solid var(--border-color)', background: 'var(--surface-2)' }}>
                             <th style={{ textAlign: 'left', padding: '1rem' }}>User Info</th>
                             <th style={{ textAlign: 'left', padding: '1rem' }}>Role</th>
                             <th style={{ textAlign: 'left', padding: '1rem' }}>Member Link</th>
@@ -81,18 +81,18 @@ const UsersTable = () => {
                     </thead>
                     <tbody>
                         {users.map(user => (
-                            <tr key={user.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.02)', color: '#cbd5e1' }}>
+                            <tr key={user.id} style={{ borderBottom: '1px solid var(--surface-2)', color: 'var(--text-color)' }}>
                                 <td style={{ padding: '1rem' }}>
-                                    <div style={{ fontWeight: '500', color: '#eff3c1' }}>{user.name}</div>
-                                    <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{user.email}</div>
+                                    <div style={{ fontWeight: '500', color: 'var(--text-color)' }}>{user.name}</div>
+                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{user.email}</div>
                                 </td>
                                 <td style={{ padding: '1rem' }}>
                                     <span style={{
-                                        background: 'rgba(255,255,255,0.05)',
+                                        background: 'var(--border-color)',
                                         padding: '0.2rem 0.5rem',
                                         borderRadius: '4px',
                                         fontSize: '0.8rem',
-                                        border: '1px solid rgba(255,255,255,0.05)'
+                                        border: '1px solid var(--border-color)'
                                     }}>
                                         {user.role}
                                     </span>
@@ -101,15 +101,15 @@ const UsersTable = () => {
                                     {user.linked ? (
                                         <span style={{ color: '#4ade80' }}>✓ Linked</span>
                                     ) : (
-                                        <span style={{ color: '#94a3b8' }}>- Unlinked</span>
+                                        <span style={{ color: 'var(--text-muted)' }}>- Unlinked</span>
                                     )}
                                 </td>
-                                <td style={{ padding: '1rem', color: '#94a3b8' }}>{user.lastLogin}</td>
+                                <td style={{ padding: '1rem', color: 'var(--text-muted)' }}>{user.lastLogin}</td>
                                 <td style={{ padding: '1rem' }}>
                                     <span style={{ color: getStatusColor(user.status), fontWeight: '500' }}>● {user.status}</span>
                                 </td>
                                 <td style={{ padding: '1rem', textAlign: 'right' }}>
-                                    <button style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', fontSize: '1.2rem' }}>⋮</button>
+                                    <button style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '1.2rem' }}>⋮</button>
                                 </td>
                             </tr>
                         ))}
@@ -118,9 +118,9 @@ const UsersTable = () => {
             </div>
 
             {/* Pagination */}
-            <div style={{ padding: '1rem', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
-                <button style={{ background: 'rgba(255,255,255,0.05)', border: 'none', color: '#cbd5e1', padding: '0.3rem 0.8rem', borderRadius: '0.3rem', cursor: 'pointer', fontSize: '0.8rem' }}>Previous</button>
-                <button style={{ background: 'rgba(255,255,255,0.05)', border: 'none', color: '#cbd5e1', padding: '0.3rem 0.8rem', borderRadius: '0.3rem', cursor: 'pointer', fontSize: '0.8rem' }}>Next</button>
+            <div style={{ padding: '1rem', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
+                <button style={{ background: 'var(--border-color)', border: 'none', color: 'var(--text-color)', padding: '0.3rem 0.8rem', borderRadius: '0.3rem', cursor: 'pointer', fontSize: '0.8rem' }}>Previous</button>
+                <button style={{ background: 'var(--border-color)', border: 'none', color: 'var(--text-color)', padding: '0.3rem 0.8rem', borderRadius: '0.3rem', cursor: 'pointer', fontSize: '0.8rem' }}>Next</button>
             </div>
         </div>
     );

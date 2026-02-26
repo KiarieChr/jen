@@ -11,11 +11,11 @@ const AttendanceDashboard = () => {
             {/* Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <div>
-                    <h1 style={{ fontSize: '1.8rem', fontWeight: '800', margin: 0, color: '#eff3c1' }}>Attendance & Analytics</h1>
-                    <p style={{ color: '#94a3b8', marginTop: '0.5rem' }}>Track engagement and participation health.</p>
+                    <h1 style={{ fontSize: '1.8rem', fontWeight: '800', margin: 0, color: 'var(--text-color)' }}>Attendance & Analytics</h1>
+                    <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>Track engagement and participation health.</p>
                 </div>
                 <div style={{ display: 'flex', gap: '1rem' }}>
-                    <select style={{ background: '#1A1625', border: '1px solid rgba(255,255,255,0.1)', color: '#eff3c1', padding: '0.5rem', borderRadius: '0.5rem' }}>
+                    <select style={{ background: 'var(--surface-1)', border: '1px solid var(--border-color)', color: 'var(--text-color)', padding: '0.5rem', borderRadius: '0.5rem' }}>
                         <option>This Month</option>
                         <option>Last Month</option>
                         <option>This Quarter</option>

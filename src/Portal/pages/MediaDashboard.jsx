@@ -31,8 +31,8 @@ const MediaDashboard = () => {
                     onClick={() => setActiveTab(tab.id)}
                     style={{
                         padding: '0.6rem 1rem',
-                        background: activeTab === tab.id ? '#22c1e6' : 'transparent',
-                        color: activeTab === tab.id ? '#120D20' : '#94a3b8',
+                        background: activeTab === tab.id ? 'var(--primary)' : 'transparent',
+                        color: activeTab === tab.id ? 'var(--bg-color)' : 'var(--text-muted)',
                         borderRadius: '0.5rem',
                         cursor: 'pointer',
                         fontSize: '0.9rem',
@@ -67,30 +67,30 @@ const MediaDashboard = () => {
 
             {activeTab === 'management' && (
                 <div style={{
-                    background: '#1A1625',
+                    background: 'var(--surface-1)',
                     border: '1px solid #22c1e6',
                     borderRadius: '1rem',
                     padding: '2rem',
                     textAlign: 'center'
                 }}>
-                    <h2 style={{ color: '#22c1e6' }}>Media Management</h2>
-                    <p style={{ color: '#cbd5e1', marginBottom: '2rem' }}>Admin controls for uploading and managing content.</p>
+                    <h2 style={{ color: 'var(--primary)' }}>Media Management</h2>
+                    <p style={{ color: 'var(--text-color)', marginBottom: '2rem' }}>Admin controls for uploading and managing content.</p>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
                         <button
                             onClick={() => setIsUploadAudioModalOpen(true)}
-                            style={{ background: '#22c1e6', color: '#120D20', border: 'none', padding: '0.8rem 1.5rem', borderRadius: '0.5rem', fontWeight: 'bold', cursor: 'pointer' }}
+                            style={{ background: 'var(--primary)', color: 'var(--bg-color)', border: 'none', padding: '0.8rem 1.5rem', borderRadius: '0.5rem', fontWeight: 'bold', cursor: 'pointer' }}
                         >
                             + Upload Audio
                         </button>
                         <button
                             onClick={() => setIsUploadVideoModalOpen(true)}
-                            style={{ background: '#22c1e6', color: '#120D20', border: 'none', padding: '0.8rem 1.5rem', borderRadius: '0.5rem', fontWeight: 'bold', cursor: 'pointer' }}
+                            style={{ background: 'var(--primary)', color: 'var(--bg-color)', border: 'none', padding: '0.8rem 1.5rem', borderRadius: '0.5rem', fontWeight: 'bold', cursor: 'pointer' }}
                         >
                             + Add Video
                         </button>
                         <button
                             onClick={() => setIsUploadPhotosModalOpen(true)}
-                            style={{ background: '#22c1e6', color: '#120D20', border: 'none', padding: '0.8rem 1.5rem', borderRadius: '0.5rem', fontWeight: 'bold', cursor: 'pointer' }}
+                            style={{ background: 'var(--primary)', color: 'var(--bg-color)', border: 'none', padding: '0.8rem 1.5rem', borderRadius: '0.5rem', fontWeight: 'bold', cursor: 'pointer' }}
                         >
                             + Upload Photos
                         </button>

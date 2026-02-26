@@ -3,15 +3,15 @@ import React from 'react';
 const PortalHero = () => {
     return (
         <section style={{
-            background: '#120D20',
+            background: 'var(--bg-color)',
             padding: '10rem 0 6rem',
             textAlign: 'center',
-            color: 'white'
+            color: 'var(--text-color)'
         }}>
             <div className="container">
                 <span style={{
                     background: 'rgba(34, 193, 230, 0.1)',
-                    color: '#22c1e6',
+                    color: 'var(--primary)',
                     padding: '0.5rem 1rem',
                     borderRadius: '9999px',
                     fontSize: '0.75rem',
@@ -33,7 +33,7 @@ const PortalHero = () => {
                 </h1>
                 <p style={{
                     fontSize: '1.125rem',
-                    color: '#94a3b8',
+                    color: 'var(--text-muted)',
                     maxWidth: '600px',
                     margin: '0 auto',
                     lineHeight: 1.6

@@ -15,7 +15,7 @@ const CellHeader = () => {
             background: 'linear-gradient(135deg, #1A1625 0%, #2e2640 100%)',
             borderRadius: '1rem',
             padding: '2rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             marginBottom: '1.5rem',
             position: 'relative',
             overflow: 'hidden',
@@ -44,7 +44,7 @@ const CellHeader = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '2.5rem',
-                color: '#22c1e6',
+                color: 'var(--primary)',
                 border: '1px solid rgba(34, 193, 230, 0.2)'
             }}>
                 🏘️
@@ -52,7 +52,7 @@ const CellHeader = () => {
 
             <div style={{ flex: 1 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
-                    <h1 style={{ margin: 0, fontSize: '2rem', fontWeight: '800', color: '#eff3c1' }}>{cellInfo.name}</h1>
+                    <h1 style={{ margin: 0, fontSize: '2rem', fontWeight: '800', color: 'var(--text-color)' }}>{cellInfo.name}</h1>
                     <span style={{
                         background: 'rgba(34, 197, 94, 0.2)',
                         color: '#4ade80',
@@ -67,7 +67,7 @@ const CellHeader = () => {
                     </span>
                 </div>
 
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', color: '#94a3b8', fontSize: '0.95rem' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', color: 'var(--text-muted)', fontSize: '0.95rem' }}>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <span>📍</span> {cellInfo.location}
                     </span>

@@ -57,7 +57,7 @@ const FastingFilters = () => {
                 <button style={{
                     padding: '0.75rem 1.5rem',
                     background: 'var(--primary)',
-                    color: 'white',
+                    color: 'var(--text-color)',
                     border: 'none',
                     borderRadius: '0.5rem',
                     fontWeight: '600',

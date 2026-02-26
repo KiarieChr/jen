@@ -4,10 +4,10 @@ const QuickAccessCard = ({ icon, title, subtitle, color, onClick }) => (
     <div
         onClick={onClick}
         style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
             padding: '2rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             cursor: 'pointer',
             transition: 'transform 0.2s',
             display: 'flex',
@@ -26,13 +26,13 @@ const QuickAccessCard = ({ icon, title, subtitle, color, onClick }) => (
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: '1.8rem',
-            color: '#120D20'
+            color: 'var(--bg-color)'
         }}>
             {icon}
         </div>
         <div>
-            <h3 style={{ color: 'white', margin: '0 0 0.5rem 0', fontSize: '1.2rem' }}>{title}</h3>
-            <p style={{ color: '#94a3b8', margin: 0, fontSize: '0.9rem' }}>{subtitle}</p>
+            <h3 style={{ color: 'var(--text-color)', margin: '0 0 0.5rem 0', fontSize: '1.2rem' }}>{title}</h3>
+            <p style={{ color: 'var(--text-muted)', margin: 0, fontSize: '0.9rem' }}>{subtitle}</p>
         </div>
         <div style={{ color: color, fontSize: '0.9rem', fontWeight: '600', marginTop: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             Explore <span>→</span>
@@ -43,7 +43,7 @@ const QuickAccessCard = ({ icon, title, subtitle, color, onClick }) => (
 const QuickAccessCards = ({ onNavigate }) => {
     return (
         <div style={{ marginTop: '2rem' }}>
-            <h3 style={{ color: '#eff3c1', fontSize: '1.1rem', marginBottom: '1rem' }}>Quick Access</h3>
+            <h3 style={{ color: 'var(--text-color)', fontSize: '1.1rem', marginBottom: '1rem' }}>Quick Access</h3>
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',

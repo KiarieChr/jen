@@ -10,8 +10,8 @@ const CellEngagementChart = () => {
 
     // Data percentages (approx from image)
     const segments = [
-        { color: '#22c1e6', percent: 65, label: 'Highly Engaged' },
-        { color: '#eff3c1', percent: 25, label: 'Moderately Engaged' },
+        { color: 'var(--primary)', percent: 65, label: 'Highly Engaged' },
+        { color: 'var(--text-color)', percent: 25, label: 'Moderately Engaged' },
         { color: '#4b5563', percent: 10, label: 'Low Engagement' } // Darker grey for low
     ];
 
@@ -19,16 +19,16 @@ const CellEngagementChart = () => {
 
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
             padding: '1.5rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             height: '100%'
         }}>
-            <h3 style={{ width: '100%', color: '#22c1e6', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', marginBottom: '1.5rem', textAlign: 'left' }}>
+            <h3 style={{ width: '100%', color: 'var(--primary)', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', marginBottom: '1.5rem', textAlign: 'left' }}>
                 Cell Engagement Status
             </h3>
 
@@ -58,7 +58,7 @@ const CellEngagementChart = () => {
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.8rem', justifyContent: 'center' }}>
                 {segments.map((seg, i) => (
-                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.65rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 'bold' }}>
+                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 'bold' }}>
                         <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: seg.color }}></span>
                         {seg.label}
                     </div>

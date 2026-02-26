@@ -58,17 +58,17 @@ const UploadExcelModal = ({ onClose }) => {
             zIndex: 1100
         }}>
             <div style={{
-                background: '#1A1625',
+                background: 'var(--surface-1)',
                 padding: '2rem',
                 borderRadius: '1rem',
                 width: '100%',
                 maxWidth: '500px',
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: '1px solid var(--border-color)',
                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                    <h2 style={{ fontSize: '1.5rem', color: '#eff3c1', margin: 0 }}>Upload Members</h2>
-                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
+                    <h2 style={{ fontSize: '1.5rem', color: 'var(--text-color)', margin: 0 }}>Upload Members</h2>
+                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
                 </div>
 
                 <form onSubmit={handleSubmit}>
@@ -78,7 +78,7 @@ const UploadExcelModal = ({ onClose }) => {
                         onDrop={handleDrop}
                         onClick={() => fileInputRef.current.click()}
                         style={{
-                            border: `2px dashed ${isDragging ? '#22c1e6' : 'rgba(255,255,255,0.2)'}`,
+                            border: `2px dashed ${isDragging ? 'var(--primary)' : 'rgba(255,255,255,0.2)'}`,
                             borderRadius: '1rem',
                             padding: '3rem 2rem',
                             textAlign: 'center',
@@ -98,37 +98,37 @@ const UploadExcelModal = ({ onClose }) => {
                         {file ? (
                             <div>
                                 <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>📄</div>
-                                <div style={{ color: '#eff3c1', fontWeight: '600' }}>{file.name}</div>
-                                <div style={{ color: '#94a3b8', fontSize: '0.9rem' }}>{(file.size / 1024).toFixed(2)} KB</div>
+                                <div style={{ color: 'var(--text-color)', fontWeight: '600' }}>{file.name}</div>
+                                <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>{(file.size / 1024).toFixed(2)} KB</div>
                             </div>
                         ) : (
                             <div>
                                 <div style={{ fontSize: '2rem', marginBottom: '1rem', opacity: 0.7 }}>☁️</div>
-                                <div style={{ color: '#eff3c1', fontWeight: '600', marginBottom: '0.5rem' }}>Click or Drag file here</div>
-                                <div style={{ color: '#94a3b8', fontSize: '0.85rem' }}>Supports .xlsx, .xls, .csv</div>
+                                <div style={{ color: 'var(--text-color)', fontWeight: '600', marginBottom: '0.5rem' }}>Click or Drag file here</div>
+                                <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Supports .xlsx, .xls, .csv</div>
                             </div>
                         )}
                     </div>
 
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                        <a href="#" style={{ color: '#22c1e6', fontSize: '0.9rem', textDecoration: 'none', borderBottom: '1px solid currentColor' }}>Download Template</a>
+                        <a href="#" style={{ color: 'var(--primary)', fontSize: '0.9rem', textDecoration: 'none', borderBottom: '1px solid currentColor' }}>Download Template</a>
                     </div>
 
                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
                         <button type="button" onClick={onClose} style={{
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            border: '1px solid var(--border-color)',
                             background: 'transparent',
-                            color: '#94a3b8',
+                            color: 'var(--text-muted)',
                             cursor: 'pointer'
                         }}>Cancel</button>
                         <button type="submit" disabled={!file} style={{
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
                             border: 'none',
-                            background: file ? '#22c1e6' : 'rgba(255,255,255,0.1)',
-                            color: file ? '#120D20' : 'rgba(255,255,255,0.3)',
+                            background: file ? 'var(--primary)' : 'var(--border-color)',
+                            color: file ? 'var(--bg-color)' : 'rgba(255,255,255,0.3)',
                             fontWeight: '600',
                             cursor: file ? 'pointer' : 'not-allowed'
                         }}>Upload File</button>

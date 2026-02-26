@@ -6,7 +6,7 @@ const PartnershipTierWidget = () => {
             background: 'linear-gradient(135deg, #1A1625 0%, #2e2640 100%)',
             borderRadius: '1rem',
             padding: '2rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             position: 'relative',
             overflow: 'hidden',
             display: 'flex',
@@ -27,7 +27,7 @@ const PartnershipTierWidget = () => {
                 pointerEvents: 'none'
             }}></div>
 
-            <h3 style={{ color: '#94a3b8', fontSize: '0.9rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', zIndex: 1 }}>
+            <h3 style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', zIndex: 1 }}>
                 My Partnership Tier
             </h3>
 
@@ -42,17 +42,17 @@ const PartnershipTierWidget = () => {
                 }}>
                     GOLD
                 </div>
-                <div style={{ color: '#eff3c1', fontSize: '0.9rem', marginTop: '0.25rem' }}>
+                <div style={{ color: 'var(--text-color)', fontSize: '0.9rem', marginTop: '0.25rem' }}>
                     Partner Since 2024
                 </div>
             </div>
 
             <div style={{ zIndex: 1, width: '100%' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: '#94a3b8', marginBottom: '0.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
                     <span>Next Tier: Platinum</span>
                     <span>85%</span>
                 </div>
-                <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', overflow: 'hidden' }}>
+                <div style={{ width: '100%', height: '8px', background: 'var(--border-color)', borderRadius: '4px', overflow: 'hidden' }}>
                     <div style={{ width: '85%', height: '100%', background: 'linear-gradient(to right, #FDE68A, #D97706)', borderRadius: '4px' }}></div>
                 </div>
             </div>

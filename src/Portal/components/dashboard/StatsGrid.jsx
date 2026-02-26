@@ -2,8 +2,8 @@ import React from 'react';
 
 const StatCard = ({ label, value, subtext, icon }) => (
     <div style={{
-        background: '#1A1625', // Dark card background for stats
-        border: '1px solid rgba(255,255,255,0.05)',
+        background: 'var(--surface-1)', // Dark card background for stats
+        border: '1px solid var(--border-color)',
         padding: '1.5rem',
         borderRadius: '1rem',
         display: 'flex',
@@ -16,7 +16,7 @@ const StatCard = ({ label, value, subtext, icon }) => (
             fontSize: '0.75rem',
             textTransform: 'uppercase',
             letterSpacing: '0.05em',
-            color: '#94a3b8',
+            color: 'var(--text-muted)',
             fontWeight: '600'
         }}>
             {label}
@@ -24,12 +24,12 @@ const StatCard = ({ label, value, subtext, icon }) => (
         <div style={{
             fontSize: '1.75rem',
             fontWeight: '700',
-            color: '#22c1e6'
+            color: 'var(--primary)'
         }}>
             {value}
         </div>
         {subtext && (
-            <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                 {subtext}
             </div>
         )}

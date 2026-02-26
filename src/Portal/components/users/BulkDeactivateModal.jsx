@@ -52,10 +52,10 @@ const BulkDeactivateModal = ({ onClose }) => {
     const inputStyle = {
         width: '100%',
         padding: '0.75rem',
-        background: '#120D20',
-        border: '1px solid rgba(255,255,255,0.1)',
+        background: 'var(--bg-color)',
+        border: '1px solid var(--border-color)',
         borderRadius: '0.5rem',
-        color: '#eff3c1',
+        color: 'var(--text-color)',
         fontSize: '0.9rem',
         outline: 'none',
         marginBottom: '1rem'
@@ -76,7 +76,7 @@ const BulkDeactivateModal = ({ onClose }) => {
             zIndex: 1100
         }}>
             <div style={{
-                background: '#1A1625',
+                background: 'var(--surface-1)',
                 padding: '2rem',
                 borderRadius: '1rem',
                 width: '100%',
@@ -84,7 +84,7 @@ const BulkDeactivateModal = ({ onClose }) => {
                 maxHeight: '80vh',
                 display: 'flex',
                 flexDirection: 'column',
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: '1px solid var(--border-color)',
                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
@@ -92,7 +92,7 @@ const BulkDeactivateModal = ({ onClose }) => {
                         <span style={{ fontSize: '1.5rem' }}>🚫</span>
                         <h2 style={{ fontSize: '1.5rem', color: '#ff4d4d', margin: 0 }}>Bulk User Deactivation</h2>
                     </div>
-                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
+                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
                 </div>
 
                 <div style={{ marginBottom: '1rem' }}>
@@ -112,11 +112,11 @@ const BulkDeactivateModal = ({ onClose }) => {
                     marginBottom: '0.5rem',
                     padding: '0 0.5rem'
                 }}>
-                    <span style={{ color: '#94a3b8', fontSize: '0.9rem' }}>{selectedUserIds.length} users selected</span>
+                    <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>{selectedUserIds.length} users selected</span>
                     <button
                         type="button"
                         onClick={toggleAll}
-                        style={{ background: 'transparent', border: 'none', color: '#22c1e6', cursor: 'pointer', fontSize: '0.9rem' }}
+                        style={{ background: 'transparent', border: 'none', color: 'var(--primary)', cursor: 'pointer', fontSize: '0.9rem' }}
                     >
                         {selectedUserIds.length === filteredUsers.length ? 'Deselect All' : 'Select All'}
                     </button>
@@ -125,7 +125,7 @@ const BulkDeactivateModal = ({ onClose }) => {
                 <div style={{
                     flex: 1,
                     overflowY: 'auto',
-                    border: '1px solid rgba(255,255,255,0.1)',
+                    border: '1px solid var(--border-color)',
                     borderRadius: '0.5rem',
                     marginBottom: '1.5rem'
                 }}>
@@ -138,7 +138,7 @@ const BulkDeactivateModal = ({ onClose }) => {
                                 alignItems: 'center',
                                 gap: '1rem',
                                 padding: '0.75rem',
-                                borderBottom: '1px solid rgba(255,255,255,0.05)',
+                                borderBottom: '1px solid var(--border-color)',
                                 background: selectedUserIds.includes(user.id) ? 'rgba(255, 77, 77, 0.1)' : 'transparent',
                                 cursor: 'pointer',
                                 transition: 'background 0.2s'
@@ -151,13 +151,13 @@ const BulkDeactivateModal = ({ onClose }) => {
                                 style={{ accentColor: '#ff4d4d', width: '18px', height: '18px' }}
                             />
                             <div style={{ flex: 1 }}>
-                                <div style={{ color: '#eff3c1', fontWeight: '500' }}>{user.name}</div>
-                                <div style={{ color: '#94a3b8', fontSize: '0.8rem' }}>{user.email} • {user.role}</div>
+                                <div style={{ color: 'var(--text-color)', fontWeight: '500' }}>{user.name}</div>
+                                <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{user.email} • {user.role}</div>
                             </div>
                         </div>
                     ))}
                     {filteredUsers.length === 0 && (
-                        <div style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>No users found.</div>
+                        <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>No users found.</div>
                     )}
                 </div>
 
@@ -165,9 +165,9 @@ const BulkDeactivateModal = ({ onClose }) => {
                     <button type="button" onClick={onClose} style={{
                         padding: '0.75rem 1.5rem',
                         borderRadius: '0.5rem',
-                        border: '1px solid rgba(255,255,255,0.1)',
+                        border: '1px solid var(--border-color)',
                         background: 'transparent',
-                        color: '#94a3b8',
+                        color: 'var(--text-muted)',
                         cursor: 'pointer'
                     }}>Cancel</button>
                     <button onClick={handleSubmit} style={{
@@ -175,7 +175,7 @@ const BulkDeactivateModal = ({ onClose }) => {
                         borderRadius: '0.5rem',
                         border: 'none',
                         background: '#ff4d4d',
-                        color: 'white',
+                        color: 'var(--text-color)',
                         fontWeight: '700',
                         cursor: 'pointer',
                         opacity: selectedUserIds.length > 0 ? 1 : 0.5,

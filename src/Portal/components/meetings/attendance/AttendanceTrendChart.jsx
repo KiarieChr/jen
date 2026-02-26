@@ -15,20 +15,20 @@ const AttendanceTrendChart = () => {
 
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
             padding: '1.5rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             display: 'flex',
             flexDirection: 'column',
             height: '100%'
         }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
                 <div>
-                    <h3 style={{ margin: 0, color: '#eff3c1', fontSize: '1rem' }}>Attendance Trend</h3>
-                    <p style={{ margin: '0.2rem 0 0 0', color: '#94a3b8', fontSize: '0.8rem' }}>Year-to-date performance vs last year</p>
+                    <h3 style={{ margin: 0, color: 'var(--text-color)', fontSize: '1rem' }}>Attendance Trend</h3>
+                    <p style={{ margin: '0.2rem 0 0 0', color: 'var(--text-muted)', fontSize: '0.8rem' }}>Year-to-date performance vs last year</p>
                 </div>
-                <select style={{ background: 'rgba(255,255,255,0.05)', border: 'none', color: '#eff3c1', borderRadius: '0.4rem', padding: '0.2rem 0.5rem', fontSize: '0.8rem', cursor: 'pointer' }}>
+                <select style={{ background: 'var(--border-color)', border: 'none', color: 'var(--text-color)', borderRadius: '0.4rem', padding: '0.2rem 0.5rem', fontSize: '0.8rem', cursor: 'pointer' }}>
                     <option>This Year</option>
                     <option>Last Year</option>
                 </select>
@@ -38,7 +38,7 @@ const AttendanceTrendChart = () => {
                 <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
                     {/* Grid lines */}
                     {[0, 25, 50, 75, 100].map(h => (
-                        <line key={h} x1="0" y1={h} x2="100" y2={h} stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
+                        <line key={h} x1="0" y1={h} x2="100" y2={h} stroke="var(--border-color)" strokeWidth="0.5" />
                     ))}
 
                     {/* Line */}
@@ -76,7 +76,7 @@ const AttendanceTrendChart = () => {
                 </svg>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem', fontSize: '0.7rem', color: '#64748b' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
                 {labels.filter((_, i) => i % 2 === 0).map((l, i) => (
                     <span key={i}>{l}</span>
                 ))}

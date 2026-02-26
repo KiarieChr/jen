@@ -20,18 +20,18 @@ const UnassignedMembersList = ({ selectedMembers, toggleSelection }) => {
 
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             display: 'flex',
             flexDirection: 'column',
             height: '100%',
             overflow: 'hidden'
         }}>
-            <div style={{ padding: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                <h3 style={{ margin: '0 0 1rem 0', color: '#eff3c1', fontSize: '1rem', display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ padding: '1.25rem', borderBottom: '1px solid var(--border-color)' }}>
+                <h3 style={{ margin: '0 0 1rem 0', color: 'var(--text-color)', fontSize: '1rem', display: 'flex', justifyContent: 'space-between' }}>
                     Unassigned Members
-                    <span style={{ background: '#f59e0b', color: '#120D20', padding: '0.1rem 0.5rem', borderRadius: '1rem', fontSize: '0.75rem' }}>{filteredMembers.length}</span>
+                    <span style={{ background: '#f59e0b', color: 'var(--bg-color)', padding: '0.1rem 0.5rem', borderRadius: '1rem', fontSize: '0.75rem' }}>{filteredMembers.length}</span>
                 </h3>
 
                 <input
@@ -42,10 +42,10 @@ const UnassignedMembersList = ({ selectedMembers, toggleSelection }) => {
                     style={{
                         width: '100%',
                         padding: '0.6rem',
-                        background: '#120D20',
-                        border: '1px solid rgba(255,255,255,0.1)',
+                        background: 'var(--bg-color)',
+                        border: '1px solid var(--border-color)',
                         borderRadius: '0.5rem',
-                        color: '#eff3c1',
+                        color: 'var(--text-color)',
                         marginBottom: '0.75rem',
                         fontSize: '0.9rem'
                     }}
@@ -57,8 +57,8 @@ const UnassignedMembersList = ({ selectedMembers, toggleSelection }) => {
                             key={f}
                             onClick={() => setFilter(f)}
                             style={{
-                                background: filter === f ? 'rgba(34, 193, 230, 0.2)' : 'rgba(255,255,255,0.05)',
-                                color: filter === f ? '#22c1e6' : '#94a3b8',
+                                background: filter === f ? 'rgba(34, 193, 230, 0.2)' : 'var(--border-color)',
+                                color: filter === f ? 'var(--primary)' : 'var(--text-muted)',
                                 border: 'none',
                                 borderRadius: '0.25rem',
                                 padding: '0.3rem 0.6rem',
@@ -98,15 +98,15 @@ const UnassignedMembersList = ({ selectedMembers, toggleSelection }) => {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            background: selectedMembers.includes(member.id) ? '#22c1e6' : 'transparent',
-                            borderColor: selectedMembers.includes(member.id) ? '#22c1e6' : '#64748b'
+                            background: selectedMembers.includes(member.id) ? 'var(--primary)' : 'transparent',
+                            borderColor: selectedMembers.includes(member.id) ? 'var(--primary)' : 'var(--text-muted)'
                         }}>
-                            {selectedMembers.includes(member.id) && <span style={{ color: '#120D20', fontSize: '0.8rem', fontWeight: 'bold' }}>✓</span>}
+                            {selectedMembers.includes(member.id) && <span style={{ color: 'var(--bg-color)', fontSize: '0.8rem', fontWeight: 'bold' }}>✓</span>}
                         </div>
 
                         <div style={{ flex: 1 }}>
-                            <div style={{ color: '#eff3c1', fontSize: '0.9rem', fontWeight: '500' }}>{member.name}</div>
-                            <div style={{ color: '#94a3b8', fontSize: '0.75rem' }}>
+                            <div style={{ color: 'var(--text-color)', fontSize: '0.9rem', fontWeight: '500' }}>{member.name}</div>
+                            <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>
                                 {member.location} • <span style={{ color: '#f59e0b' }}>{member.status}</span>
                             </div>
                         </div>

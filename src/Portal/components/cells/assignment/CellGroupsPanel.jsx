@@ -12,21 +12,21 @@ const CellGroupsPanel = ({ onAssign }) => {
         const ratio = current / max;
         if (ratio >= 1) return '#ef4444'; // Red
         if (ratio >= 0.8) return '#f59e0b'; // Amber
-        return '#22c1e6'; // Blue
+        return 'var(--primary)'; // Blue
     };
 
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             display: 'flex',
             flexDirection: 'column',
             height: '100%',
             overflow: 'hidden'
         }}>
-            <div style={{ padding: '1.25rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                <h3 style={{ margin: '0', color: '#eff3c1', fontSize: '1rem' }}>Available Cell Groups</h3>
+            <div style={{ padding: '1.25rem', borderBottom: '1px solid var(--border-color)' }}>
+                <h3 style={{ margin: '0', color: 'var(--text-color)', fontSize: '1rem' }}>Available Cell Groups</h3>
             </div>
 
             <div style={{ flex: 1, overflowY: 'auto', padding: '1rem', display: 'grid', gap: '1rem' }}>
@@ -36,22 +36,22 @@ const CellGroupsPanel = ({ onAssign }) => {
 
                     return (
                         <div key={cell.id} style={{
-                            background: '#120D20',
+                            background: 'var(--bg-color)',
                             borderRadius: '0.75rem',
                             padding: '1rem',
-                            border: '1px solid rgba(255,255,255,0.05)'
+                            border: '1px solid var(--border-color)'
                         }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
                                 <div>
-                                    <div style={{ color: '#eff3c1', fontWeight: '600', fontSize: '0.95rem' }}>{cell.name}</div>
-                                    <div style={{ color: '#94a3b8', fontSize: '0.8rem' }}>{cell.location} • {cell.leader}</div>
+                                    <div style={{ color: 'var(--text-color)', fontWeight: '600', fontSize: '0.95rem' }}>{cell.name}</div>
+                                    <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{cell.location} • {cell.leader}</div>
                                 </div>
                                 <button
                                     onClick={() => onAssign(cell.id)}
                                     disabled={isFull}
                                     style={{
-                                        background: isFull ? 'rgba(255,255,255,0.05)' : 'rgba(34, 193, 230, 0.1)',
-                                        color: isFull ? '#64748b' : '#22c1e6',
+                                        background: isFull ? 'var(--border-color)' : 'rgba(34, 193, 230, 0.1)',
+                                        color: isFull ? 'var(--text-muted)' : 'var(--primary)',
                                         border: isFull ? 'none' : '1px solid #22c1e6',
                                         borderRadius: '0.5rem',
                                         padding: '0.3rem 0.8rem',
@@ -66,7 +66,7 @@ const CellGroupsPanel = ({ onAssign }) => {
 
                             {/* Capacity Bar */}
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem' }}>
-                                <div style={{ flex: 1, height: '6px', background: 'rgba(255,255,255,0.1)', borderRadius: '3px', overflow: 'hidden' }}>
+                                <div style={{ flex: 1, height: '6px', background: 'var(--border-color)', borderRadius: '3px', overflow: 'hidden' }}>
                                     <div style={{
                                         width: `${(cell.current / cell.max) * 100}%`,
                                         height: '100%',

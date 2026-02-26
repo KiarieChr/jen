@@ -153,8 +153,8 @@ const Dashboard = () => {
                      `}</style>
                 </div>
             ) : (
-                <div style={{ padding: '4rem', textAlign: 'center', color: '#64748b', background: '#1A1625', borderRadius: '1rem' }}>
-                    <h2 style={{ color: '#eff3c1' }}>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Module</h2>
+                <div style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-muted)', background: 'var(--surface-1)', borderRadius: '1rem' }}>
+                    <h2 style={{ color: 'var(--text-color)' }}>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Module</h2>
                     <p>Detailed view coming soon...</p>
                 </div>
             )}

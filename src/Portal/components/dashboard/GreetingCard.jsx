@@ -20,12 +20,12 @@ const GreetingCard = () => {
                 <h1 style={{
                     fontSize: '2rem',
                     fontWeight: '700',
-                    color: '#eff3c1',
+                    color: 'var(--text-color)',
                     marginBottom: '0.25rem'
                 }}>
-                    {getGreeting()}, <span style={{ color: '#22c1e6' }}>Timothy</span>
+                    {getGreeting()}, <span style={{ color: 'var(--primary)' }}>Timothy</span>
                 </h1>
-                <p style={{ color: '#94a3b8', fontSize: '0.9rem', fontStyle: 'italic' }}>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontStyle: 'italic' }}>
                     Cell Leader • Let everything that has breath praise the Lord. – Psalm 150:6
                 </p>
             </div>
@@ -33,9 +33,9 @@ const GreetingCard = () => {
             <div style={{
                 width: '48px', height: '48px',
                 borderRadius: '50%',
-                background: '#22c1e6',
+                background: 'var(--primary)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: '#120D20',
+                color: 'var(--bg-color)',
                 fontWeight: 'bold',
                 fontSize: '1.2rem',
                 boxShadow: '0 0 15px rgba(34, 193, 230, 0.4)'

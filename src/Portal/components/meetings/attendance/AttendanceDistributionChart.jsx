@@ -3,7 +3,7 @@ import React from 'react';
 const AttendanceDistributionChart = () => {
     // Mock Data
     const data = [
-        { label: 'Cell Meetings', value: 35, color: '#22c1e6' },
+        { label: 'Cell Meetings', value: 35, color: 'var(--primary)' },
         { label: 'Sunday Service', value: 45, color: '#4ade80' },
         { label: 'Prayer', value: 15, color: '#f59e0b' },
         { label: 'Outreach', value: 5, color: '#ef4444' },
@@ -29,16 +29,16 @@ const AttendanceDistributionChart = () => {
 
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
             padding: '1.5rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             height: '100%',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center'
         }}>
-            <h3 style={{ margin: '0 0 1.5rem 0', color: '#eff3c1', fontSize: '1rem', width: '100%', textAlign: 'left' }}>Attendance Distribution</h3>
+            <h3 style={{ margin: '0 0 1.5rem 0', color: 'var(--text-color)', fontSize: '1rem', width: '100%', textAlign: 'left' }}>Attendance Distribution</h3>
 
             <div style={donutStyle}>
                 <div style={{
@@ -49,14 +49,14 @@ const AttendanceDistributionChart = () => {
                     width: '120px',
                     height: '120px',
                     borderRadius: '50%',
-                    background: '#1A1625',
+                    background: 'var(--surface-1)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     flexDirection: 'column'
                 }}>
-                    <div style={{ fontSize: '1.5rem', fontWeight: '800', color: '#eff3c1' }}>100%</div>
-                    <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Engagement</div>
+                    <div style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--text-color)' }}>100%</div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Engagement</div>
                 </div>
             </div>
 
@@ -64,7 +64,7 @@ const AttendanceDistributionChart = () => {
                 {data.map((d, i) => (
                     <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: d.color }}></span>
-                        <div style={{ fontSize: '0.8rem', color: '#cbd5e1' }}>
+                        <div style={{ fontSize: '0.8rem', color: 'var(--text-color)' }}>
                             <span style={{ fontWeight: '600' }}>{d.value}%</span> {d.label}
                         </div>
                     </div>

@@ -6,31 +6,31 @@ const AuditItem = ({ user, action, time }) => (
         alignItems: 'center',
         gap: '0.8rem',
         padding: '0.8rem 0',
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
+        borderBottom: '1px solid var(--border-color)',
         fontSize: '0.85rem'
     }}>
-        <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#22c1e6' }}></div>
+        <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--primary)' }}></div>
         <div style={{ flex: 1 }}>
-            <span style={{ color: '#eff3c1', fontWeight: '600' }}>{user}</span> <span style={{ color: '#94a3b8' }}>{action}</span>
+            <span style={{ color: 'var(--text-color)', fontWeight: '600' }}>{user}</span> <span style={{ color: 'var(--text-muted)' }}>{action}</span>
         </div>
-        <div style={{ color: '#64748b', fontSize: '0.75rem' }}>{time}</div>
+        <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>{time}</div>
     </div>
 );
 
 const UserAuditLog = () => {
     return (
         <div style={{
-            background: '#1A1625',
+            background: 'var(--surface-1)',
             borderRadius: '1rem',
             padding: '1.5rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             height: '100%',
             display: 'flex',
             flexDirection: 'column'
         }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <h3 style={{ margin: 0, color: '#eff3c1', fontSize: '1rem' }}>Recent Security Activity</h3>
-                <span style={{ fontSize: '0.75rem', color: '#22c1e6', cursor: 'pointer' }}>View All</span>
+                <h3 style={{ margin: 0, color: 'var(--text-color)', fontSize: '1rem' }}>Recent Security Activity</h3>
+                <span style={{ fontSize: '0.75rem', color: 'var(--primary)', cursor: 'pointer' }}>View All</span>
             </div>
 
             <div>

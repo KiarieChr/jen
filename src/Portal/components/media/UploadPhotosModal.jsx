@@ -55,16 +55,16 @@ const UploadPhotosModal = ({ onClose }) => {
     const inputStyle = {
         width: '100%',
         padding: '0.75rem',
-        background: '#120D20',
-        border: '1px solid rgba(255,255,255,0.1)',
+        background: 'var(--bg-color)',
+        border: '1px solid var(--border-color)',
         borderRadius: '0.5rem',
-        color: '#eff3c1',
+        color: 'var(--text-color)',
         fontSize: '0.9rem',
         marginTop: '0.4rem'
     };
 
     const labelStyle = {
-        color: '#94a3b8',
+        color: 'var(--text-muted)',
         fontSize: '0.85rem',
         fontWeight: '500'
     };
@@ -73,7 +73,7 @@ const UploadPhotosModal = ({ onClose }) => {
         padding: '0.5rem 1rem',
         cursor: 'pointer',
         borderBottom: isActive ? '2px solid #22c1e6' : '2px solid transparent',
-        color: isActive ? '#eff3c1' : '#94a3b8',
+        color: isActive ? 'var(--text-color)' : 'var(--text-muted)',
         fontWeight: isActive ? '600' : '400',
         transition: 'all 0.2s'
     });
@@ -93,22 +93,22 @@ const UploadPhotosModal = ({ onClose }) => {
             zIndex: 1100
         }}>
             <div style={{
-                background: '#1A1625',
+                background: 'var(--surface-1)',
                 padding: '2rem',
                 borderRadius: '1rem',
                 width: '100%',
                 maxWidth: '600px',
                 maxHeight: '90vh',
                 overflowY: 'auto',
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: '1px solid var(--border-color)',
                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                    <h2 style={{ fontSize: '1.5rem', color: '#22c1e6', margin: 0 }}>Create Photo Gallery</h2>
-                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
+                    <h2 style={{ fontSize: '1.5rem', color: 'var(--primary)', margin: 0 }}>Create Photo Gallery</h2>
+                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
                 </div>
 
-                <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)' }}>
                     <div style={tabStyle(uploadType === 'file')} onClick={() => setUploadType('file')}>Upload Photos</div>
                     <div style={tabStyle(uploadType === 'url')} onClick={() => setUploadType('url')}>Gallery Link</div>
                 </div>
@@ -126,7 +126,7 @@ const UploadPhotosModal = ({ onClose }) => {
                                     padding: '1.5rem',
                                     textAlign: 'center',
                                     cursor: 'pointer',
-                                    background: 'rgba(255,255,255,0.02)'
+                                    background: 'var(--surface-2)'
                                 }}
                             >
                                 <input
@@ -138,8 +138,8 @@ const UploadPhotosModal = ({ onClose }) => {
                                     style={{ display: 'none' }}
                                 />
                                 <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🖼️</div>
-                                <div style={{ color: '#eff3c1', fontWeight: '500' }}>Click to select photos</div>
-                                <div style={{ color: '#94a3b8', fontSize: '0.8rem', marginTop: '0.2rem' }}>JPG, PNG, WEBP (Multiple allowed)</div>
+                                <div style={{ color: 'var(--text-color)', fontWeight: '500' }}>Click to select photos</div>
+                                <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '0.2rem' }}>JPG, PNG, WEBP (Multiple allowed)</div>
                             </div>
 
                             {/* Selected Files Preview */}
@@ -149,15 +149,15 @@ const UploadPhotosModal = ({ onClose }) => {
                                     flexWrap: 'wrap',
                                     gap: '0.5rem',
                                     padding: '0.5rem',
-                                    background: 'rgba(255,255,255,0.05)',
+                                    background: 'var(--border-color)',
                                     borderRadius: '0.5rem',
                                     maxHeight: '100px',
                                     overflowY: 'auto'
                                 }}>
                                     {files.map((file, index) => (
                                         <div key={index} style={{
-                                            background: '#22c1e6',
-                                            color: '#120D20',
+                                            background: 'var(--primary)',
+                                            color: 'var(--bg-color)',
                                             padding: '0.2rem 0.6rem',
                                             borderRadius: '1rem',
                                             fontSize: '0.8rem',
@@ -222,17 +222,17 @@ const UploadPhotosModal = ({ onClose }) => {
                         <button type="button" onClick={onClose} style={{
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            border: '1px solid var(--border-color)',
                             background: 'transparent',
-                            color: '#94a3b8',
+                            color: 'var(--text-muted)',
                             cursor: 'pointer'
                         }}>Cancel</button>
                         <button type="submit" style={{
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
                             border: 'none',
-                            background: '#22c1e6',
-                            color: '#120D20',
+                            background: 'var(--primary)',
+                            color: 'var(--bg-color)',
                             fontWeight: '700',
                             cursor: 'pointer'
                         }}>Create Gallery</button>

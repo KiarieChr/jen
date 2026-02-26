@@ -51,16 +51,16 @@ const UploadVideoModal = ({ onClose }) => {
     const inputStyle = {
         width: '100%',
         padding: '0.75rem',
-        background: '#120D20',
-        border: '1px solid rgba(255,255,255,0.1)',
+        background: 'var(--bg-color)',
+        border: '1px solid var(--border-color)',
         borderRadius: '0.5rem',
-        color: '#eff3c1',
+        color: 'var(--text-color)',
         fontSize: '0.9rem',
         marginTop: '0.4rem'
     };
 
     const labelStyle = {
-        color: '#94a3b8',
+        color: 'var(--text-muted)',
         fontSize: '0.85rem',
         fontWeight: '500'
     };
@@ -69,7 +69,7 @@ const UploadVideoModal = ({ onClose }) => {
         padding: '0.5rem 1rem',
         cursor: 'pointer',
         borderBottom: isActive ? '2px solid #22c1e6' : '2px solid transparent',
-        color: isActive ? '#eff3c1' : '#94a3b8',
+        color: isActive ? 'var(--text-color)' : 'var(--text-muted)',
         fontWeight: isActive ? '600' : '400',
         transition: 'all 0.2s'
     });
@@ -89,20 +89,20 @@ const UploadVideoModal = ({ onClose }) => {
             zIndex: 1100
         }}>
             <div style={{
-                background: '#1A1625',
+                background: 'var(--surface-1)',
                 padding: '2rem',
                 borderRadius: '1rem',
                 width: '100%',
                 maxWidth: '600px',
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: '1px solid var(--border-color)',
                 boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                    <h2 style={{ fontSize: '1.5rem', color: '#22c1e6', margin: 0 }}>Add Video Content</h2>
-                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
+                    <h2 style={{ fontSize: '1.5rem', color: 'var(--primary)', margin: 0 }}>Add Video Content</h2>
+                    <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '1.5rem', cursor: 'pointer' }}>×</button>
                 </div>
 
-                <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)' }}>
                     <div style={tabStyle(uploadType === 'url')} onClick={() => setUploadType('url')}>Video URL (YouTube/Vimeo)</div>
                     <div style={tabStyle(uploadType === 'file')} onClick={() => setUploadType('file')}>Upload Video File</div>
                 </div>
@@ -119,7 +119,7 @@ const UploadVideoModal = ({ onClose }) => {
                                 padding: '1.5rem',
                                 textAlign: 'center',
                                 cursor: 'pointer',
-                                background: 'rgba(255,255,255,0.02)'
+                                background: 'var(--surface-2)'
                             }}
                         >
                             <input
@@ -131,11 +131,11 @@ const UploadVideoModal = ({ onClose }) => {
                             />
                             <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>📹</div>
                             {file ? (
-                                <div style={{ color: '#22c1e6', fontWeight: '500' }}>{file.name}</div>
+                                <div style={{ color: 'var(--primary)', fontWeight: '500' }}>{file.name}</div>
                             ) : (
                                 <>
-                                    <div style={{ color: '#eff3c1', fontWeight: '500' }}>Click to select video file</div>
-                                    <div style={{ color: '#94a3b8', fontSize: '0.8rem', marginTop: '0.2rem' }}>MP4, MOV supported</div>
+                                    <div style={{ color: 'var(--text-color)', fontWeight: '500' }}>Click to select video file</div>
+                                    <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '0.2rem' }}>MP4, MOV supported</div>
                                 </>
                             )}
                         </div>
@@ -195,17 +195,17 @@ const UploadVideoModal = ({ onClose }) => {
                         <button type="button" onClick={onClose} style={{
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
-                            border: '1px solid rgba(255,255,255,0.1)',
+                            border: '1px solid var(--border-color)',
                             background: 'transparent',
-                            color: '#94a3b8',
+                            color: 'var(--text-muted)',
                             cursor: 'pointer'
                         }}>Cancel</button>
                         <button type="submit" style={{
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
                             border: 'none',
-                            background: '#22c1e6',
-                            color: '#120D20',
+                            background: 'var(--primary)',
+                            color: 'var(--bg-color)',
                             fontWeight: '700',
                             cursor: 'pointer'
                         }}>Add Video</button>

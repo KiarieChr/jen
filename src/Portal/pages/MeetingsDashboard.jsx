@@ -12,14 +12,14 @@ const MeetingsDashboard = () => {
             {/* Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <div>
-                    <h1 style={{ fontSize: '1.8rem', fontWeight: '800', margin: 0, color: '#eff3c1' }}>Meetings</h1>
-                    <p style={{ color: '#94a3b8', marginTop: '0.5rem' }}>Schedule, manage, and track all ministry gatherings.</p>
+                    <h1 style={{ fontSize: '1.8rem', fontWeight: '800', margin: 0, color: 'var(--text-color)' }}>Meetings</h1>
+                    <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>Schedule, manage, and track all ministry gatherings.</p>
                 </div>
                 <button
                     onClick={() => setIsCreateModalOpen(true)}
                     style={{
-                        background: '#22c1e6',
-                        color: '#120D20',
+                        background: 'var(--primary)',
+                        color: 'var(--bg-color)',
                         border: 'none',
                         borderRadius: '0.5rem',
                         padding: '0.75rem 1.5rem',

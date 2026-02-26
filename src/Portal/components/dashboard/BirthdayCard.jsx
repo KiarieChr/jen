@@ -13,7 +13,7 @@ const BirthdayCard = () => {
             background: 'linear-gradient(135deg, #1A1625 0%, #2e2640 100%)',
             borderRadius: '1.5rem',
             padding: '3rem',
-            border: '1px solid rgba(255,255,255,0.05)',
+            border: '1px solid var(--border-color)',
             position: 'relative',
             overflow: 'hidden',
             display: 'flex',
@@ -53,7 +53,7 @@ const BirthdayCard = () => {
 
             <div style={{ zIndex: 2 }}>
                 <h2 style={{
-                    color: '#eff3c1',
+                    color: 'var(--text-color)',
                     fontSize: '1.5rem',
                     fontWeight: '300',
                     textTransform: 'uppercase',
@@ -77,25 +77,25 @@ const BirthdayCard = () => {
 
                 <div style={{
                     fontSize: '2rem',
-                    color: '#94a3b8',
+                    color: 'var(--text-muted)',
                     fontWeight: '600',
                     marginBottom: '2.5rem'
                 }}>
-                    Turning <span style={{ color: '#eff3c1', fontSize: '2.5rem' }}>{birthday.turningAge}</span> Years Old
+                    Turning <span style={{ color: 'var(--text-color)', fontSize: '2.5rem' }}>{birthday.turningAge}</span> Years Old
                 </div>
 
                 <div style={{
-                    background: 'rgba(255,255,255,0.05)',
+                    background: 'var(--border-color)',
                     padding: '1rem 2rem',
                     borderRadius: '50px',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '1rem',
                     backdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255,255,255,0.1)'
+                    border: '1px solid var(--border-color)'
                 }}>
                     <span style={{ fontSize: '1.5rem' }}>⏳</span>
-                    <span style={{ color: '#eff3c1', fontSize: '1.1rem', fontWeight: '500' }}>
+                    <span style={{ color: 'var(--text-color)', fontSize: '1.1rem', fontWeight: '500' }}>
                         {birthday.daysLeft} days to go!
                     </span>
                 </div>
