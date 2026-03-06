@@ -69,6 +69,11 @@ const Dashboard = () => {
                         <CellOverviewWidget />
                     </div>
                 </div>
+            ) : activeTab === 'calendar' ? (
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem' }}>
+                    <CalendarWidget />
+                    <UpcomingEventsList />
+                </div>
             ) : activeTab === 'cell' ? (
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
                     <div style={{ flex: 2, minWidth: '350px' }}>
@@ -85,8 +90,12 @@ const Dashboard = () => {
                         }
                      `}</style>
                 </div>
-            ) : activeTab === 'partnership' ? (
-                <div className="partnership-grid">
+            ) : activeTab === 'attendance' ? (
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem' }}>
+                    <AttendanceWidget />
+                </div>
+            ) : activeTab === 'pledges' ? (
+                <div className="pledges-grid">
                     <div style={{ gridArea: 'tier' }}>
                         <PartnershipTierWidget />
                     </div>
@@ -100,35 +109,19 @@ const Dashboard = () => {
                         <PledgesWidget />
                     </div>
                     <style>{`
-                        .partnership-grid {
+                        .pledges-grid {
                             display: grid;
                             gap: 1.5rem;
                             grid-template-columns: 1fr;
                             grid-template-areas: "tier" "graph" "list" "pledge";
                         }
                         @media (min-width: 1024px) {
-                            .partnership-grid {
-                                grid-template-columns: 1fr 2fr;
-                                grid-template-rows: auto auto;
-                                grid-template-areas: 
-                                    "tier graph"
-                                    "list list"
-                                    "pledge pledge"; /* Adjusted to fit */
-                            }
-                             /* Better layout */
-                             .partnership-grid {
-                                grid-template-columns: 1fr 1fr 1fr;
-                                grid-template-areas: 
-                                    "tier graph list"
-                                    "pledge graph list"; /* Spanning */
-                             }
-                             /* Simplest robust layout */
-                             .partnership-grid {
+                            .pledges-grid {
                                 grid-template-columns: 1fr 2fr;
                                 grid-template-areas: 
                                     "tier graph"
                                     "pledge list";
-                             }
+                            }
                         }
                     `}</style>
                 </div>

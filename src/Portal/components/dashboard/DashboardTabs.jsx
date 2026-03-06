@@ -2,10 +2,11 @@ import React from 'react';
 
 const DashboardTabs = ({ activeTab, setActiveTab }) => {
     const tabs = [
-        { id: 'dashboard', label: 'My Dashboard', icon: '00' },
-        { id: 'calendar', label: 'Calendar', icon: '📅' },
+        { id: 'dashboard', label: 'My Dashboard', icon: '🎛️' },
+        { id: 'calendar', label: 'Calendar Schedule', icon: '📅' },
         { id: 'cell', label: 'My Cell', icon: '👥' },
-        { id: 'partnership', label: 'My Partnership', icon: '🤝' },
+        { id: 'attendance', label: 'Meeting Attendance', icon: '✅' },
+        { id: 'pledges', label: 'My Pledges', icon: '💰' },
         { id: 'birthday', label: 'My Birthday', icon: '🎂' },
         { id: 'upcoming', label: 'Upcoming Birthdays', icon: '🎁' },
     ];
@@ -41,7 +42,7 @@ const DashboardTabs = ({ activeTab, setActiveTab }) => {
                         transition: 'all 0.2s'
                     }}
                 >
-                    <span>{tab.icon === '00' ? '🎛️' : tab.icon}</span>
+                    <span>{tab.icon}</span>
                     {tab.label}
                 </button>
             ))}

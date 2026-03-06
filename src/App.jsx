@@ -25,7 +25,9 @@ import PropheticInstructions from './Portal/pages/prayers/PropheticInstructions'
 import PrayerCommunications from './Portal/pages/prayers/PrayerCommunications';
 import { ThemeProvider } from './context/ThemeContext';
 import { EventProvider } from './context/EventContext';
+import { AuthProvider } from './context/AuthContext';
 import EventRegistration from './website/pages/EventRegistration';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Placeholder Pages
 const Placeholder = ({ title }) => <h1 style={{ color: 'white' }}>{title}</h1>;
@@ -33,44 +35,50 @@ const Placeholder = ({ title }) => <h1 style={{ color: 'white' }}>{title}</h1>;
 function App() {
   return (
     <ThemeProvider>
-      <EventProvider>
-        <Router>
-          <Routes>
-            {/* Public Website Routes */}
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/sermons" element={<Sermons />} />
-            <Route path="/events" element={<Events />} />
-            <Route path="/events/:eventId/register" element={<EventRegistration />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/portal" element={<Portal />} />
-            <Route path="/give" element={<Give />} />
+      <AuthProvider>
+        <EventProvider>
+          <Router>
+            <Routes>
+              {/* Public Website Routes */}
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/sermons" element={<Sermons />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/events/:eventId/register" element={<EventRegistration />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/login" element={<Portal />} />
+              <Route path="/portal" element={<Portal />} />
+              <Route path="/give" element={<Give />} />
 
-            {/* Authenticated Portal Routes */}
-            <Route path="/portal" element={<PortalLayout />}>
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="cells" element={<CellsDashboard />} />
-              <Route path="cells/assign" element={<AssignMembersDashboard />} />
-              <Route path="my-cell" element={<MyCellDashboard />} />
-              <Route path="meetings" element={<MeetingsDashboard />} />
-              <Route path="meetings/events" element={<EventsDashboard />} />
-              <Route path="meetings/attendance" element={<AttendanceDashboard />} />
-              <Route path="members" element={<MembersDashboard />} />
-              <Route path="members" element={<MembersDashboard />} />
+              {/* Authenticated Portal Routes */}
+              <Route path="/portal" element={
+                <ProtectedRoute>
+                  <PortalLayout />
+                </ProtectedRoute>
+              }>
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="cells" element={<CellsDashboard />} />
+                <Route path="cells/assign" element={<AssignMembersDashboard />} />
+                <Route path="my-cell" element={<MyCellDashboard />} />
+                <Route path="meetings" element={<MeetingsDashboard />} />
+                <Route path="meetings/events" element={<EventsDashboard />} />
+                <Route path="meetings/attendance" element={<AttendanceDashboard />} />
+                <Route path="members" element={<MembersDashboard />} />
 
-              {/* Prayer Module Routes */}
-              <Route path="prayers/fasting" element={<FastingCommitment />} />
-              <Route path="prayers/prophetic" element={<PropheticInstructions />} />
-              <Route path="prayers/communications" element={<PrayerCommunications />} />
-              <Route path="media" element={<MediaDashboard />} />
-              <Route path="giving" element={<Placeholder title="Contributions" />} />
-              <Route path="users" element={<UsersDashboard />} />
-              <Route path="users/account" element={<MyAccountDashboard />} />
-              <Route path="roles" element={<Placeholder title="Roles & Permissions" />} />
-            </Route>
-          </Routes>
-        </Router>
-      </EventProvider>
+                {/* Prayer Module Routes */}
+                <Route path="prayers/fasting" element={<FastingCommitment />} />
+                <Route path="prayers/prophetic" element={<PropheticInstructions />} />
+                <Route path="prayers/communications" element={<PrayerCommunications />} />
+                <Route path="media" element={<MediaDashboard />} />
+                <Route path="giving" element={<Placeholder title="Contributions" />} />
+                <Route path="users" element={<UsersDashboard />} />
+                <Route path="users/account" element={<MyAccountDashboard />} />
+                <Route path="roles" element={<Placeholder title="Roles & Permissions" />} />
+              </Route>
+            </Routes>
+          </Router>
+        </EventProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

@@ -1,9 +1,85 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { register } from '../../services/authService';
 
 const AuthSection = () => {
     const [activeTab, setActiveTab] = useState('login');
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    
+    // Login form state
+    const [loginData, setLoginData] = useState({ email: '', password: '' });
+    
+    // Register form state
+    const [registerData, setRegisterData] = useState({
+        phone_no: '',
+        email: '',
+        dob: '',
+        location: '',
+        emp_status: '',
+        password: '',
+        confirmPassword: ''
+    });
+    
     const navigate = useNavigate();
+    const { login } = useAuth();
+
+    const handleLoginSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+        setIsLoading(true);
+        
+        try {
+            const result = await login(loginData.email, loginData.password);
+            if (result.success) {
+                navigate('/portal/dashboard');
+            } else {
+                setError(result.error || 'Login failed');
+            }
+        } catch (err) {
+            setError(err.message || 'An error occurred');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleRegisterSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+        
+        if (registerData.password !== registerData.confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
+        
+        if (registerData.password.length < 6) {
+            setError('Password must be at least 6 characters');
+            return;
+        }
+        
+        setIsLoading(true);
+        
+        try {
+            const result = await register({
+                phone_no: registerData.phone_no,
+                email: registerData.email,
+                password: registerData.password,
+                dob: registerData.dob,
+                location: registerData.location,
+                emp_status: registerData.emp_status
+            });
+            
+            if (result.success) {
+                navigate('/portal/dashboard');
+            }
+        } catch (err) {
+            setError(err.message || 'Registration failed');
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <section style={{ padding: '4rem 0 6rem', background: '#eff3c1' }}>
@@ -21,17 +97,32 @@ const AuthSection = () => {
                         borderRadius: '1.5rem',
                         boxShadow: '0 10px 30px -5px rgba(0, 0, 0, 0.05)'
                     }}>
+                        {/* Error Message */}
+                        {error && (
+                            <div style={{
+                                background: '#fef2f2',
+                                border: '1px solid #fecaca',
+                                color: '#dc2626',
+                                padding: '0.75rem 1rem',
+                                borderRadius: '0.5rem',
+                                marginBottom: '1rem',
+                                fontSize: '0.9rem'
+                            }}>
+                                {error}
+                            </div>
+                        )}
+                        
                         {/* Tabs */}
                         {activeTab !== 'forgot-password' && (
                             <div style={{
                                 display: 'flex',
-                                background: '#dce7c5', // Slightly darker secondary for tab background
+                                background: '#dce7c5',
                                 padding: '0.3rem',
                                 borderRadius: '0.75rem',
                                 marginBottom: '2rem'
                             }}>
                                 <button
-                                    onClick={() => setActiveTab('login')}
+                                    onClick={() => { setActiveTab('login'); setError(''); }}
                                     style={{
                                         flex: 1,
                                         padding: '0.75rem',
@@ -47,14 +138,14 @@ const AuthSection = () => {
                                     Login
                                 </button>
                                 <button
-                                    onClick={() => setActiveTab('register')}
+                                    onClick={() => { setActiveTab('register'); setError(''); }}
                                     style={{
                                         flex: 1,
                                         padding: '0.75rem',
                                         borderRadius: '0.5rem',
                                         border: 'none',
                                         background: activeTab === 'register' ? '#22c1e6' : 'transparent',
-                                        color: activeTab === 'register' ? 'white' : '#120D20', // Using dark text for contrast on inactive
+                                        color: activeTab === 'register' ? 'white' : '#120D20',
                                         fontWeight: '600',
                                         cursor: 'pointer',
                                         transition: 'all 0.2s'
@@ -67,23 +158,39 @@ const AuthSection = () => {
 
                         {/* Login Form */}
                         {activeTab === 'login' && (
-                            <form onSubmit={(e) => {
-                                e.preventDefault();
-                                navigate('/portal/dashboard');
-                            }} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                            <form onSubmit={handleLoginSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                     <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#120D20' }}>Email Address</label>
-                                    <input type="email" placeholder="your@email.com" style={{
-                                        padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #cbd5e1', background: '#eff3c1', outline: 'none'
-                                    }} />
+                                    <input 
+                                        type="email" 
+                                        placeholder="your@email.com" 
+                                        value={loginData.email}
+                                        onChange={(e) => setLoginData({...loginData, email: e.target.value})}
+                                        required
+                                        style={{
+                                            padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #cbd5e1', background: '#eff3c1', outline: 'none'
+                                        }} 
+                                    />
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                     <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#120D20' }}>Password</label>
                                     <div style={{ position: 'relative' }}>
-                                        <input type="password" placeholder="........" style={{
-                                            width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #cbd5e1', background: '#eff3c1', outline: 'none'
-                                        }} />
-                                        <span style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}>👁️</span>
+                                        <input 
+                                            type={showPassword ? 'text' : 'password'} 
+                                            placeholder="........" 
+                                            value={loginData.password}
+                                            onChange={(e) => setLoginData({...loginData, password: e.target.value})}
+                                            required
+                                            style={{
+                                                width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #cbd5e1', background: '#eff3c1', outline: 'none'
+                                            }} 
+                                        />
+                                        <span 
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                                        >
+                                            {showPassword ? '🙈' : '👁️'}
+                                        </span>
                                     </div>
                                 </div>
                                 <div style={{ textAlign: 'right' }}>
@@ -95,18 +202,22 @@ const AuthSection = () => {
                                         Forgot password?
                                     </button>
                                 </div>
-                                <button type="submit" style={{
-                                    background: '#22c1e6',
-                                    color: 'white',
-                                    padding: '0.75rem',
-                                    borderRadius: '0.5rem',
-                                    fontWeight: '700',
-                                    border: 'none',
-                                    cursor: 'pointer',
-                                    fontSize: '1rem',
-                                    marginTop: '0.5rem'
-                                }}>
-                                    Sign In &gt;
+                                <button 
+                                    type="submit" 
+                                    disabled={isLoading}
+                                    style={{
+                                        background: isLoading ? '#94a3b8' : '#22c1e6',
+                                        color: 'white',
+                                        padding: '0.75rem',
+                                        borderRadius: '0.5rem',
+                                        fontWeight: '700',
+                                        border: 'none',
+                                        cursor: isLoading ? 'not-allowed' : 'pointer',
+                                        fontSize: '1rem',
+                                        marginTop: '0.5rem'
+                                    }}
+                                >
+                                    {isLoading ? 'Signing in...' : 'Sign In >'}
                                 </button>
                             </form>
                         )}
@@ -182,15 +293,22 @@ const AuthSection = () => {
 
                         {/* Register Form */}
                         {activeTab === 'register' && (
-                            <form style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                            <form onSubmit={handleRegisterSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                                 {/* Phone Number */}
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                     <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#120D20' }}>Phone Number</label>
                                     <div style={{ position: 'relative' }}>
                                         <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#64748b' }}>📞</span>
-                                        <input type="tel" placeholder="0700000000" style={{
-                                            width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', borderRadius: '0.5rem', border: '1px solid #cbd5e1', background: '#eff3c1', outline: 'none'
-                                        }} />
+                                        <input 
+                                            type="tel" 
+                                            placeholder="0700000000" 
+                                            value={registerData.phone_no}
+                                            onChange={(e) => setRegisterData({...registerData, phone_no: e.target.value})}
+                                            required
+                                            style={{
+                                                width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', borderRadius: '0.5rem', border: '1px solid #cbd5e1', background: '#eff3c1', outline: 'none'
+                                            }} 
+                                        />
                                     </div>
                                 </div>
 
@@ -199,9 +317,16 @@ const AuthSection = () => {
                                     <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#120D20' }}>Email Address</label>
                                     <div style={{ position: 'relative' }}>
                                         <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#64748b' }}>✉️</span>
-                                        <input type="email" placeholder="your@email.com" style={{
-                                            width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', borderRadius: '0.5rem', border: '1px solid #cbd5e1', background: '#eff3c1', outline: 'none'
-                                        }} />
+                                        <input 
+                                            type="email" 
+                                            placeholder="your@email.com" 
+                                            value={registerData.email}
+                                            onChange={(e) => setRegisterData({...registerData, email: e.target.value})}
+                                            required
+                                            style={{
+                                                width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', borderRadius: '0.5rem', border: '1px solid #cbd5e1', background: '#eff3c1', outline: 'none'
+                                            }} 
+                                        />
                                     </div>
                                 </div>
 
@@ -210,9 +335,15 @@ const AuthSection = () => {
                                     <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#120D20' }}>Date Of Birth</label>
                                     <div style={{ position: 'relative' }}>
                                         <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#64748b' }}>📅</span>
-                                        <input type="date" style={{
-                                            width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', borderRadius: '0.5rem', border: '1px solid #cbd5e1', background: '#eff3c1', outline: 'none', color: '#64748b'
-                                        }} />
+                                        <input 
+                                            type="date" 
+                                            value={registerData.dob}
+                                            onChange={(e) => setRegisterData({...registerData, dob: e.target.value})}
+                                            required
+                                            style={{
+                                                width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', borderRadius: '0.5rem', border: '1px solid #cbd5e1', background: '#eff3c1', outline: 'none', color: '#64748b'
+                                            }} 
+                                        />
                                     </div>
                                 </div>
 
@@ -221,9 +352,16 @@ const AuthSection = () => {
                                     <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#120D20' }}>Area of Residence</label>
                                     <div style={{ position: 'relative' }}>
                                         <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#64748b' }}>📍</span>
-                                        <input type="text" placeholder="Enter your Area of Residence" style={{
-                                            width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', borderRadius: '0.5rem', border: '1px solid #cbd5e1', background: '#eff3c1', outline: 'none'
-                                        }} />
+                                        <input 
+                                            type="text" 
+                                            placeholder="Enter your Area of Residence" 
+                                            value={registerData.location}
+                                            onChange={(e) => setRegisterData({...registerData, location: e.target.value})}
+                                            required
+                                            style={{
+                                                width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', borderRadius: '0.5rem', border: '1px solid #cbd5e1', background: '#eff3c1', outline: 'none'
+                                            }} 
+                                        />
                                     </div>
                                 </div>
 
@@ -232,14 +370,19 @@ const AuthSection = () => {
                                     <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#120D20' }}>Employment Status</label>
                                     <div style={{ position: 'relative' }}>
                                         <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#64748b' }}>💼</span>
-                                        <select style={{
-                                            width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', borderRadius: '0.5rem', border: '1px solid #cbd5e1', background: '#eff3c1', outline: 'none', appearance: 'none', color: '#64748b'
-                                        }}>
-                                            <option>Select Employment Status</option>
-                                            <option>Employed</option>
-                                            <option>Self-Employed</option>
-                                            <option>Student</option>
-                                            <option>Unemployed</option>
+                                        <select 
+                                            value={registerData.emp_status}
+                                            onChange={(e) => setRegisterData({...registerData, emp_status: e.target.value})}
+                                            required
+                                            style={{
+                                                width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', borderRadius: '0.5rem', border: '1px solid #cbd5e1', background: '#eff3c1', outline: 'none', appearance: 'none', color: '#64748b'
+                                            }}
+                                        >
+                                            <option value="">Select Employment Status</option>
+                                            <option value="Employed">Employed</option>
+                                            <option value="Self-Employed">Self-Employed</option>
+                                            <option value="Student">Student</option>
+                                            <option value="Unemployed">Unemployed</option>
                                         </select>
                                         <span style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#64748b' }}>▼</span>
                                     </div>
@@ -250,9 +393,16 @@ const AuthSection = () => {
                                     <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#120D20' }}>Password</label>
                                     <div style={{ position: 'relative' }}>
                                         <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#64748b' }}>🔒</span>
-                                        <input type="password" placeholder="........" style={{
-                                            width: '100%', padding: '0.75rem 2.5rem 0.75rem 2.5rem', borderRadius: '0.5rem', border: '1px solid #cbd5e1', background: '#eff3c1', outline: 'none'
-                                        }} />
+                                        <input 
+                                            type="password" 
+                                            placeholder="........" 
+                                            value={registerData.password}
+                                            onChange={(e) => setRegisterData({...registerData, password: e.target.value})}
+                                            required
+                                            style={{
+                                                width: '100%', padding: '0.75rem 2.5rem 0.75rem 2.5rem', borderRadius: '0.5rem', border: '1px solid #cbd5e1', background: '#eff3c1', outline: 'none'
+                                            }} 
+                                        />
                                         <span style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}>👁️</span>
                                     </div>
                                 </div>
@@ -262,29 +412,40 @@ const AuthSection = () => {
                                     <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#120D20' }}>Confirm Password</label>
                                     <div style={{ position: 'relative' }}>
                                         <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#64748b' }}>🔒</span>
-                                        <input type="password" placeholder="........" style={{
-                                            width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', borderRadius: '0.5rem', border: '1px solid #cbd5e1', background: '#eff3c1', outline: 'none'
-                                        }} />
+                                        <input 
+                                            type="password" 
+                                            placeholder="........" 
+                                            value={registerData.confirmPassword}
+                                            onChange={(e) => setRegisterData({...registerData, confirmPassword: e.target.value})}
+                                            required
+                                            style={{
+                                                width: '100%', padding: '0.75rem 0.75rem 0.75rem 2.5rem', borderRadius: '0.5rem', border: '1px solid #cbd5e1', background: '#eff3c1', outline: 'none'
+                                            }} 
+                                        />
                                     </div>
                                 </div>
 
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', color: '#120D20' }}>
-                                    <input type="checkbox" id="terms" style={{ accentColor: '#22c1e6' }} />
+                                    <input type="checkbox" id="terms" required style={{ accentColor: '#22c1e6' }} />
                                     <label htmlFor="terms">I agree to <span style={{ fontWeight: '600' }}>privacy policy & terms</span></label>
                                 </div>
 
-                                <button type="submit" style={{
-                                    background: '#22c1e6',
-                                    color: 'white',
-                                    padding: '0.75rem',
-                                    borderRadius: '0.5rem',
-                                    fontWeight: '700',
-                                    border: 'none',
-                                    cursor: 'pointer',
-                                    fontSize: '1rem',
-                                    marginTop: '0.5rem'
-                                }}>
-                                    Create Account &gt;
+                                <button 
+                                    type="submit" 
+                                    disabled={isLoading}
+                                    style={{
+                                        background: isLoading ? '#94a3b8' : '#22c1e6',
+                                        color: 'white',
+                                        padding: '0.75rem',
+                                        borderRadius: '0.5rem',
+                                        fontWeight: '700',
+                                        border: 'none',
+                                        cursor: isLoading ? 'not-allowed' : 'pointer',
+                                        fontSize: '1rem',
+                                        marginTop: '0.5rem'
+                                    }}
+                                >
+                                    {isLoading ? 'Creating Account...' : 'Create Account >'}
                                 </button>
                             </form>
                         )}
