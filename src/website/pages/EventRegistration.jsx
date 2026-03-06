@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-const API_URL = 'http://jesusenthroned_net.local/api';
+const API_URL = 'https://jen.royalsoftwares.co.ke/api';
 
 const EventRegistration = () => {
     const { eventId } = useParams();
