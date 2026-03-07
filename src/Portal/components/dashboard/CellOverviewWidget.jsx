@@ -1,10 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import api from '../../../services/api';
+import DashboardCard from './DashboardCard';
+import { ThemeContext } from '../../../context/ThemeContext';
 
 const CellOverviewWidget = () => {
     const [cellData, setCellData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { theme } = useContext(ThemeContext);
+    const isLight = theme === 'light';
+
+    // Theme colors
+    const colors = {
+        text: isLight ? '#1e293b' : '#ffffff',
+        textMuted: isLight ? '#64748b' : 'rgba(255,255,255,0.5)',
+        surface: isLight ? '#f8fafc' : 'rgba(255,255,255,0.05)',
+        surfaceAlt: isLight ? '#f1f5f9' : 'rgba(255,255,255,0.08)',
+        border: isLight ? '#e2e8f0' : 'rgba(255,255,255,0.1)',
+        accent: '#5d87ff',
+        accentBg: isLight ? '#eef2ff' : 'rgba(93, 135, 255, 0.15)'
+    };
 
     useEffect(() => {
         const fetchCellData = async () => {
@@ -26,40 +41,50 @@ const CellOverviewWidget = () => {
 
     if (loading) {
         return (
-            <div style={{
-                background: 'var(--surface-1)',
-                border: '1px solid var(--border-color)',
-                borderRadius: '1rem',
-                padding: '1.5rem',
-                height: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-            }}>
-                <div style={{ color: 'var(--text-muted)' }}>Loading...</div>
-            </div>
+            <DashboardCard title="My Cell Group">
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '3rem 0',
+                    color: colors.textMuted
+                }}>
+                    Loading...
+                </div>
+            </DashboardCard>
         );
     }
 
     if (!cellData?.assigned) {
         return (
-            <div style={{
-                background: 'var(--surface-1)',
-                border: '1px solid var(--border-color)',
-                borderRadius: '1rem',
-                padding: '1.5rem',
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center'
-            }}>
-                <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🏠</div>
-                <div style={{ color: 'var(--text-color)', fontWeight: '600', marginBottom: '0.5rem' }}>No Cell Assigned</div>
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textAlign: 'center' }}>
-                    You haven't been assigned to a cell group yet.
+            <DashboardCard title="My Cell Group">
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '2rem 0',
+                    textAlign: 'center'
+                }}>
+                    <div style={{
+                        width: '64px',
+                        height: '64px',
+                        background: colors.surfaceAlt,
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '1.5rem',
+                        marginBottom: '1rem'
+                    }}>
+                        🏠
+                    </div>
+                    <div style={{ color: colors.text, fontWeight: '600', marginBottom: '0.5rem' }}>No Cell Assigned</div>
+                    <div style={{ color: colors.textMuted, fontSize: '0.85rem' }}>
+                        You haven't been assigned to a cell group yet.
+                    </div>
                 </div>
-            </div>
+            </DashboardCard>
         );
     }
 
@@ -68,49 +93,48 @@ const CellOverviewWidget = () => {
     const memberCount = cellData.member_count || members.length;
 
     return (
-        <div style={{
-            background: 'var(--surface-1)',
-            border: '1px solid var(--border-color)',
-            borderRadius: '1rem',
-            padding: '1.5rem',
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column'
-        }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                <h3 style={{ color: 'var(--primary)', fontSize: '1.1rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                    🏠 My Cell Group
-                </h3>
-                <button style={{ background: 'rgba(34, 193, 230, 0.1)', color: 'var(--primary)', border: 'none', borderRadius: '0.5rem', padding: '0.25rem 0.75rem', fontSize: '0.8rem', cursor: 'pointer' }}>
+        <DashboardCard
+            title="My Cell Group"
+            headerAction={
+                <button style={{
+                    background: colors.accentBg,
+                    color: colors.accent,
+                    border: 'none',
+                    borderRadius: '0.375rem',
+                    padding: '0.375rem 0.75rem',
+                    fontSize: '0.8rem',
+                    fontWeight: '500',
+                    cursor: 'pointer'
+                }}>
                     View Details
                 </button>
-            </div>
-
+            }
+        >
             <div style={{ marginBottom: '1.5rem' }}>
-                <h2 style={{ color: 'var(--text-color)', fontSize: '1.75rem', fontWeight: '800', marginBottom: '0.5rem' }}>
+                <h2 style={{ color: colors.text, fontSize: '1.5rem', fontWeight: '700', marginBottom: '0.5rem' }}>
                     {cell?.name || 'My Cell'}
                 </h2>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: colors.textMuted, fontSize: '0.9rem' }}>
                     <span>Leader:</span>
-                    <span style={{ color: 'var(--text-color)', fontWeight: '600' }}>
+                    <span style={{ color: colors.text, fontWeight: '600' }}>
                         {cell?.leader_name || 'Not assigned'}
                     </span>
                 </div>
                 {cell?.location && (
-                    <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.25rem' }}>
+                    <div style={{ color: colors.textMuted, fontSize: '0.85rem', marginTop: '0.25rem' }}>
                         📍 {cell.location}
                     </div>
                 )}
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
-                <div style={{ background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '0.75rem' }}>
-                    <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem', marginBottom: '0.25rem' }}>Members</div>
-                    <div style={{ color: 'var(--text-color)', fontSize: '1.25rem', fontWeight: '700' }}>{memberCount}</div>
+                <div style={{ background: colors.surface, padding: '1rem', borderRadius: '0.5rem' }}>
+                    <div style={{ color: colors.textMuted, fontSize: '0.75rem', marginBottom: '0.25rem' }}>Members</div>
+                    <div style={{ color: colors.text, fontSize: '1.25rem', fontWeight: '700' }}>{memberCount}</div>
                 </div>
-                <div style={{ background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '0.75rem' }}>
-                    <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem', marginBottom: '0.25rem' }}>Meeting Day</div>
-                    <div style={{ color: 'var(--primary)', fontSize: '1.1rem', fontWeight: '700' }}>
+                <div style={{ background: colors.surface, padding: '1rem', borderRadius: '0.5rem' }}>
+                    <div style={{ color: colors.textMuted, fontSize: '0.75rem', marginBottom: '0.25rem' }}>Meeting Day</div>
+                    <div style={{ color: colors.accent, fontSize: '1.1rem', fontWeight: '700' }}>
                         {cell?.meeting_day || 'TBD'}
                     </div>
                 </div>
@@ -118,40 +142,41 @@ const CellOverviewWidget = () => {
 
             {/* Members List */}
             {members.length > 0 && (
-                <div style={{ marginTop: 'auto' }}>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+                <div>
+                    <div style={{ fontSize: '0.75rem', color: colors.textMuted, textTransform: 'uppercase', fontWeight: '600', marginBottom: '0.75rem' }}>
                         Cell Members
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '150px', overflowY: 'auto' }}>
                         {members.slice(0, 5).map((member, i) => (
-                            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem' }}>
+                            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.85rem' }}>
                                 <div style={{
-                                    width: '24px',
-                                    height: '24px',
-                                    background: 'var(--border-color)',
+                                    width: '32px',
+                                    height: '32px',
+                                    background: colors.accentBg,
                                     borderRadius: '50%',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    fontSize: '0.7rem',
-                                    color: 'var(--text-color)'
+                                    fontSize: '0.8rem',
+                                    fontWeight: '600',
+                                    color: colors.accent
                                 }}>
                                     {member.first_name?.charAt(0) || '?'}
                                 </div>
-                                <span style={{ color: 'var(--text-color)' }}>
+                                <span style={{ color: colors.text }}>
                                     {member.first_name} {member.last_name}
                                 </span>
                             </div>
                         ))}
                         {members.length > 5 && (
-                            <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>
+                            <div style={{ color: colors.textMuted, fontSize: '0.75rem' }}>
                                 +{members.length - 5} more
                             </div>
                         )}
                     </div>
                 </div>
             )}
-        </div>
+        </DashboardCard>
     );
 };
 

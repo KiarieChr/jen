@@ -105,6 +105,20 @@ const GivingOptions = () => {
                     </GivingCard>
                 </div>
             </div>
+
+            <style>{`
+                @media (max-width: 768px) {
+                    section {
+                        padding: 3rem 0 4rem !important;
+                    }
+                    div[style*="padding: 2.5rem"] {
+                        padding: 1.5rem !important;
+                    }
+                    h2 {
+                        fontSize: 1.75rem !important;
+                    }
+                }
+            `}</style>
         </section>
     );
 };

@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import GreetingCard from '../components/dashboard/GreetingCard';
 import StatsGrid from '../components/dashboard/StatsGrid';
 import DashboardTabs from '../components/dashboard/DashboardTabs';
+import ProfilePrompt from '../components/dashboard/ProfilePrompt';
 
 // Widgets
-import CalendarWidget from '../components/dashboard/CalendarWidget';
 import CellOverviewWidget from '../components/dashboard/CellOverviewWidget';
 import AttendanceWidget from '../components/dashboard/AttendanceWidget';
 import PledgesWidget from '../components/dashboard/PledgesWidget';
@@ -27,123 +27,80 @@ const Dashboard = () => {
     const [activeTab, setActiveTab] = useState('dashboard');
 
     return (
-        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-            <GreetingCard />
-            <StatsGrid />
+        <div className="dashboard-content-wrapper">
+            {/* Show profile prompt, greeting, and stats only on Dashboard tab OR on desktop */}
+            <div className={`dashboard-top-section ${activeTab !== 'dashboard' ? 'mobile-hidden' : ''}`}>
+                <ProfilePrompt />
+                <GreetingCard />
+                <StatsGrid />
+            </div>
             <DashboardTabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
             {activeTab === 'dashboard' ? (
                 <div className="dashboard-grid">
-                    {/* Row 1: Trends & Health */}
-                    <div style={{ gridArea: 'trend' }}>
-                        <AttendanceTrendChart />
-                    </div>
-                    <div style={{ gridArea: 'health' }}>
-                        <ParticipationHealthChart />
-                    </div>
-
-                    {/* Row 2: Breakdown, Giving, Engagement */}
-                    <div style={{ gridArea: 'breakdown' }}>
-                        <MonthlyAttendanceChart />
-                    </div>
-                    <div style={{ gridArea: 'giving' }}>
-                        <GivingProgressChart />
-                    </div>
-                    <div style={{ gridArea: 'cellPie' }}>
-                        <CellEngagementChart />
+                    {/* Primary Row: Trends & Health */}
+                    <div className="horizontal-widget-row">
+                        <div className="grid-item-trend">
+                            <AttendanceTrendChart />
+                        </div>
+                        <div className="grid-item-health">
+                            <ParticipationHealthChart />
+                        </div>
                     </div>
 
-                    {/* Row 3: Quick Actions */}
-                    <div style={{ gridArea: 'actions' }}>
-                        <QuickActionsWidget />
+                    {/* Secondary Row: Insights & Recent Attendance */}
+                    <div className="horizontal-widget-row">
+                        <div className="grid-item-insights">
+                            <SmartInsightsWidget />
+                        </div>
+                        <div className="grid-item-recent">
+                            <AttendanceWidget />
+                        </div>
                     </div>
 
-                    {/* Row 4: Lists & Details */}
-                    <div style={{ gridArea: 'recent' }}>
-                        <AttendanceWidget />
+                    {/* Tertiary Row: Cell Overview */}
+                    <div className="horizontal-widget-row">
+                        <div className="grid-item-cell">
+                            <CellOverviewWidget />
+                        </div>
                     </div>
-                    <div style={{ gridArea: 'insights' }}>
-                        <SmartInsightsWidget />
-                    </div>
-                    <div style={{ gridArea: 'cellGroup' }}>
-                        <CellOverviewWidget />
-                    </div>
-                </div>
-            ) : activeTab === 'calendar' ? (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem' }}>
-                    <CalendarWidget />
-                    <UpcomingEventsList />
                 </div>
             ) : activeTab === 'cell' ? (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
-                    <div style={{ flex: 2, minWidth: '350px' }}>
+                <div className="cell-tab-grid">
+                    <div className="grid-item-chart">
                         <CellEngagementChart />
                     </div>
-                    <div style={{ flex: 1, minWidth: '300px' }}>
+                    <div className="grid-item-overview">
                         <CellOverviewWidget />
                     </div>
-                    <style>{`
-                        @media (min-width: 1024px) {
-                            div[style*="grid-template-columns"] {
-                                grid-template-columns: 2fr 1fr !important;
-                            }
-                        }
-                     `}</style>
                 </div>
-            ) : activeTab === 'attendance' ? (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem' }}>
-                    <AttendanceWidget />
-                </div>
-            ) : activeTab === 'pledges' ? (
-                <div className="pledges-grid">
-                    <div style={{ gridArea: 'tier' }}>
+            ) : activeTab === 'partnership' ? (
+                <div className="partnership-grid">
+                    <div className="grid-item-tier">
                         <PartnershipTierWidget />
                     </div>
-                    <div style={{ gridArea: 'graph' }}>
+                    <div className="grid-item-graph">
                         <GivingProgressChart />
                     </div>
-                    <div style={{ gridArea: 'list' }}>
+                    <div className="grid-item-list">
                         <ContributionHistoryWidget />
                     </div>
-                    <div style={{ gridArea: 'pledge' }}>
+                    <div className="grid-item-pledge">
                         <PledgesWidget />
                     </div>
-                    <style>{`
-                        .pledges-grid {
-                            display: grid;
-                            gap: 1.5rem;
-                            grid-template-columns: 1fr;
-                            grid-template-areas: "tier" "graph" "list" "pledge";
-                        }
-                        @media (min-width: 1024px) {
-                            .pledges-grid {
-                                grid-template-columns: 1fr 2fr;
-                                grid-template-areas: 
-                                    "tier graph"
-                                    "pledge list";
-                            }
-                        }
-                    `}</style>
                 </div>
             ) : activeTab === 'birthday' ? (
                 <div style={{ maxWidth: '800px', margin: '0 auto' }}>
                     <BirthdayCard />
                 </div>
             ) : activeTab === 'upcoming' ? (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
-                    <div style={{ flex: 1 }}>
+                <div className="upcoming-grid">
+                    <div>
                         <BirthdaysWidget />
                     </div>
-                    <div style={{ flex: 1 }}>
+                    <div>
                         <UpcomingEventsList />
                     </div>
-                    <style>{`
-                        @media (min-width: 1024px) {
-                            div[style*="grid-template-columns"] {
-                                grid-template-columns: 1fr 1fr !important;
-                            }
-                        }
-                     `}</style>
                 </div>
             ) : (
                 <div style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-muted)', background: 'var(--surface-1)', borderRadius: '1rem' }}>
@@ -153,20 +110,112 @@ const Dashboard = () => {
             )}
 
             <style>{`
+                .dashboard-content-wrapper {
+                    max-width: 1400px;
+                    margin: 0 auto;
+                    padding-bottom: 2rem;
+                }
+
+                @media (max-width: 640px) {
+                    .dashboard-content-wrapper {
+                        padding-bottom: 80px;
+                    }
+                    .mobile-hidden {
+                        display: none !important;
+                    }
+                }
+
                 .dashboard-grid {
-                    display: grid;
+                    display: flex;
+                    flex-direction: column;
                     gap: 1.5rem;
-                    grid-template-columns: 1fr;
+                }
+
+                .horizontal-widget-row {
+                    display: flex;
+                    gap: 1.25rem;
+                    overflow-x: auto;
+                    padding: 0.25rem 0.25rem 1rem;
+                    margin: -0.25rem -0.25rem 0.5rem;
+                    scrollbar-width: none;
+                    scroll-snap-type: x mandatory;
+                    -webkit-overflow-scrolling: touch;
+                }
+                .horizontal-widget-row::-webkit-scrollbar { display: none; }
+                
+                .horizontal-widget-row > div {
+                    flex: 0 0 280px;
+                    scroll-snap-align: start;
                 }
 
                 @media (min-width: 1024px) {
                     .dashboard-grid {
+                        display: grid;
                         grid-template-columns: repeat(3, 1fr);
                         grid-template-areas: 
                             "trend trend health"
-                            "breakdown giving cellPie"
-                            "actions actions actions" 
-                            "recent insights cellGroup";
+                            "recent insights cell";
+                        gap: 1.5rem;
+                    }
+                    .horizontal-widget-row {
+                        display: contents !important;
+                    }
+                    .grid-item-trend { grid-area: trend; }
+                    .grid-item-health { grid-area: health; }
+                    .grid-item-insights { grid-area: insights; }
+                    .grid-item-recent { grid-area: recent; }
+                    .grid-item-cell { grid-area: cell; }
+                }
+
+                /* Cell Tab Grid */
+                .cell-tab-grid {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1.5rem;
+                }
+
+                @media (min-width: 1024px) {
+                    .cell-tab-grid {
+                        display: grid;
+                        grid-template-columns: 2fr 1fr;
+                        grid-template-areas: "chart overview";
+                    }
+                    .cell-tab-grid .grid-item-chart { grid-area: chart; }
+                    .cell-tab-grid .grid-item-overview { grid-area: overview; }
+                }
+
+                /* Partnership Grid */
+                .partnership-grid {
+                    display: grid;
+                    gap: 1.5rem;
+                    grid-template-columns: 1fr;
+                    grid-template-areas: "tier" "graph" "list" "pledge";
+                }
+                
+                @media (min-width: 1024px) {
+                    .partnership-grid {
+                        grid-template-columns: 1fr 2fr;
+                        grid-template-areas: 
+                            "tier graph"
+                            "pledge list";
+                    }
+                }
+
+                .partnership-grid .grid-item-tier { grid-area: tier; }
+                .partnership-grid .grid-item-graph { grid-area: graph; }
+                .partnership-grid .grid-item-list { grid-area: list; }
+                .partnership-grid .grid-item-pledge { grid-area: pledge; }
+
+                /* Upcoming Birthdays Grid */
+                .upcoming-grid {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    gap: 1.5rem;
+                }
+
+                @media (min-width: 1024px) {
+                    .upcoming-grid {
+                        grid-template-columns: 1fr 1fr;
                     }
                 }
             `}</style>

@@ -87,7 +87,7 @@ const ContactFormSection = () => {
                         </h3>
 
                         <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                            <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                     <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#1e293b' }}>Full Name *</label>
                                     <input type="text" placeholder="Your name" style={{
@@ -102,7 +102,7 @@ const ContactFormSection = () => {
                                 </div>
                             </div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                            <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                     <label style={{ fontSize: '0.9rem', fontWeight: '600', color: '#1e293b' }}>Phone</label>
                                     <input type="text" placeholder="+254 700 000 000" style={{
@@ -135,6 +135,23 @@ const ContactFormSection = () => {
                     </div>
                 </div>
             </div>
+
+            <style>{`
+                @media (max-width: 768px) {
+                    section {
+                        padding: 3rem 0 4rem !important;
+                    }
+                    .form-grid {
+                        grid-template-columns: 1fr !important;
+                    }
+                    div[style*="padding: 3rem"] {
+                        padding: 1.5rem !important;
+                    }
+                    h2 {
+                        marginBottom: 2rem !important;
+                    }
+                }
+            `}</style>
         </section>
     );
 };

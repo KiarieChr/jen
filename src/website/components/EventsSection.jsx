@@ -66,7 +66,7 @@ const EventsSection = () => {
                     </p>
                 </div>
 
-                <div style={{
+                <div className="event-card" style={{
                     background: 'white',
                     borderRadius: '2rem',
                     overflow: 'hidden',
@@ -75,42 +75,44 @@ const EventsSection = () => {
                     margin: '0 auto',
                     boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
                 }}>
-                    <div style={{ flex: '1', minHeight: '400px' }}>
+                    <div className="event-image" style={{ flex: '1', minHeight: '300px' }}>
                         <img
                             src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069&auto=format&fit=crop"
                             alt="Event"
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                     </div>
-                    <div style={{ flex: '1', padding: '3rem', background: 'var(--primary)', color: 'white' }}>
+                    <div className="event-content" style={{ flex: '1', padding: '3rem', background: 'var(--primary)', color: 'white' }}>
                         <div style={{ marginBottom: '2rem' }}>
                             <p style={{ fontSize: '0.875rem', fontWeight: '600', marginBottom: '0.5rem', opacity: 0.9 }}>Starts in:</p>
-                            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                                 {[
                                     { label: 'D', value: timeLeft.days },
                                     { label: 'H', value: timeLeft.hours },
                                     { label: 'M', value: timeLeft.minutes },
                                     { label: 'S', value: timeLeft.seconds }
                                 ].map((item, i) => (
-                                    <span key={i} style={{
+                                    <span key={i} className="timer-box" style={{
                                         background: 'rgba(0,0,0,0.2)',
-                                        padding: '0.75rem 1.25rem',
+                                        padding: '0.75rem 1rem',
                                         borderRadius: '0.75rem',
                                         fontWeight: '800',
                                         fontFamily: 'monospace',
-                                        fontSize: '2.5rem',
-                                        lineHeight: 1
+                                        fontSize: '2rem',
+                                        lineHeight: 1,
+                                        minWidth: '70px',
+                                        textAlign: 'center'
                                     }}>
-                                        {item.value}<span style={{ fontSize: '1rem', verticalAlign: 'top', marginLeft: '0.2rem' }}>{item.label}</span>
+                                        {item.value}<span style={{ fontSize: '0.8rem', verticalAlign: 'top', marginLeft: '0.1rem' }}>{item.label}</span>
                                     </span>
                                 ))}
                             </div>
                         </div>
 
-                        <h3 style={{ fontSize: '2rem', fontWeight: '800', marginBottom: '1rem', lineHeight: 1.2 }}>
+                        <h3 className="event-title" style={{ fontSize: '2rem', fontWeight: '800', marginBottom: '1rem', lineHeight: 1.2 }}>
                             Marriage Enrichment Seminar
                         </h3>
-                        <p style={{ marginBottom: '2rem', opacity: 0.9, lineHeight: 1.6 }}>
+                        <p className="event-description" style={{ marginBottom: '2rem', opacity: 0.9, lineHeight: 1.6 }}>
                             Strengthen your marriage with biblical principles. Open to couples at all stages of marriage.
                         </p>
 
@@ -152,6 +154,29 @@ const EventsSection = () => {
                     </button>
                 </div>
             </div>
+
+            <style>{`
+                @media (max-width: 968px) {
+                    .event-card {
+                        flex-direction: column !important;
+                        border-radius: 1.5rem !important;
+                    }
+                    .event-image {
+                        minHeight: 250px !important;
+                    }
+                    .event-content {
+                        padding: 2rem !important;
+                    }
+                    h2 {
+                        fontSize: 2.25rem !important;
+                    }
+                    .timer-box {
+                        fontSize: 1.5rem !important;
+                        padding: 0.5rem 0.75rem !important;
+                        minWidth: 60px !important;
+                    }
+                }
+            `}</style>
         </section>
     );
 };

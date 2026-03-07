@@ -121,6 +121,18 @@ const SermonsSection = () => {
                     </Link>
                 </div>
             </div>
+
+            <style>{`
+                @media (max-width: 968px) {
+                    .section-padding {
+                        padding: 3rem 0 !important;
+                    }
+                    h2 {
+                        fontSize: 2.25rem !important;
+                        marginTop: 1rem !important;
+                    }
+                }
+            `}</style>
         </section>
     );
 };

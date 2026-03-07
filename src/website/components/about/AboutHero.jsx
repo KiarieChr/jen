@@ -41,6 +41,21 @@ const AboutHero = () => {
                     Jesus Enthroned Network is a global ministry committed to raising a generation that knows God intimately and walks in Kingdom authority.
                 </p>
             </div>
+
+            <style>{`
+                @media (max-width: 768px) {
+                    section {
+                        padding: 6rem 0 4rem !important;
+                    }
+                    h1 {
+                        fontSize: 2.5rem !important;
+                    }
+                    p {
+                        fontSize: 1.1rem !important;
+                        padding: 0 1rem;
+                    }
+                }
+            `}</style>
         </section>
     );
 };

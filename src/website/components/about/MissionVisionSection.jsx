@@ -68,6 +68,20 @@ const MissionVisionSection = () => {
                     </div>
                 </div>
             </div>
+
+            <style>{`
+                @media (max-width: 768px) {
+                    div[style*="grid-template-columns"] {
+                        grid-template-columns: 1fr !important;
+                    }
+                    div[style*="padding: 3rem"] {
+                        padding: 2rem 1.5rem !important;
+                    }
+                    h3 {
+                        fontSize: 1.75rem !important;
+                    }
+                }
+            `}</style>
         </section>
     );
 };

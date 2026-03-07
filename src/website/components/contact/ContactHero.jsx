@@ -38,9 +38,23 @@ const ContactHero = () => {
                     margin: '0 auto',
                     lineHeight: 1.6
                 }}>
-                    We'd love to hear from you. Reach out with any questions, prayer requests, or just to say hello.
                 </p>
             </div>
+
+            <style>{`
+                @media (max-width: 768px) {
+                    section {
+                        padding: 6rem 0 4rem !important;
+                    }
+                    h1 {
+                        fontSize: 2.5rem !important;
+                    }
+                    p {
+                        fontSize: 1rem !important;
+                        padding: 0 1rem;
+                    }
+                }
+            `}</style>
         </section>
     );
 };

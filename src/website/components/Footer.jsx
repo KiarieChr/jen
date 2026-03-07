@@ -104,29 +104,47 @@ const Footer = () => {
                     </div>
                 </div>
 
-                <div style={{
+                <div className="footer-bottom" style={{
                     borderTop: '1px solid var(--surface)',
                     paddingTop: '2rem',
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     flexWrap: 'wrap',
-                    gap: '1rem',
+                    gap: '1.5rem',
                     color: '#64748b',
                     fontSize: '0.875rem'
                 }}>
-                    <div>
+                    <div className="footer-copyright">
                         © 2026 Jesus Enthroned Network. All rights reserved.
                         <div style={{ marginTop: '0.25rem' }}>
                             Designed by Visuals Creatives • Powered by RoyalSoftwares
                         </div>
                     </div>
-                    <div style={{ display: 'flex', gap: '2rem' }}>
+                    <div className="footer-links" style={{ display: 'flex', gap: '2rem' }}>
                         <a href="#">Privacy Policy</a>
                         <a href="#">Terms of Service</a>
                     </div>
                 </div>
             </div>
+
+            <style>{`
+                @media (max-width: 768px) {
+                    footer {
+                        padding: 3rem 0 2rem !important;
+                    }
+                    .footer-bottom {
+                        flexDirection: column !important;
+                        textAlign: center !important;
+                    }
+                    .footer-links {
+                        justifyContent: center !important;
+                    }
+                    .container {
+                        padding: 0 1.5rem !important;
+                    }
+                }
+            `}</style>
         </footer>
     );
 };

@@ -19,6 +19,8 @@ import MembersDashboard from './Portal/pages/MembersDashboard';
 import UsersDashboard from './Portal/pages/UsersDashboard';
 import MyAccountDashboard from './Portal/pages/MyAccountDashboard';
 import MediaDashboard from './Portal/pages/MediaDashboard';
+import CalendarPage from './Portal/pages/CalendarPage';
+import WatchLive from './Portal/pages/WatchLive';
 // import PrayersDashboard from './Portal/pages/PrayersDashboard'; // Deprecated
 import FastingCommitment from './Portal/pages/prayers/FastingCommitment';
 import PropheticInstructions from './Portal/pages/prayers/PropheticInstructions';
@@ -57,6 +59,7 @@ function App() {
                 </ProtectedRoute>
               }>
                 <Route path="dashboard" element={<Dashboard />} />
+                <Route path="calendar" element={<CalendarPage />} />
                 <Route path="cells" element={<CellsDashboard />} />
                 <Route path="cells/assign" element={<AssignMembersDashboard />} />
                 <Route path="my-cell" element={<MyCellDashboard />} />
@@ -70,6 +73,7 @@ function App() {
                 <Route path="prayers/prophetic" element={<PropheticInstructions />} />
                 <Route path="prayers/communications" element={<PrayerCommunications />} />
                 <Route path="media" element={<MediaDashboard />} />
+                <Route path="media/live" element={<WatchLive />} />
                 <Route path="giving" element={<Placeholder title="Contributions" />} />
                 <Route path="users" element={<UsersDashboard />} />
                 <Route path="users/account" element={<MyAccountDashboard />} />

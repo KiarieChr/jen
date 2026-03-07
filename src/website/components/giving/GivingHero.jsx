@@ -70,6 +70,31 @@ const GivingHero = () => {
                     Your generous giving enables us to spread the Gospel, support missions, and transform lives across the globe. Together, we are building the Kingdom.
                 </p>
             </div>
+
+            <style>{`
+                @media (max-width: 768px) {
+                    section {
+                        padding: 6rem 0 4rem !important;
+                    }
+                    h1 {
+                        fontSize: 2.5rem !important;
+                    }
+                    p {
+                        fontSize: 1rem !important;
+                        padding: 0 1rem;
+                    }
+                    div[style*="width: 80px"] {
+                        width: 60px !important;
+                        height: 60px !important;
+                        marginBottom: 1.5rem !important;
+                    }
+                    div[style*="width: 50px"] {
+                        width: 40px !important;
+                        height: 40px !important;
+                        fontSize: 1.25rem !important;
+                    }
+                }
+            `}</style>
         </section>
     );
 };

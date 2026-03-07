@@ -87,6 +87,14 @@ const TeamSection = () => {
                     ))}
                 </div>
             </div>
+
+            <style>{`
+                @media (max-width: 768px) {
+                    h2 {
+                        fontSize: 2.25rem !important;
+                    }
+                }
+            `}</style>
         </section>
     );
 };

@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import api from '../../../services/api';
+import DashboardCard from './DashboardCard';
+import { ThemeContext } from '../../../context/ThemeContext';
 
 const AttendanceWidget = () => {
     const [attendanceData, setAttendanceData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { theme } = useContext(ThemeContext);
+    const isLight = theme === 'light';
 
     useEffect(() => {
         const fetchAttendance = async () => {
@@ -23,9 +27,15 @@ const AttendanceWidget = () => {
     }, []);
 
     const getStatusColor = (status) => {
-        if (status === 'Present' || status === 'present') return 'var(--primary)';
+        if (status === 'Present' || status === 'present') return '#10b981';
         if (status === 'Absent' || status === 'absent') return '#ef4444';
-        return '#a8a29e';
+        return '#94a3b8';
+    };
+
+    const getStatusBg = (status) => {
+        if (status === 'Present' || status === 'present') return '#dcfce7';
+        if (status === 'Absent' || status === 'absent') return '#fee2e2';
+        return '#f1f5f9';
     };
 
     // Transform API data or use fallback
@@ -43,33 +53,45 @@ const AttendanceWidget = () => {
 
     if (loading) {
         return (
-            <div style={{
-                background: 'var(--surface-1)',
-                border: '1px solid var(--border-color)',
-                borderRadius: '1rem',
-                padding: '1.5rem',
-                height: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-            }}>
-                <div style={{ color: 'var(--text-muted)' }}>Loading...</div>
-            </div>
+            <DashboardCard title="My Attendance">
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '3rem 0',
+                    color: isLight ? '#64748b' : 'rgba(255,255,255,0.5)'
+                }}>
+                    Loading...
+                </div>
+            </DashboardCard>
         );
     }
 
-    return (
-        <div style={{
-            background: 'var(--surface-1)',
-            border: '1px solid var(--border-color)',
-            borderRadius: '1rem',
-            padding: '1.5rem',
-            height: '100%'
-        }}>
-            <h3 style={{ color: 'var(--primary)', fontSize: '1.1rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1rem' }}>
-                ✅ My Attendance
-            </h3>
+    // Theme colors
+    const colors = {
+        text: isLight ? '#1e293b' : '#ffffff',
+        textMuted: isLight ? '#64748b' : 'rgba(255,255,255,0.5)',
+        surface: isLight ? '#f8fafc' : 'rgba(255,255,255,0.05)',
+        border: isLight ? '#e2e8f0' : 'rgba(255,255,255,0.1)'
+    };
 
+    return (
+        <DashboardCard
+            title="My Attendance"
+            headerAction={
+                <button style={{
+                    background: colors.surface,
+                    color: colors.textMuted,
+                    border: `1px solid ${colors.border}`,
+                    borderRadius: '0.375rem',
+                    padding: '0.375rem 0.75rem',
+                    fontSize: '0.8rem',
+                    cursor: 'pointer'
+                }}>
+                    View All
+                </button>
+            }
+        >
             {/* Stats Summary */}
             <div style={{
                 display: 'grid',
@@ -77,22 +99,22 @@ const AttendanceWidget = () => {
                 gap: '0.75rem',
                 marginBottom: '1.5rem'
             }}>
-                <div style={{ background: 'rgba(255,255,255,0.03)', padding: '0.75rem', borderRadius: '0.5rem', textAlign: 'center' }}>
-                    <div style={{ color: 'var(--text-color)', fontSize: '1.25rem', fontWeight: '700' }}>{stats.attended}</div>
-                    <div style={{ color: 'var(--text-muted)', fontSize: '0.7rem' }}>Attended</div>
+                <div style={{ background: colors.surface, padding: '1rem', borderRadius: '0.5rem', textAlign: 'center' }}>
+                    <div style={{ color: colors.text, fontSize: '1.5rem', fontWeight: '700' }}>{stats.attended}</div>
+                    <div style={{ color: colors.textMuted, fontSize: '0.75rem' }}>Attended</div>
                 </div>
-                <div style={{ background: 'rgba(255,255,255,0.03)', padding: '0.75rem', borderRadius: '0.5rem', textAlign: 'center' }}>
-                    <div style={{ color: 'var(--text-color)', fontSize: '1.25rem', fontWeight: '700' }}>{stats.total_meetings}</div>
-                    <div style={{ color: 'var(--text-muted)', fontSize: '0.7rem' }}>Total</div>
+                <div style={{ background: colors.surface, padding: '1rem', borderRadius: '0.5rem', textAlign: 'center' }}>
+                    <div style={{ color: colors.text, fontSize: '1.5rem', fontWeight: '700' }}>{stats.total_meetings}</div>
+                    <div style={{ color: colors.textMuted, fontSize: '0.75rem' }}>Total</div>
                 </div>
-                <div style={{ background: 'rgba(34, 193, 230, 0.1)', padding: '0.75rem', borderRadius: '0.5rem', textAlign: 'center' }}>
-                    <div style={{ color: 'var(--primary)', fontSize: '1.25rem', fontWeight: '700' }}>{stats.percentage}%</div>
-                    <div style={{ color: 'var(--text-muted)', fontSize: '0.7rem' }}>Rate</div>
+                <div style={{ background: '#dcfce7', padding: '1rem', borderRadius: '0.5rem', textAlign: 'center' }}>
+                    <div style={{ color: '#10b981', fontSize: '1.5rem', fontWeight: '700' }}>{stats.percentage}%</div>
+                    <div style={{ color: colors.textMuted, fontSize: '0.75rem' }}>Rate</div>
                 </div>
             </div>
 
             {/* Recent History */}
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+            <div style={{ fontSize: '0.75rem', color: colors.textMuted, textTransform: 'uppercase', fontWeight: '600', marginBottom: '0.75rem' }}>
                 Recent History
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -101,14 +123,14 @@ const AttendanceWidget = () => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
-                        padding: '0.75rem',
-                        background: 'rgba(255,255,255,0.03)',
-                        borderRadius: '0.75rem',
+                        padding: '0.75rem 1rem',
+                        background: colors.surface,
+                        borderRadius: '0.5rem',
                         borderLeft: `3px solid ${getStatusColor(record.status)}`
                     }}>
                         <div>
-                            <div style={{ color: 'var(--text-color)', fontSize: '0.9rem', fontWeight: '600' }}>{record.event}</div>
-                            <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>{record.date}</div>
+                            <div style={{ color: colors.text, fontSize: '0.9rem', fontWeight: '600' }}>{record.event}</div>
+                            <div style={{ color: colors.textMuted, fontSize: '0.75rem' }}>{record.date}</div>
                         </div>
                         <div style={{
                             display: 'flex',
@@ -116,27 +138,21 @@ const AttendanceWidget = () => {
                             gap: '0.4rem',
                             color: getStatusColor(record.status),
                             fontSize: '0.75rem',
-                            fontWeight: '700',
-                            background: `rgba(${record.status === 'Present' ? '34, 193, 230' : '239, 68, 68'}, 0.1)`,
-                            padding: '0.25rem 0.5rem',
-                            borderRadius: '0.5rem'
+                            fontWeight: '600',
+                            background: getStatusBg(record.status),
+                            padding: '0.25rem 0.75rem',
+                            borderRadius: '1rem'
                         }}>
-                            <span style={{ fontSize: '0.5rem' }}>●</span> {record.status}
+                            {record.status}
                         </div>
                     </div>
                 )) : (
-                    <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textAlign: 'center', padding: '1rem' }}>
+                    <div style={{ color: colors.textMuted, fontSize: '0.85rem', textAlign: 'center', padding: '2rem' }}>
                         No attendance records yet
                     </div>
                 )}
             </div>
-
-            <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-                <button style={{ background: 'transparent', color: 'var(--text-muted)', border: '1px solid var(--border-color)', borderRadius: '0.5rem', padding: '0.5rem 1rem', fontSize: '0.85rem', cursor: 'pointer', width: '100%' }}>
-                    View Full History
-                </button>
-            </div>
-        </div>
+        </DashboardCard>
     );
 };
 
