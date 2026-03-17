@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-const StatCard = ({ title, value, label, description, icon, color = 'var(--primary)' }) => (
+const API_URL = import.meta.env.VITE_API_URL || 'http://jesusenthroned_net.local/api/';
+
+const StatCard = ({ title, value, label, description, icon, color = 'var(--primary)', loading }) => (
     <div style={{
         background: 'var(--surface-1)',
         borderRadius: '1rem',
@@ -16,7 +18,9 @@ const StatCard = ({ title, value, label, description, icon, color = 'var(--prima
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
             <div>
                 <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontWeight: '600' }}>{title}</div>
-                <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--text-color)', margin: '0.2rem 0' }}>{value}</div>
+                <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--text-color)', margin: '0.2rem 0' }}>
+                    {loading ? '...' : value}
+                </div>
             </div>
             <div style={{
                 background: `rgba(${color === 'var(--primary)' ? '34, 193, 230' : (color === '#4ade80' ? '74, 222, 128' : (color === '#f59e0b' ? '245, 158, 11' : '168, 85, 247'))}, 0.1)`,
@@ -40,6 +44,35 @@ const StatCard = ({ title, value, label, description, icon, color = 'var(--prima
 );
 
 const MemberStatsCard = () => {
+    const [stats, setStats] = useState({
+        total_members: 0,
+        committed_members: 0,
+        linked_accounts: 0,
+        unlinked_accounts: 0
+    });
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                const response = await fetch(`${API_URL}get_member_stats.php`);
+                const data = await response.json();
+                if (data.success) {
+                    setStats(data.data);
+                }
+            } catch (err) {
+                console.error('Failed to load member stats:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchStats();
+    }, []);
+
+    const formatNumber = (num) => {
+        return num.toLocaleString();
+    };
+
     return (
         <div style={{
             display: 'grid',
@@ -49,35 +82,39 @@ const MemberStatsCard = () => {
         }}>
             <StatCard
                 title="Total Members"
-                value="2,450"
+                value={formatNumber(stats.total_members)}
                 label="Registered"
                 description="All registered members"
                 icon="👥"
                 color="#22c1e6"
+                loading={loading}
             />
             <StatCard
                 title="Committed Members"
-                value="850"
+                value={formatNumber(stats.committed_members)}
                 label="Committed"
                 description="Formal commitment made"
                 icon="🤝"
                 color="#4ade80"
+                loading={loading}
             />
             <StatCard
                 title="Linked Accounts"
-                value="720"
+                value={formatNumber(stats.linked_accounts)}
                 label="Linked"
                 description="Committed & ID linked"
                 icon="🔗"
                 color="#a855f7"
+                loading={loading}
             />
             <StatCard
                 title="Unlinked Accounts"
-                value="130"
+                value={formatNumber(stats.unlinked_accounts)}
                 label="Unlinked"
                 description="Action required"
                 icon="⚠️"
                 color="#f59e0b"
+                loading={loading}
             />
         </div>
     );

@@ -6,6 +6,7 @@ import Give from './website/pages/Give';
 import Sermons from './website/pages/Sermons';
 import Events from './website/pages/Events';
 import Contact from './website/pages/Contact';
+import Devotionals from './website/pages/Devotionals';
 import Portal from './Portal/pages/Portal';
 import PortalLayout from './Portal/layout/PortalLayout';
 import Dashboard from './Portal/pages/Dashboard';
@@ -20,6 +21,7 @@ import UsersDashboard from './Portal/pages/UsersDashboard';
 import MyAccountDashboard from './Portal/pages/MyAccountDashboard';
 import MediaDashboard from './Portal/pages/MediaDashboard';
 import CalendarPage from './Portal/pages/CalendarPage';
+import DevotionalsDashboard from './Portal/pages/DevotionalsDashboard';
 import WatchLive from './Portal/pages/WatchLive';
 // import PrayersDashboard from './Portal/pages/PrayersDashboard'; // Deprecated
 import FastingCommitment from './Portal/pages/prayers/FastingCommitment';
@@ -29,7 +31,9 @@ import { ThemeProvider } from './context/ThemeContext';
 import { EventProvider } from './context/EventContext';
 import { AuthProvider } from './context/AuthContext';
 import EventRegistration from './website/pages/EventRegistration';
+import MeetingAttendance from './website/pages/MeetingAttendance';
 import ProtectedRoute from './components/ProtectedRoute';
+import AddMemberPage from './website/pages/AddMember';
 
 // Placeholder Pages
 const Placeholder = ({ title }) => <h1 style={{ color: 'white' }}>{title}</h1>;
@@ -46,11 +50,14 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/sermons" element={<Sermons />} />
               <Route path="/events" element={<Events />} />
+              <Route path="/devotionals" element={<Devotionals />} />
               <Route path="/events/:eventId/register" element={<EventRegistration />} />
+              <Route path="/meetings/:meetingId/attend" element={<MeetingAttendance />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Portal />} />
               <Route path="/portal" element={<Portal />} />
               <Route path="/give" element={<Give />} />
+              <Route path="/add-member" element={<AddMemberPage />} />
 
               {/* Authenticated Portal Routes */}
               <Route path="/portal" element={
@@ -74,6 +81,7 @@ function App() {
                 <Route path="prayers/communications" element={<PrayerCommunications />} />
                 <Route path="media" element={<MediaDashboard />} />
                 <Route path="media/live" element={<WatchLive />} />
+                <Route path="devotionals" element={<DevotionalsDashboard />} />
                 <Route path="giving" element={<Placeholder title="Contributions" />} />
                 <Route path="users" element={<UsersDashboard />} />
                 <Route path="users/account" element={<MyAccountDashboard />} />

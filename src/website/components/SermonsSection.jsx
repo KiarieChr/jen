@@ -39,9 +39,11 @@ const SermonCard = ({ type, title, pastor, date, duration, image }) => (
     </div>
 );
 
-const SermonsSection = () => {
-    const sermons = [
+const SermonsSection = ({ sermons: propSermons, loading }) => {
+    // Default fallback sermons
+    const defaultSermons = [
         {
+            id: 1,
             type: 'video',
             title: 'Walking in Kingdom Authority',
             pastor: 'Pastor James Mwangi',
@@ -50,6 +52,7 @@ const SermonsSection = () => {
             image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop'
         },
         {
+            id: 2,
             type: 'video',
             title: 'The Power of Unity in Christ',
             pastor: 'Pastor Grace Wanjiku',
@@ -58,6 +61,7 @@ const SermonsSection = () => {
             image: 'https://images.unsplash.com/photo-1478147427282-58a87a120781?q=80&w=1000&auto=format&fit=crop'
         },
         {
+            id: 3,
             type: 'audio',
             title: 'Discovering Your Purpose',
             pastor: 'Pastor James Mwangi',
@@ -66,6 +70,8 @@ const SermonsSection = () => {
             image: 'https://images.unsplash.com/photo-1491841550275-ad7854e35ca6?q=80&w=1000&auto=format&fit=crop'
         }
     ];
+
+    const sermons = propSermons?.length > 0 ? propSermons : defaultSermons;
 
     return (
         <section className="section-padding" style={{ background: 'var(--secondary)' }}>

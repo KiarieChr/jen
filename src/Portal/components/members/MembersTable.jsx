@@ -1,16 +1,84 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://jesusenthroned_net.local/api/';
 
 const MembersTable = () => {
     const [activeTab, setActiveTab] = useState('regular'); // regular | committed
+    const [members, setMembers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [search, setSearch] = useState('');
+    const [pagination, setPagination] = useState({
+        page: 1,
+        limit: 20,
+        total: 0,
+        total_pages: 1
+    });
+    const [stats, setStats] = useState({ regular: 0, committed: 0 });
 
-    // Mock Data
-    const members = [
-        { id: 'MEM001', name: 'John Doe', phone: '+254 712 345 678', cell: 'Goshen Alpha', category: 'Member', status: 'Active', linked: false },
-        { id: 'MEM002', name: 'Jane Smith', phone: '+254 722 111 222', cell: 'Judah Beta', category: 'Leader', status: 'Active', linked: true },
-        { id: 'MEM003', name: 'Alice Johnson', phone: '+254 733 444 555', cell: 'None', category: 'Visitor', status: 'New', linked: false },
-        { id: 'MEM004', name: 'Bob Williams', phone: '+254 711 999 888', cell: 'Goshen Alpha', category: 'Member', status: 'Inactive', linked: true },
-        { id: 'MEM005', name: 'Charlie Brown', phone: '+254 700 000 000', cell: 'Zion', category: 'Member', status: 'Active', linked: true },
-    ];
+    useEffect(() => {
+        fetchMembers();
+    }, [activeTab, pagination.page, search]);
+
+    useEffect(() => {
+        fetchStats();
+    }, []);
+
+    const fetchStats = async () => {
+        try {
+            const response = await fetch(`${API_URL}get_member_stats.php`);
+            const data = await response.json();
+            if (data.success) {
+                setStats({
+                    regular: data.data.total_members,
+                    committed: data.data.committed_members
+                });
+            }
+        } catch (err) {
+            console.error('Failed to load stats:', err);
+        }
+    };
+
+    const fetchMembers = async () => {
+        setLoading(true);
+        try {
+            const params = new URLSearchParams({
+                type: activeTab,
+                page: pagination.page,
+                limit: pagination.limit,
+                search: search
+            });
+            const response = await fetch(`${API_URL}get_members.php?${params}`);
+            const data = await response.json();
+            if (data.success) {
+                setMembers(data.data);
+                setPagination(prev => ({
+                    ...prev,
+                    total: data.pagination.total,
+                    total_pages: data.pagination.total_pages
+                }));
+            }
+        } catch (err) {
+            console.error('Failed to load members:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSearch = (e) => {
+        setSearch(e.target.value);
+        setPagination(prev => ({ ...prev, page: 1 }));
+    };
+
+    const handleTabChange = (tab) => {
+        setActiveTab(tab);
+        setPagination(prev => ({ ...prev, page: 1 }));
+    };
+
+    const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= pagination.total_pages) {
+            setPagination(prev => ({ ...prev, page: newPage }));
+        }
+    };
 
     const ExportButton = ({ icon, label }) => (
         <button style={{
@@ -43,7 +111,7 @@ const MembersTable = () => {
                     {/* Tabs */}
                     <div style={{ display: 'flex', background: 'var(--border-color)', borderRadius: '0.5rem', padding: '0.25rem' }}>
                         <button
-                            onClick={() => setActiveTab('regular')}
+                            onClick={() => handleTabChange('regular')}
                             style={{
                                 background: activeTab === 'regular' ? 'var(--primary)' : 'transparent',
                                 color: activeTab === 'regular' ? 'var(--bg-color)' : 'var(--text-muted)',
@@ -56,10 +124,10 @@ const MembersTable = () => {
                                 transition: 'all 0.2s'
                             }}
                         >
-                            Regular Members <span style={{ fontSize: '0.75rem', opacity: 0.7, marginLeft: '4px' }}>(2.4k)</span>
+                            Regular Members <span style={{ fontSize: '0.75rem', opacity: 0.7, marginLeft: '4px' }}>({stats.regular.toLocaleString()})</span>
                         </button>
                         <button
-                            onClick={() => setActiveTab('committed')}
+                            onClick={() => handleTabChange('committed')}
                             style={{
                                 background: activeTab === 'committed' ? 'var(--primary)' : 'transparent',
                                 color: activeTab === 'committed' ? 'var(--bg-color)' : 'var(--text-muted)',
@@ -72,7 +140,7 @@ const MembersTable = () => {
                                 transition: 'all 0.2s'
                             }}
                         >
-                            Committed Members <span style={{ fontSize: '0.75rem', opacity: 0.7, marginLeft: '4px' }}>(850)</span>
+                            Committed Members <span style={{ fontSize: '0.75rem', opacity: 0.7, marginLeft: '4px' }}>({stats.committed.toLocaleString()})</span>
                         </button>
                     </div>
 
@@ -81,6 +149,8 @@ const MembersTable = () => {
                         <input
                             type="text"
                             placeholder="Search members..."
+                            value={search}
+                            onChange={handleSearch}
                             style={{
                                 background: 'var(--surface-2)',
                                 border: '1px solid var(--border-color)',
@@ -111,64 +181,122 @@ const MembersTable = () => {
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
                     <thead>
                         <tr style={{ color: 'var(--text-muted)', borderBottom: '1px solid var(--border-color)', background: 'var(--surface-2)' }}>
-                            <th style={{ textAlign: 'left', padding: '1rem' }}>Member ID</th>
+                            <th style={{ textAlign: 'left', padding: '1rem' }}>ID</th>
                             <th style={{ textAlign: 'left', padding: '1rem' }}>Full Name</th>
-                            <th style={{ textAlign: 'left', padding: '1rem' }}>Phone / Email</th>
-                            <th style={{ textAlign: 'left', padding: '1rem' }}>Cell Group</th>
-                            <th style={{ textAlign: 'left', padding: '1rem' }}>Category</th>
+                            <th style={{ textAlign: 'left', padding: '1rem' }}>Phone</th>
+                            <th style={{ textAlign: 'left', padding: '1rem' }}>Email</th>
+                            {activeTab === 'regular' && <th style={{ textAlign: 'left', padding: '1rem' }}>Invited By</th>}
+                            {activeTab === 'committed' && <th style={{ textAlign: 'left', padding: '1rem' }}>Residence</th>}
                             <th style={{ textAlign: 'left', padding: '1rem' }}>Status</th>
                             {activeTab === 'committed' && <th style={{ textAlign: 'center', padding: '1rem' }}>Linked</th>}
                             <th style={{ textAlign: 'right', padding: '1rem' }}>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {members.map(member => (
-                            <tr key={member.id} style={{ borderBottom: '1px solid var(--surface-2)', color: 'var(--text-color)' }}>
-                                <td style={{ padding: '1rem', fontFamily: 'monospace', color: 'var(--text-muted)' }}>{member.id}</td>
-                                <td style={{ padding: '1rem', fontWeight: '500', color: 'var(--text-color)' }}>{member.name}</td>
-                                <td style={{ padding: '1rem' }}>{member.phone}</td>
-                                <td style={{ padding: '1rem' }}>
-                                    {member.cell !== 'None' ? (
-                                        <span style={{ background: 'rgba(34, 193, 230, 0.1)', color: 'var(--primary)', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem' }}>{member.cell}</span>
-                                    ) : (
-                                        <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>-</span>
-                                    )}
-                                </td>
-                                <td style={{ padding: '1rem' }}>{member.category}</td>
-                                <td style={{ padding: '1rem' }}>
-                                    <span style={{
-                                        color: member.status === 'Active' ? '#4ade80' : (member.status === 'New' ? 'var(--primary)' : 'var(--text-muted)'),
-                                        fontSize: '0.85rem'
-                                    }}>
-                                        ● {member.status}
-                                    </span>
-                                </td>
-                                {activeTab === 'committed' && (
-                                    <td style={{ padding: '1rem', textAlign: 'center' }}>
-                                        {member.linked ? (
-                                            <span style={{ color: '#4ade80', fontSize: '1.2rem' }} title="Linked">✓</span>
-                                        ) : (
-                                            <span style={{ color: '#f59e0b', fontSize: '1.2rem' }} title="Unlinked">⚠️</span>
-                                        )}
-                                    </td>
-                                )}
-                                <td style={{ padding: '1rem', textAlign: 'right' }}>
-                                    <button style={{ background: 'transparent', border: '1px solid var(--border-color)', color: 'var(--primary)', borderRadius: '0.3rem', padding: '0.3rem 0.6rem', fontSize: '0.8rem', cursor: 'pointer' }}>View</button>
+                        {loading ? (
+                            <tr>
+                                <td colSpan={activeTab === 'committed' ? 8 : 7} style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                                    Loading...
                                 </td>
                             </tr>
-                        ))}
+                        ) : members.length === 0 ? (
+                            <tr>
+                                <td colSpan={activeTab === 'committed' ? 8 : 7} style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                                    No members found
+                                </td>
+                            </tr>
+                        ) : (
+                            members.map(member => (
+                                <tr key={member.id} style={{ borderBottom: '1px solid var(--surface-2)', color: 'var(--text-color)' }}>
+                                    <td style={{ padding: '1rem', fontFamily: 'monospace', color: 'var(--text-muted)' }}>{member.id}</td>
+                                    <td style={{ padding: '1rem', fontWeight: '500', color: 'var(--text-color)' }}>
+                                        {member.name}
+                                        {member.status === 'New' && (
+                                            <span style={{
+                                                background: 'rgba(245, 158, 11, 0.2)',
+                                                color: '#f59e0b',
+                                                padding: '0.1rem 0.4rem',
+                                                borderRadius: '4px',
+                                                fontSize: '0.7rem',
+                                                marginLeft: '0.5rem'
+                                            }}>New</span>
+                                        )}
+                                    </td>
+                                    <td style={{ padding: '1rem' }}>{member.phone}</td>
+                                    <td style={{ padding: '1rem' }}>{member.email}</td>
+                                    {activeTab === 'regular' && <td style={{ padding: '1rem' }}>{member.department || '-'}</td>}
+                                    {activeTab === 'committed' && <td style={{ padding: '1rem' }}>{member.residence || '-'}</td>}
+                                    <td style={{ padding: '1rem' }}>
+                                        <span style={{
+                                            color: member.status === 'Active' ? '#4ade80' : (member.status === 'New' ? 'var(--primary)' : 'var(--text-muted)'),
+                                            fontSize: '0.85rem'
+                                        }}>
+                                            ● {member.status || 'Active'}
+                                        </span>
+                                    </td>
+                                    {activeTab === 'committed' && (
+                                        <td style={{ padding: '1rem', textAlign: 'center' }}>
+                                            {member.linked ? (
+                                                <span style={{ color: '#4ade80', fontSize: '1.2rem' }} title={`Linked to ID: ${member.member_id}`}>✓</span>
+                                            ) : (
+                                                <span style={{ color: '#f59e0b', fontSize: '1.2rem' }} title="Not linked">⚠️</span>
+                                            )}
+                                        </td>
+                                    )}
+                                    <td style={{ padding: '1rem', textAlign: 'right' }}>
+                                        <button style={{ background: 'transparent', border: '1px solid var(--border-color)', color: 'var(--primary)', borderRadius: '0.3rem', padding: '0.3rem 0.6rem', fontSize: '0.8rem', cursor: 'pointer' }}>View</button>
+                                    </td>
+                                </tr>
+                            ))
+                        )}
                     </tbody>
                 </table>
             </div>
 
             {/* Pagination */}
             <div style={{ padding: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-                <div>Showing 1 to 5 of 2,450 entries</div>
+                <div>Showing {members.length > 0 ? ((pagination.page - 1) * pagination.limit + 1) : 0} to {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total.toLocaleString()} entries</div>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <button style={{ background: 'var(--border-color)', border: 'none', color: 'var(--text-color)', padding: '0.3rem 0.6rem', borderRadius: '0.3rem', cursor: 'pointer' }}>Previous</button>
-                    <button style={{ background: 'var(--primary)', border: 'none', color: 'var(--bg-color)', padding: '0.3rem 0.6rem', borderRadius: '0.3rem', cursor: 'pointer', fontWeight: 'bold' }}>1</button>
-                    <button style={{ background: 'var(--border-color)', border: 'none', color: 'var(--text-color)', padding: '0.3rem 0.6rem', borderRadius: '0.3rem', cursor: 'pointer' }}>2</button>
-                    <button style={{ background: 'var(--border-color)', border: 'none', color: 'var(--text-color)', padding: '0.3rem 0.6rem', borderRadius: '0.3rem', cursor: 'pointer' }}>Next</button>
+                    <button
+                        onClick={() => handlePageChange(pagination.page - 1)}
+                        disabled={pagination.page === 1}
+                        style={{ background: 'var(--border-color)', border: 'none', color: 'var(--text-color)', padding: '0.3rem 0.6rem', borderRadius: '0.3rem', cursor: pagination.page === 1 ? 'not-allowed' : 'pointer', opacity: pagination.page === 1 ? 0.5 : 1 }}>
+                        Previous
+                    </button>
+                    {Array.from({ length: Math.min(5, pagination.total_pages) }, (_, i) => {
+                        let pageNum;
+                        if (pagination.total_pages <= 5) {
+                            pageNum = i + 1;
+                        } else if (pagination.page <= 3) {
+                            pageNum = i + 1;
+                        } else if (pagination.page >= pagination.total_pages - 2) {
+                            pageNum = pagination.total_pages - 4 + i;
+                        } else {
+                            pageNum = pagination.page - 2 + i;
+                        }
+                        return (
+                            <button
+                                key={pageNum}
+                                onClick={() => handlePageChange(pageNum)}
+                                style={{
+                                    background: pagination.page === pageNum ? 'var(--primary)' : 'var(--border-color)',
+                                    border: 'none',
+                                    color: pagination.page === pageNum ? 'var(--bg-color)' : 'var(--text-color)',
+                                    padding: '0.3rem 0.6rem',
+                                    borderRadius: '0.3rem',
+                                    cursor: 'pointer',
+                                    fontWeight: pagination.page === pageNum ? 'bold' : 'normal'
+                                }}>
+                                {pageNum}
+                            </button>
+                        );
+                    })}
+                    <button
+                        onClick={() => handlePageChange(pagination.page + 1)}
+                        disabled={pagination.page === pagination.total_pages}
+                        style={{ background: 'var(--border-color)', border: 'none', color: 'var(--text-color)', padding: '0.3rem 0.6rem', borderRadius: '0.3rem', cursor: pagination.page === pagination.total_pages ? 'not-allowed' : 'pointer', opacity: pagination.page === pagination.total_pages ? 0.5 : 1 }}>
+                        Next
+                    </button>
                 </div>
             </div>
         </div>

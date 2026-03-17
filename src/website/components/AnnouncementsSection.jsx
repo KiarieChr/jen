@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const AnnouncementsSection = () => {
+const AnnouncementsSection = ({ announcements: propAnnouncements, calendarSchedule, loading }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [activeAnnouncement, setActiveAnnouncement] = useState(0);
 
@@ -21,16 +21,8 @@ const AnnouncementsSection = () => {
         return () => observer.disconnect();
     }, []);
 
-    // Auto-rotate announcements
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setActiveAnnouncement(prev => (prev + 1) % announcements.length);
-        }, 5000);
-        return () => clearInterval(interval);
-    }, []);
-
-    // Sample announcements - can be replaced with API
-    const announcements = [
+    // Fallback announcements if API data not available
+    const defaultAnnouncements = [
         {
             id: 1,
             type: 'urgent',
@@ -57,8 +49,8 @@ const AnnouncementsSection = () => {
         }
     ];
 
-    // Sample upcoming events - can be replaced with API
-    const upcomingEvents = [
+    // Fallback calendar schedule if API data not available
+    const defaultEvents = [
         {
             title: 'Sunday Service',
             date: 'Every Sunday',
@@ -88,6 +80,27 @@ const AnnouncementsSection = () => {
             color: '#f59e0b'
         }
     ];
+
+    // Use API data if available, otherwise use defaults
+    const announcements = propAnnouncements?.length > 0 ? propAnnouncements : defaultAnnouncements;
+    const upcomingEvents = calendarSchedule?.length > 0 
+        ? calendarSchedule.map(item => ({
+            title: item.title,
+            date: item.date,
+            time: item.time,
+            location: item.type || item.facilitator || 'TBA',
+            color: item.color
+        }))
+        : defaultEvents;
+
+    // Auto-rotate announcements
+    useEffect(() => {
+        if (announcements.length === 0) return;
+        const interval = setInterval(() => {
+            setActiveAnnouncement(prev => (prev + 1) % announcements.length);
+        }, 5000);
+        return () => clearInterval(interval);
+    }, [announcements.length]);
 
     const getTypeBadge = (type) => {
         switch (type) {

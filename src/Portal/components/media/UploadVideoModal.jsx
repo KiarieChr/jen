@@ -89,13 +89,14 @@ const UploadVideoModal = ({ onClose }) => {
             zIndex: 1100
         }}>
             <div style={{
-                background: 'var(--surface-1)',
+                background: 'var(--surface-1, #1A1625)',
                 padding: '2rem',
                 borderRadius: '1rem',
                 width: '100%',
                 maxWidth: '600px',
-                border: '1px solid var(--border-color)',
-                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+                border: '1px solid var(--border-color, rgba(255,255,255,0.1))',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+                color: 'var(--text-color, #f8fafc)'
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                     <h2 style={{ fontSize: '1.5rem', color: 'var(--primary)', margin: 0 }}>Add Video Content</h2>

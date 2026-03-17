@@ -138,14 +138,16 @@ export const CardDropdown = ({ value, options, onChange }) => {
     const isLight = theme === 'light';
 
     return (
-        <select
-            value={value}
-            onChange={e => onChange(e.target.value)}
-            className={`card-dropdown ${isLight ? 'light' : 'dark'}`}
-        >
-            {options.map(opt => (
-                <option key={opt.value} value={opt.value}>{opt.label}</option>
-            ))}
+        <>
+            <select
+                value={value}
+                onChange={e => onChange(e.target.value)}
+                className={`card-dropdown ${isLight ? 'light' : 'dark'}`}
+            >
+                {options.map(opt => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+            </select>
             <style>{`
                 .card-dropdown {
                     border-radius: 0.5rem;
@@ -178,7 +180,7 @@ export const CardDropdown = ({ value, options, onChange }) => {
                     box-shadow: 0 0 0 3px rgba(93, 135, 255, 0.1);
                 }
             `}</style>
-        </select>
+        </>
     );
 };
 

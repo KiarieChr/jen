@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-const EventsSection = () => {
+const EventsSection = ({ event, loading }) => {
     const [timeLeft, setTimeLeft] = useState({
         days: 0,
         hours: 0,
@@ -8,8 +9,20 @@ const EventsSection = () => {
         seconds: 0
     });
 
+    // Default fallback event
+    const defaultEvent = {
+        name: 'Marriage Enrichment Seminar',
+        description: 'Strengthen your marriage with biblical principles. Open to couples at all stages of marriage.',
+        start_date: '2026-02-14T10:00:00',
+        end_date: '2026-02-14T16:00:00',
+        venue: 'Family Center',
+        id: null
+    };
+
+    const eventData = event || defaultEvent;
+
     useEffect(() => {
-        const targetDate = new Date('2026-02-14T10:00:00');
+        const targetDate = new Date(eventData.start_date);
 
         const calculateTimeLeft = () => {
             const difference = +targetDate - +new Date();
@@ -35,7 +48,17 @@ const EventsSection = () => {
         }, 1000);
 
         return () => clearInterval(timer);
-    }, []);
+    }, [eventData.start_date]);
+
+    const formatDate = (dateStr) => {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    };
+
+    const formatTime = (dateStr) => {
+        const date = new Date(dateStr);
+        return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    };
 
     return (
         <section className="section-padding" style={{ background: 'var(--background)' }}>
@@ -110,48 +133,78 @@ const EventsSection = () => {
                         </div>
 
                         <h3 className="event-title" style={{ fontSize: '2rem', fontWeight: '800', marginBottom: '1rem', lineHeight: 1.2 }}>
-                            Marriage Enrichment Seminar
+                            {eventData.name}
                         </h3>
                         <p className="event-description" style={{ marginBottom: '2rem', opacity: 0.9, lineHeight: 1.6 }}>
-                            Strengthen your marriage with biblical principles. Open to couples at all stages of marriage.
+                            {eventData.description || 'Join us for this special event. Experience the presence of God together.'}
                         </p>
 
                         <div style={{ marginBottom: '2rem', fontSize: '0.9rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <span>📅</span> Sat, Feb 14
+                                <span>📅</span> {formatDate(eventData.start_date)}
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <span>⏰</span> 10:00 AM - 4:00 PM
+                                <span>⏰</span> {formatTime(eventData.start_date)}{eventData.end_date ? ` - ${formatTime(eventData.end_date)}` : ''}
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <span>📍</span> Family Center
+                                <span>📍</span> {eventData.venue || 'TBA'}
                             </div>
+                            {eventData.registered_count !== undefined && (
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                    <span>👥</span> {eventData.registered_count} registered
+                                </div>
+                            )}
                         </div>
 
-                        <button style={{
-                            width: '100%',
-                            padding: '1rem',
-                            borderRadius: '9999px',
-                            border: '1px solid white',
-                            background: 'transparent',
-                            color: 'white',
-                            fontWeight: '700',
-                            cursor: 'pointer',
-                            transition: 'background 0.2s',
-                            fontSize: '1rem'
-                        }}
-                            onMouseOver={(e) => { e.target.style.background = 'white'; e.target.style.color = 'var(--primary)'; }}
-                            onMouseOut={(e) => { e.target.style.background = 'transparent'; e.target.style.color = 'white'; }}
-                        >
-                            Register Now
-                        </button>
+                        {eventData.id ? (
+                            <Link 
+                                to={`/events/${eventData.id}/register`}
+                                style={{
+                                    display: 'block',
+                                    width: '100%',
+                                    padding: '1rem',
+                                    borderRadius: '9999px',
+                                    border: '1px solid white',
+                                    background: 'transparent',
+                                    color: 'white',
+                                    fontWeight: '700',
+                                    cursor: 'pointer',
+                                    transition: 'background 0.2s',
+                                    fontSize: '1rem',
+                                    textAlign: 'center',
+                                    textDecoration: 'none'
+                                }}
+                                onMouseOver={(e) => { e.target.style.background = 'white'; e.target.style.color = 'var(--primary)'; }}
+                                onMouseOut={(e) => { e.target.style.background = 'transparent'; e.target.style.color = 'white'; }}
+                            >
+                                Register Now
+                            </Link>
+                        ) : (
+                            <button style={{
+                                width: '100%',
+                                padding: '1rem',
+                                borderRadius: '9999px',
+                                border: '1px solid white',
+                                background: 'transparent',
+                                color: 'white',
+                                fontWeight: '700',
+                                cursor: 'pointer',
+                                transition: 'background 0.2s',
+                                fontSize: '1rem'
+                            }}
+                                onMouseOver={(e) => { e.target.style.background = 'white'; e.target.style.color = 'var(--primary)'; }}
+                                onMouseOut={(e) => { e.target.style.background = 'transparent'; e.target.style.color = 'white'; }}
+                            >
+                                Register Now
+                            </button>
+                        )}
                     </div>
                 </div>
 
                 <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-                    <button className="btn btn-primary">
+                    <Link to="/events" className="btn btn-primary">
                         View All Events →
-                    </button>
+                    </Link>
                 </div>
             </div>
 
