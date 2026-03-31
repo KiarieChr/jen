@@ -17,6 +17,8 @@ const EventAttendancePage = () => {
     const [manualSearch, setManualSearch] = useState('');
     const [actionLoading, setActionLoading] = useState(null);
     const [toast, setToast] = useState(null);
+    const [emailLoading, setEmailLoading] = useState(null); // 'bulk' or registration_id
+    const [showEmailConfirm, setShowEmailConfirm] = useState(false);
 
     // Load events list
     useEffect(() => {
@@ -141,6 +143,47 @@ const EventAttendancePage = () => {
         }
     };
 
+    // Send QR email to single registrant
+    const handleSendEmail = async (registrationId) => {
+        setEmailLoading(registrationId);
+        try {
+            const res = await api.post('/send_event_qr_email.php', {
+                registration_id: registrationId
+            });
+            if (res?.success) {
+                showToast(res.message || 'Email sent!');
+            }
+        } catch (err) {
+            const msg = err.response?.data?.error || 'Failed to send email';
+            showToast(msg, 'error');
+        } finally {
+            setEmailLoading(null);
+        }
+    };
+
+    // Send QR emails to all registrants for the event
+    const handleBulkEmail = async () => {
+        setShowEmailConfirm(false);
+        setEmailLoading('bulk');
+        try {
+            const res = await api.post('/send_event_qr_email.php', {
+                event_id: parseInt(selectedEventId)
+            });
+            if (res?.success) {
+                const d = res.data;
+                showToast(
+                    `Sent ${d.sent} of ${d.total} emails${d.failed > 0 ? `. ${d.failed} failed.` : '!'}`,
+                    d.failed > 0 ? 'warning' : 'success'
+                );
+            }
+        } catch (err) {
+            const msg = err.response?.data?.error || 'Failed to send bulk emails';
+            showToast(msg, 'error');
+        } finally {
+            setEmailLoading(null);
+        }
+    };
+
     // Filter attendees
     const filteredAttendees = attendees.filter(a => {
         const matchesSearch = !searchTerm ||
@@ -210,34 +253,62 @@ const EventAttendancePage = () => {
                     </p>
                 </div>
                 {selectedEventId && (
-                    <button
-                        onClick={() => setShowScanner(true)}
-                        style={{
-                            background: 'linear-gradient(135deg, #a855f7, #7c3aed)',
-                            color: '#fff',
-                            border: 'none',
-                            borderRadius: '0.5rem',
-                            padding: '0.75rem 1.5rem',
-                            fontSize: '0.95rem',
-                            fontWeight: '700',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            boxShadow: '0 4px 15px rgba(168, 85, 247, 0.3)'
-                        }}
-                    >
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <rect x="3" y="3" width="7" height="7" />
-                            <rect x="14" y="3" width="7" height="7" />
-                            <rect x="3" y="14" width="7" height="7" />
-                            <rect x="14" y="14" width="3" height="3" />
-                            <rect x="18" y="14" width="3" height="3" />
-                            <rect x="14" y="18" width="3" height="3" />
-                            <rect x="18" y="18" width="3" height="3" />
-                        </svg>
-                        Scan QR Code
-                    </button>
+                    <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                        <button
+                            onClick={() => setShowEmailConfirm(true)}
+                            disabled={emailLoading === 'bulk' || attendees.length === 0}
+                            style={{
+                                background: emailLoading === 'bulk'
+                                    ? 'var(--border-color)'
+                                    : 'linear-gradient(135deg, #06b6d4, #0891b2)',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: '0.5rem',
+                                padding: '0.75rem 1.5rem',
+                                fontSize: '0.95rem',
+                                fontWeight: '700',
+                                cursor: emailLoading === 'bulk' ? 'wait' : 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                boxShadow: '0 4px 15px rgba(6, 182, 212, 0.3)'
+                            }}
+                        >
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                            {emailLoading === 'bulk' ? 'Sending...' : 'Email All QR Codes'}
+                        </button>
+                        <button
+                            onClick={() => setShowScanner(true)}
+                            style={{
+                                background: 'linear-gradient(135deg, #a855f7, #7c3aed)',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: '0.5rem',
+                                padding: '0.75rem 1.5rem',
+                                fontSize: '0.95rem',
+                                fontWeight: '700',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                boxShadow: '0 4px 15px rgba(168, 85, 247, 0.3)'
+                            }}
+                        >
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <rect x="3" y="3" width="7" height="7" />
+                                <rect x="14" y="3" width="7" height="7" />
+                                <rect x="3" y="14" width="7" height="7" />
+                                <rect x="14" y="14" width="3" height="3" />
+                                <rect x="18" y="14" width="3" height="3" />
+                                <rect x="14" y="18" width="3" height="3" />
+                                <rect x="18" y="18" width="3" height="3" />
+                            </svg>
+                            Scan QR Code
+                        </button>
+                    </div>
                 )}
             </div>
 
@@ -585,6 +656,25 @@ const EventAttendancePage = () => {
                                                         >
                                                             QR
                                                         </button>
+                                                        {a.email && (
+                                                            <button
+                                                                onClick={() => handleSendEmail(a.registration_id)}
+                                                                disabled={emailLoading === a.registration_id}
+                                                                style={{
+                                                                    padding: '0.3rem 0.6rem',
+                                                                    borderRadius: '0.35rem',
+                                                                    border: '1px solid rgba(6, 182, 212, 0.3)',
+                                                                    background: 'rgba(6, 182, 212, 0.1)',
+                                                                    color: '#06b6d4',
+                                                                    fontSize: '0.75rem',
+                                                                    fontWeight: '600',
+                                                                    cursor: emailLoading === a.registration_id ? 'wait' : 'pointer'
+                                                                }}
+                                                                title="Send QR code via email"
+                                                            >
+                                                                {emailLoading === a.registration_id ? '...' : '✉'}
+                                                            </button>
+                                                        )}
                                                     </div>
                                                 </td>
                                             </tr>
@@ -624,6 +714,74 @@ const EventAttendancePage = () => {
                 eventName={eventInfo?.ename}
                 onClose={() => setShowQRPreview(null)}
             />}
+
+            {/* Bulk Email Confirmation Modal */}
+            {showEmailConfirm && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0, left: 0, right: 0, bottom: 0,
+                    background: 'rgba(0,0,0,0.7)',
+                    backdropFilter: 'blur(5px)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 9999
+                }} onClick={() => setShowEmailConfirm(false)}>
+                    <div style={{
+                        background: 'var(--surface-1, #1A1625)',
+                        borderRadius: '1rem',
+                        padding: '2rem',
+                        maxWidth: '420px',
+                        width: '90%',
+                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+                        border: '1px solid var(--border-color)'
+                    }} onClick={e => e.stopPropagation()}>
+                        <h3 style={{ margin: '0 0 0.5rem', color: 'var(--text-color)', fontSize: '1.15rem' }}>
+                            Send QR Codes to All Registrants?
+                        </h3>
+                        <p style={{ margin: '0 0 0.25rem', color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: 1.5 }}>
+                            This will send an invitation email with their personal QR check-in code to
+                            <strong style={{ color: 'var(--text-color)' }}> {attendees.filter(a => a.email).length} registrants</strong> with
+                            email addresses for <strong style={{ color: 'var(--primary)' }}>{eventInfo?.ename}</strong>.
+                        </p>
+                        <p style={{ margin: '0 0 1.25rem', color: 'var(--text-muted)', fontSize: '0.8rem' }}>
+                            Each person will receive the event details and their unique QR code.
+                        </p>
+                        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end' }}>
+                            <button
+                                onClick={() => setShowEmailConfirm(false)}
+                                style={{
+                                    padding: '0.6rem 1.25rem',
+                                    borderRadius: '0.5rem',
+                                    border: '1px solid var(--border-color)',
+                                    background: 'transparent',
+                                    color: 'var(--text-color)',
+                                    fontSize: '0.9rem',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleBulkEmail}
+                                style={{
+                                    padding: '0.6rem 1.25rem',
+                                    borderRadius: '0.5rem',
+                                    border: 'none',
+                                    background: 'linear-gradient(135deg, #06b6d4, #0891b2)',
+                                    color: '#fff',
+                                    fontSize: '0.9rem',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    boxShadow: '0 4px 12px rgba(6, 182, 212, 0.3)'
+                                }}
+                            >
+                                Send All Emails
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* QR Scanner Modal */}
             {showScanner && (
