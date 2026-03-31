@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 
 // Components
@@ -16,6 +17,7 @@ const EventsDashboard = () => {
     const [loading, setLoading] = useState(true);
     const [dashboardData, setDashboardData] = useState(null);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchDashboardData = async () => {
@@ -204,6 +206,7 @@ const EventsDashboard = () => {
 
             {/* Tab Content */}
             {activeTab === 'dashboard' && renderDashboardTab()}
+            {activeTab === 'attendance' && (() => { navigate('/portal/meetings/event-attendance'); return null; })()}
             {activeTab === 'mobilisation' && renderMobilisationTab()}
             {activeTab === 'statistics' && renderStatisticsTab()}
             {activeTab === 'all' && renderAllEventsTab()}

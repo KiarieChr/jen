@@ -66,6 +66,19 @@ const Icons = {
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
         </svg>
     ),
+    Finance: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"></line>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+        </svg>
+    ),
+    Accounting: () => (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="2" y="3" width="20" height="18" rx="2"></rect>
+            <line x1="2" y1="9" x2="22" y2="9"></line>
+            <line x1="12" y1="9" x2="12" y2="21"></line>
+        </svg>
+    ),
     Users: () => (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="3"></circle>
@@ -149,7 +162,7 @@ const SidebarItem = ({ icon: Icon, label, path, active, hovered, setHovered, sub
                         sub.external ? (
                             <a
                                 key={sub.path}
-                                href="http://jesusenthroned_net.local/db/sync.php"
+                                href={`${import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api/', '') : ''}/db/sync.php`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={onClose}
@@ -218,6 +231,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             subItems: [
                 { label: 'View Meetings', path: '/portal/meetings' },
                 { label: 'Events', path: '/portal/meetings/events' },
+                { label: 'Event Attendance', path: '/portal/meetings/event-attendance' },
                 { label: 'Attendance', path: '/portal/meetings/attendance' }
             ]
         },
@@ -234,7 +248,33 @@ const Sidebar = ({ isOpen, onClose }) => {
         },
         { icon: Icons.Media, label: 'Media & Sermons', path: '/portal/media' },
         { icon: Icons.Devotionals, label: 'Devotionals', path: '/portal/devotionals' },
-        { icon: Icons.Contributions, label: 'Contributions', path: '/portal/giving' },
+        {
+            icon: Icons.Finance,
+            label: 'Financial Management',
+            path: '/portal/finance-module',
+            subItems: [
+                { label: 'Overview', path: '/portal/finance' },
+                { label: 'Contributions', path: '/portal/finance/contributions' },
+                { label: 'Pledges', path: '/portal/finance/pledges' },
+                { label: 'Budgets', path: '/portal/finance/budgets' },
+                { label: 'Settings', path: '/portal/finance/settings' }
+            ]
+        },
+        {
+            icon: Icons.Accounting,
+            label: 'Accounting',
+            path: '/portal/accounting-module',
+            subItems: [
+                { label: 'Chart of Accounts', path: '/portal/accounting/chart-of-accounts' },
+                { label: 'General Ledger', path: '/portal/accounting/general-ledger' },
+                { label: 'Trial Balance', path: '/portal/accounting/trial-balance' },
+                { label: 'Income Statement', path: '/portal/accounting/income-statement' },
+                { label: 'Balance Sheet', path: '/portal/accounting/balance-sheet' },
+                { label: 'Journal Entries', path: '/portal/accounting/journal-entries' },
+                { label: 'Payroll', path: '/portal/accounting/payroll' },
+                { label: 'Audit Log', path: '/portal/accounting/audit-log' }
+            ]
+        },
         {
             icon: Icons.Users,
             label: 'Users',

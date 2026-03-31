@@ -7,8 +7,7 @@ import SermonsSection from '../components/SermonsSection';
 import EventsSection from '../components/EventsSection';
 import PartnerSection from '../components/PartnerSection';
 import Footer from '../components/Footer';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://jesusenthroned_net.local/api/';
+import { API_BASE_URL as API_URL } from '../../services/api';
 
 const Home = () => {
     const [homeData, setHomeData] = useState(null);

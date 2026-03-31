@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://jesusenthroned_net.local/api/';
+import api from '../../../services/api';
 
 const MembersTable = () => {
     const [activeTab, setActiveTab] = useState('regular'); // regular | committed
@@ -25,8 +24,7 @@ const MembersTable = () => {
 
     const fetchStats = async () => {
         try {
-            const response = await fetch(`${API_URL}get_member_stats.php`);
-            const data = await response.json();
+            const data = await api.get('get_member_stats.php');
             if (data.success) {
                 setStats({
                     regular: data.data.total_members,
@@ -47,8 +45,7 @@ const MembersTable = () => {
                 limit: pagination.limit,
                 search: search
             });
-            const response = await fetch(`${API_URL}get_members.php?${params}`);
-            const data = await response.json();
+            const data = await api.get(`get_members.php?${params}`);
             if (data.success) {
                 setMembers(data.data);
                 setPagination(prev => ({

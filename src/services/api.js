@@ -6,7 +6,7 @@
 import axios from 'axios';
 
 // API Base URL - change for production
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://jen.royalsoftwares.co.ke/api/';
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://jen.royalsoftwares.co.ke/api/';
 
 // Create axios instance with default config
 const api = axios.create({

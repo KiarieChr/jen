@@ -3,6 +3,7 @@ import React from 'react';
 const EventsTabs = ({ activeTab, setActiveTab }) => {
     const tabs = [
         { id: 'dashboard', label: 'Events Dashboard' },
+        { id: 'attendance', label: 'Event Attendance' },
         { id: 'mobilisation', label: 'Events Mobilisation' },
         { id: 'statistics', label: 'Events Statistics' },
         { id: 'all', label: 'All Events' }

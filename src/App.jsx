@@ -16,6 +16,7 @@ import MyCellDashboard from './Portal/pages/MyCellDashboard';
 import MeetingsDashboard from './Portal/pages/MeetingsDashboard';
 import EventsDashboard from './Portal/pages/EventsDashboard';
 import AttendanceDashboard from './Portal/pages/AttendanceDashboard';
+import EventAttendancePage from './Portal/pages/EventAttendancePage';
 import MembersDashboard from './Portal/pages/MembersDashboard';
 import UsersDashboard from './Portal/pages/UsersDashboard';
 import MyAccountDashboard from './Portal/pages/MyAccountDashboard';
@@ -27,6 +28,19 @@ import WatchLive from './Portal/pages/WatchLive';
 import FastingCommitment from './Portal/pages/prayers/FastingCommitment';
 import PropheticInstructions from './Portal/pages/prayers/PropheticInstructions';
 import PrayerCommunications from './Portal/pages/prayers/PrayerCommunications';
+import FinanceDashboard from './Portal/pages/FinanceDashboard';
+import ContributionsDashboard from './Portal/pages/finance/ContributionsDashboard';
+import PledgesDashboard from './Portal/pages/finance/PledgesDashboard';
+import BudgetsDashboard from './Portal/pages/finance/BudgetsDashboard';
+import FinanceSettings from './Portal/pages/finance/FinanceSettings';
+import ChartOfAccountsPage from './Portal/pages/accounting/ChartOfAccountsPage';
+import GeneralLedgerPage from './Portal/pages/accounting/GeneralLedgerPage';
+import TrialBalancePage from './Portal/pages/accounting/TrialBalancePage';
+import IncomeStatementPage from './Portal/pages/accounting/IncomeStatementPage';
+import BalanceSheetPage from './Portal/pages/accounting/BalanceSheetPage';
+import JournalEntriesPage from './Portal/pages/accounting/JournalEntriesPage';
+import PayrollPage from './Portal/pages/accounting/PayrollPage';
+import AuditLogPage from './Portal/pages/accounting/AuditLogPage';
 import { ThemeProvider } from './context/ThemeContext';
 import { EventProvider } from './context/EventContext';
 import { AuthProvider } from './context/AuthContext';
@@ -73,6 +87,7 @@ function App() {
                 <Route path="meetings" element={<MeetingsDashboard />} />
                 <Route path="meetings/events" element={<EventsDashboard />} />
                 <Route path="meetings/attendance" element={<AttendanceDashboard />} />
+                <Route path="meetings/event-attendance" element={<EventAttendancePage />} />
                 <Route path="members" element={<MembersDashboard />} />
 
                 {/* Prayer Module Routes */}
@@ -82,7 +97,25 @@ function App() {
                 <Route path="media" element={<MediaDashboard />} />
                 <Route path="media/live" element={<WatchLive />} />
                 <Route path="devotionals" element={<DevotionalsDashboard />} />
-                <Route path="giving" element={<Placeholder title="Contributions" />} />
+                <Route path="giving" element={<FinanceDashboard />} />
+
+                {/* Financial Management Routes */}
+                <Route path="finance" element={<FinanceDashboard />} />
+                <Route path="finance/contributions" element={<ContributionsDashboard />} />
+                <Route path="finance/pledges" element={<PledgesDashboard />} />
+                <Route path="finance/budgets" element={<BudgetsDashboard />} />
+                <Route path="finance/settings" element={<FinanceSettings />} />
+
+                {/* Accounting Module Routes */}
+                <Route path="accounting/chart-of-accounts" element={<ChartOfAccountsPage />} />
+                <Route path="accounting/general-ledger" element={<GeneralLedgerPage />} />
+                <Route path="accounting/trial-balance" element={<TrialBalancePage />} />
+                <Route path="accounting/income-statement" element={<IncomeStatementPage />} />
+                <Route path="accounting/balance-sheet" element={<BalanceSheetPage />} />
+                <Route path="accounting/journal-entries" element={<JournalEntriesPage />} />
+                <Route path="accounting/payroll" element={<PayrollPage />} />
+                <Route path="accounting/audit-log" element={<AuditLogPage />} />
+
                 <Route path="users" element={<UsersDashboard />} />
                 <Route path="users/account" element={<MyAccountDashboard />} />
                 <Route path="roles" element={<Placeholder title="Roles & Permissions" />} />

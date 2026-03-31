@@ -1,5 +1,5 @@
 import React from "react";
-import AddMember from "../../../../jesusenthroned_net/src/components/AddMember";
+import AddMember from "../components/AddMember";
 import { useSearchParams } from "react-router-dom";
 
 export default function AddMemberPage() {

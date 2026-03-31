@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-
-const API_URL = import.meta.env.VITE_API_URL || 'https://jen.royalsoftwares.co.ke/api/';
+import { API_BASE_URL as API_URL } from '../../services/api';
 
 const EventRegistration = () => {
     const { eventId } = useParams();

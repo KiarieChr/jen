@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://jesusenthroned_net.local/api/';
+import api from '../../../services/api';
 
 const StatCard = ({ title, value, label, description, icon, color = 'var(--primary)', loading }) => (
     <div style={{
@@ -55,8 +54,7 @@ const MemberStatsCard = () => {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const response = await fetch(`${API_URL}get_member_stats.php`);
-                const data = await response.json();
+                const data = await api.get('get_member_stats.php');
                 if (data.success) {
                     setStats(data.data);
                 }
@@ -70,7 +68,7 @@ const MemberStatsCard = () => {
     }, []);
 
     const formatNumber = (num) => {
-        return num.toLocaleString();
+        return (num || 0).toLocaleString();
     };
 
     return (
