@@ -17,6 +17,8 @@ import MeetingsDashboard from './Portal/pages/MeetingsDashboard';
 import EventsDashboard from './Portal/pages/EventsDashboard';
 import AttendanceDashboard from './Portal/pages/AttendanceDashboard';
 import EventAttendancePage from './Portal/pages/EventAttendancePage';
+import EventSchedulePage from './Portal/pages/EventSchedulePage';
+import EventBudgetPage from './Portal/pages/EventBudgetPage';
 import MembersDashboard from './Portal/pages/MembersDashboard';
 import UsersDashboard from './Portal/pages/UsersDashboard';
 import MyAccountDashboard from './Portal/pages/MyAccountDashboard';
@@ -88,6 +90,8 @@ function App() {
                 <Route path="meetings/events" element={<EventsDashboard />} />
                 <Route path="meetings/attendance" element={<AttendanceDashboard />} />
                 <Route path="meetings/event-attendance" element={<EventAttendancePage />} />
+                <Route path="meetings/event-schedule" element={<EventSchedulePage />} />
+                <Route path="meetings/event-budget" element={<EventBudgetPage />} />
                 <Route path="members" element={<MembersDashboard />} />
 
                 {/* Prayer Module Routes */}

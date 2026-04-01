@@ -232,6 +232,8 @@ const Sidebar = ({ isOpen, onClose }) => {
                 { label: 'View Meetings', path: '/portal/meetings' },
                 { label: 'Events', path: '/portal/meetings/events' },
                 { label: 'Event Attendance', path: '/portal/meetings/event-attendance' },
+                { label: 'Event Schedule', path: '/portal/meetings/event-schedule' },
+                { label: 'Event Budget', path: '/portal/meetings/event-budget' },
                 { label: 'Attendance', path: '/portal/meetings/attendance' }
             ]
         },

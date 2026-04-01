@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import api from '../../services/api';
+import api, { API_BASE_URL, getAccessToken } from '../../services/api';
 import QRScannerModal from '../components/events/QRScannerModal';
 import { QRCodeSVG } from 'qrcode.react';
 
@@ -19,6 +19,9 @@ const EventAttendancePage = () => {
     const [toast, setToast] = useState(null);
     const [emailLoading, setEmailLoading] = useState(null); // 'bulk' or registration_id
     const [showEmailConfirm, setShowEmailConfirm] = useState(false);
+    const [showRegister, setShowRegister] = useState(false);
+    const [regForm, setRegForm] = useState({ names: '', phone_no: '', email: '', residence: '', gender: '' });
+    const [regLoading, setRegLoading] = useState(false);
 
     // Load events list
     useEffect(() => {
@@ -36,9 +39,9 @@ const EventAttendancePage = () => {
     }, []);
 
     // Load attendance data for selected event
-    const fetchAttendance = useCallback(async () => {
+    const fetchAttendance = useCallback(async (silent = false) => {
         if (!selectedEventId) return;
-        setLoading(true);
+        if (!silent) setLoading(true);
         try {
             const res = await api.get(`/get_event_attendance.php?event_id=${selectedEventId}`);
             if (res?.success) {
@@ -48,9 +51,9 @@ const EventAttendancePage = () => {
             }
         } catch (err) {
             console.error('Failed to load attendance:', err);
-            showToast('Failed to load attendance data', 'error');
+            if (!silent) showToast('Failed to load attendance data', 'error');
         } finally {
-            setLoading(false);
+            if (!silent) setLoading(false);
         }
     }, [selectedEventId]);
 
@@ -73,7 +76,7 @@ const EventAttendancePage = () => {
             });
             if (res?.success) {
                 showToast(res.message || 'Checked in successfully!');
-                fetchAttendance();
+                await fetchAttendance(true);
             }
         } catch (err) {
             const msg = err.response?.data?.error || 'Check-in failed';
@@ -95,7 +98,7 @@ const EventAttendancePage = () => {
             if (res?.success) {
                 showToast(res.message || 'Checked in successfully!');
                 setManualSearch('');
-                fetchAttendance();
+                await fetchAttendance(true);
             }
         } catch (err) {
             const msg = err.response?.data?.error || 'Check-in failed';
@@ -116,7 +119,7 @@ const EventAttendancePage = () => {
                 } else {
                     showToast(`${name} checked in via QR!`);
                 }
-                fetchAttendance();
+                await fetchAttendance(true);
             }
         } catch (err) {
             const msg = err.response?.data?.error || 'QR check-in failed';
@@ -134,7 +137,7 @@ const EventAttendancePage = () => {
             });
             if (res?.success) {
                 showToast('Check-in reversed');
-                fetchAttendance();
+                await fetchAttendance(true);
             }
         } catch (err) {
             showToast('Failed to undo check-in', 'error');
@@ -151,11 +154,18 @@ const EventAttendancePage = () => {
                 registration_id: registrationId
             });
             if (res?.success) {
-                showToast(res.message || 'Email sent!');
+                console.log('[Email] Single send result:', res.data);
+                if (res.data?.failed > 0) {
+                    console.warn('[Email] Failures:', res.data.errors);
+                    showToast(`Email failed: ${res.data.errors?.[0] || 'Unknown error'}`, 'error');
+                } else {
+                    showToast(res.message || 'Email sent!');
+                }
             }
         } catch (err) {
-            const msg = err.response?.data?.error || 'Failed to send email';
-            showToast(msg, 'error');
+            const errData = err.response?.data;
+            console.error('[Email] Send error:', errData || err.message);
+            showToast(errData?.error || 'Failed to send email', 'error');
         } finally {
             setEmailLoading(null);
         }
@@ -171,16 +181,61 @@ const EventAttendancePage = () => {
             });
             if (res?.success) {
                 const d = res.data;
+                console.log('[Email] Bulk send result:', d);
+                if (d.failed > 0) {
+                    console.warn('[Email] Failed emails:', d.errors);
+                }
                 showToast(
-                    `Sent ${d.sent} of ${d.total} emails${d.failed > 0 ? `. ${d.failed} failed.` : '!'}`,
+                    `Sent ${d.sent} of ${d.total} emails${d.failed > 0 ? `. ${d.failed} failed — check console for details.` : '!'}`,
                     d.failed > 0 ? 'warning' : 'success'
                 );
             }
         } catch (err) {
-            const msg = err.response?.data?.error || 'Failed to send bulk emails';
-            showToast(msg, 'error');
+            const errData = err.response?.data;
+            console.error('[Email] Bulk send error:', errData || err.message);
+            showToast(errData?.error || 'Failed to send bulk emails', 'error');
         } finally {
             setEmailLoading(null);
+        }
+    };
+
+    // On-the-spot registration + auto check-in
+    const handleRegister = async () => {
+        const { names, phone_no, email, residence, gender } = regForm;
+        if (!names || !phone_no || !email || !residence || !gender) {
+            showToast('Please fill all required fields', 'error');
+            return;
+        }
+        setRegLoading(true);
+        try {
+            const res = await api.post('/register_event.php', {
+                ...regForm,
+                event_id: parseInt(selectedEventId)
+            });
+            if (res?.success) {
+                const regId = res.data?.registration_id;
+                showToast(`${names} registered successfully!`);
+                // Auto check-in
+                if (regId) {
+                    try {
+                        await api.post('/mark_event_attendance.php', {
+                            event_id: parseInt(selectedEventId),
+                            registration_id: regId
+                        });
+                        showToast(`${names} registered & checked in!`);
+                    } catch (e) {
+                        // Registration succeeded even if check-in failed
+                    }
+                }
+                setRegForm({ names: '', phone_no: '', email: '', residence: '', gender: '' });
+                setShowRegister(false);
+                await fetchAttendance(true);
+            }
+        } catch (err) {
+            const msg = err.response?.data?.error || err.message || 'Registration failed';
+            showToast(msg, 'error');
+        } finally {
+            setRegLoading(false);
         }
     };
 
@@ -255,6 +310,31 @@ const EventAttendancePage = () => {
                 {selectedEventId && (
                     <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                         <button
+                            onClick={() => setShowRegister(true)}
+                            style={{
+                                background: 'linear-gradient(135deg, #22c55e, #16a34a)',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: '0.5rem',
+                                padding: '0.75rem 1.5rem',
+                                fontSize: '0.95rem',
+                                fontWeight: '700',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                boxShadow: '0 4px 15px rgba(34, 197, 94, 0.3)'
+                            }}
+                        >
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <line x1="19" y1="8" x2="19" y2="14"/>
+                                <line x1="22" y1="11" x2="16" y2="11"/>
+                            </svg>
+                            Register
+                        </button>
+                        <button
                             onClick={() => setShowEmailConfirm(true)}
                             disabled={emailLoading === 'bulk' || attendees.length === 0}
                             style={{
@@ -307,6 +387,47 @@ const EventAttendancePage = () => {
                                 <rect x="18" y="18" width="3" height="3" />
                             </svg>
                             Scan QR Code
+                        </button>
+                        <button
+                            onClick={() => {
+                                const url = `${API_BASE_URL}/attendance_report_pdf.php?event_id=${selectedEventId}`;
+                                const token = getAccessToken();
+                                // Open in new tab with auth via fetch + blob
+                                fetch(url, { headers: { Authorization: `Bearer ${token}` } })
+                                    .then(res => {
+                                        if (!res.ok) throw new Error('Failed to generate report');
+                                        return res.blob();
+                                    })
+                                    .then(blob => {
+                                        const blobUrl = URL.createObjectURL(blob);
+                                        window.open(blobUrl, '_blank');
+                                    })
+                                    .catch(() => showToast('Failed to generate PDF report', 'error'));
+                            }}
+                            disabled={attendees.length === 0}
+                            style={{
+                                background: attendees.length === 0 ? 'var(--border-color)' : 'linear-gradient(135deg, #ef4444, #dc2626)',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: '0.5rem',
+                                padding: '0.75rem 1.5rem',
+                                fontSize: '0.95rem',
+                                fontWeight: '700',
+                                cursor: attendees.length === 0 ? 'not-allowed' : 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                boxShadow: '0 4px 15px rgba(239, 68, 68, 0.3)'
+                            }}
+                        >
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                                <polyline points="10 9 9 9 8 9"/>
+                            </svg>
+                            PDF Report
                         </button>
                     </div>
                 )}
@@ -777,6 +898,134 @@ const EventAttendancePage = () => {
                                 }}
                             >
                                 Send All Emails
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Registration Modal */}
+            {showRegister && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0, left: 0, right: 0, bottom: 0,
+                    background: 'rgba(0,0,0,0.7)',
+                    backdropFilter: 'blur(5px)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 9999
+                }} onClick={() => setShowRegister(false)}>
+                    <div style={{
+                        background: 'var(--surface-1, #1A1625)',
+                        borderRadius: '1rem',
+                        padding: '2rem',
+                        maxWidth: '480px',
+                        width: '90%',
+                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+                        border: '1px solid var(--border-color)'
+                    }} onClick={e => e.stopPropagation()}>
+                        <h3 style={{ margin: '0 0 0.25rem', color: 'var(--text-color)', fontSize: '1.15rem' }}>
+                            Register New Attendee
+                        </h3>
+                        <p style={{ margin: '0 0 1.25rem', color: 'var(--text-muted)', fontSize: '0.8rem' }}>
+                            {eventInfo?.ename} — will be auto-checked in after registration.
+                        </p>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                            {[{ key: 'names', label: 'Full Name', placeholder: 'John Doe', type: 'text' },
+                              { key: 'phone_no', label: 'Phone Number', placeholder: '0712345678', type: 'tel' },
+                              { key: 'email', label: 'Email Address', placeholder: 'john@example.com', type: 'email' },
+                              { key: 'residence', label: 'Residence', placeholder: 'Nairobi', type: 'text' }
+                            ].map(f => (
+                                <div key={f.key}>
+                                    <label style={{
+                                        display: 'block',
+                                        fontSize: '0.75rem',
+                                        fontWeight: '600',
+                                        color: 'var(--text-muted)',
+                                        marginBottom: '0.3rem',
+                                        textTransform: 'uppercase'
+                                    }}>{f.label} *</label>
+                                    <input
+                                        type={f.type}
+                                        placeholder={f.placeholder}
+                                        value={regForm[f.key]}
+                                        onChange={e => setRegForm(prev => ({ ...prev, [f.key]: e.target.value }))}
+                                        style={{
+                                            width: '100%',
+                                            padding: '0.6rem 1rem',
+                                            borderRadius: '0.5rem',
+                                            border: '1px solid var(--border-color)',
+                                            background: 'var(--bg-color)',
+                                            color: 'var(--text-color)',
+                                            fontSize: '0.9rem',
+                                            boxSizing: 'border-box'
+                                        }}
+                                    />
+                                </div>
+                            ))}
+                            <div>
+                                <label style={{
+                                    display: 'block',
+                                    fontSize: '0.75rem',
+                                    fontWeight: '600',
+                                    color: 'var(--text-muted)',
+                                    marginBottom: '0.3rem',
+                                    textTransform: 'uppercase'
+                                }}>Gender *</label>
+                                <select
+                                    value={regForm.gender}
+                                    onChange={e => setRegForm(prev => ({ ...prev, gender: e.target.value }))}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.6rem 1rem',
+                                        borderRadius: '0.5rem',
+                                        border: '1px solid var(--border-color)',
+                                        background: 'var(--bg-color)',
+                                        color: 'var(--text-color)',
+                                        fontSize: '0.9rem',
+                                        boxSizing: 'border-box'
+                                    }}
+                                >
+                                    <option value="">-- Select --</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'flex-end', marginTop: '1.5rem' }}>
+                            <button
+                                onClick={() => setShowRegister(false)}
+                                style={{
+                                    padding: '0.6rem 1.25rem',
+                                    borderRadius: '0.5rem',
+                                    border: '1px solid var(--border-color)',
+                                    background: 'transparent',
+                                    color: 'var(--text-color)',
+                                    fontSize: '0.9rem',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleRegister}
+                                disabled={regLoading}
+                                style={{
+                                    padding: '0.6rem 1.25rem',
+                                    borderRadius: '0.5rem',
+                                    border: 'none',
+                                    background: regLoading ? 'var(--border-color)' : 'linear-gradient(135deg, #22c55e, #16a34a)',
+                                    color: '#fff',
+                                    fontSize: '0.9rem',
+                                    fontWeight: '600',
+                                    cursor: regLoading ? 'wait' : 'pointer',
+                                    boxShadow: '0 4px 12px rgba(34, 197, 94, 0.3)'
+                                }}
+                            >
+                                {regLoading ? 'Registering...' : 'Register & Check In'}
                             </button>
                         </div>
                     </div>
