@@ -1,22 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-const UnassignedMembersList = ({ selectedMembers, toggleSelection }) => {
+const UnassignedMembersList = ({ members: apiMembers = [], locations: apiLocations = [], selectedMembers, toggleSelection, onSearch, loading }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filter, setFilter] = useState('All');
+    const debounceRef = useRef(null);
 
-    // Mock Data
-    const members = [
-        { id: 101, name: 'David Kim', gender: 'Male', location: 'Westlands', status: 'New Member' },
-        { id: 102, name: 'Eva Green', gender: 'Female', location: 'Kilimani', status: 'Transferred' },
-        { id: 103, name: 'Frank White', gender: 'Male', location: 'CBD', status: 'New Member' },
-        { id: 104, name: 'Grace Liu', gender: 'Female', location: 'Westlands', status: 'New Member' },
-        { id: 105, name: 'Henry Ford', gender: 'Male', location: 'Ngong Rd', status: 'Rejoining' },
-    ];
+    const members = apiMembers.map(m => ({
+        id: m.id,
+        name: `${m.first_name} ${m.last_name}`,
+        gender: m.gender || '',
+        location: m.location || '—',
+    }));
 
     const filteredMembers = members.filter(m =>
         (filter === 'All' || m.location === filter) &&
         m.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const locationFilters = ['All', ...apiLocations.slice(0, 5)];
+
+    useEffect(() => {
+        if (debounceRef.current) clearTimeout(debounceRef.current);
+        debounceRef.current = setTimeout(() => {
+            if (onSearch) onSearch(searchTerm, filter === 'All' ? '' : filter);
+        }, 400);
+        return () => clearTimeout(debounceRef.current);
+    }, [searchTerm]);
 
     return (
         <div style={{
@@ -51,8 +60,8 @@ const UnassignedMembersList = ({ selectedMembers, toggleSelection }) => {
                     }}
                 />
 
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    {['All', 'Westlands', 'Kilimani', 'CBD'].map(f => (
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    {locationFilters.map(f => (
                         <button
                             key={f}
                             onClick={() => setFilter(f)}
@@ -107,7 +116,7 @@ const UnassignedMembersList = ({ selectedMembers, toggleSelection }) => {
                         <div style={{ flex: 1 }}>
                             <div style={{ color: 'var(--text-color)', fontSize: '0.9rem', fontWeight: '500' }}>{member.name}</div>
                             <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>
-                                {member.location} • <span style={{ color: '#f59e0b' }}>{member.status}</span>
+                                {member.location}
                             </div>
                         </div>
                     </div>

@@ -19,22 +19,22 @@ const EventsDashboard = () => {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchDashboardData = async () => {
-            try {
-                setLoading(true);
-                const response = await api.get('/get_events_dashboard.php');
-                // api.js interceptor already returns response.data, so response IS the data
-                if (response?.success) {
-                    setDashboardData(response.data);
-                }
-            } catch (err) {
-                console.error('Error fetching events data:', err);
-                setError('Failed to load events data');
-            } finally {
-                setLoading(false);
+    const fetchDashboardData = async () => {
+        try {
+            setLoading(true);
+            const response = await api.get('/get_events_dashboard.php');
+            if (response?.success) {
+                setDashboardData(response.data);
             }
-        };
+        } catch (err) {
+            console.error('Error fetching events data:', err);
+            setError('Failed to load events data');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
         fetchDashboardData();
     }, []);
 
@@ -213,7 +213,10 @@ const EventsDashboard = () => {
 
             {/* Create Event Modal */}
             {isCreateModalOpen && (
-                <CreateEventModal onClose={() => setIsCreateModalOpen(false)} />
+                <CreateEventModal
+                    onClose={() => setIsCreateModalOpen(false)}
+                    onCreated={() => fetchDashboardData()}
+                />
             )}
         </div>
     );

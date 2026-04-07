@@ -13,6 +13,9 @@ import Dashboard from './Portal/pages/Dashboard';
 import CellsDashboard from './Portal/pages/CellsDashboard';
 import AssignMembersDashboard from './Portal/pages/AssignMembersDashboard';
 import MyCellDashboard from './Portal/pages/MyCellDashboard';
+import CellAttendancePage from './Portal/pages/CellAttendancePage';
+import CellAnalyticsPage from './Portal/pages/CellAnalyticsPage';
+import FollowUpDashboard from './Portal/pages/FollowUpDashboard';
 import MeetingsDashboard from './Portal/pages/MeetingsDashboard';
 import EventsDashboard from './Portal/pages/EventsDashboard';
 import AttendanceDashboard from './Portal/pages/AttendanceDashboard';
@@ -85,7 +88,10 @@ function App() {
                 <Route path="calendar" element={<CalendarPage />} />
                 <Route path="cells" element={<CellsDashboard />} />
                 <Route path="cells/assign" element={<AssignMembersDashboard />} />
+                <Route path="cells/attendance" element={<CellAttendancePage />} />
+                <Route path="cells/analytics" element={<CellAnalyticsPage />} />
                 <Route path="my-cell" element={<MyCellDashboard />} />
+                <Route path="followups" element={<FollowUpDashboard />} />
                 <Route path="meetings" element={<MeetingsDashboard />} />
                 <Route path="meetings/events" element={<EventsDashboard />} />
                 <Route path="meetings/attendance" element={<AttendanceDashboard />} />

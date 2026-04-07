@@ -1,13 +1,13 @@
 import React from 'react';
 
-const CellHeader = () => {
-    // Mock Data
+const CellHeader = ({ cell }) => {
+    const c = cell || {};
     const cellInfo = {
-        name: 'Goshen Alpha',
-        category: 'General',
-        location: 'Westlands, Nairobi',
-        meetingTime: 'Wednesdays @ 6:00 PM',
-        status: 'Active'
+        name: c.cell_name || c.code || 'My Cell',
+        category: c.category || 'General',
+        location: c.location || '—',
+        meetingTime: c.meeting_day ? `${c.meeting_day}${c.meeting_time ? ' @ ' + c.meeting_time : ''}` : '—',
+        status: c.status == 1 ? 'Active' : 'Inactive'
     };
 
     return (

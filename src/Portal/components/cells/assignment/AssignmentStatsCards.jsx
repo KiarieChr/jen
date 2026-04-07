@@ -30,7 +30,8 @@ const StatCard = ({ icon, value, label, color = 'var(--primary)', alert = false 
     </div>
 );
 
-const AssignmentStatsCards = () => {
+const AssignmentStatsCards = ({ stats: s, loading }) => {
+    const d = s || {};
     return (
         <div style={{
             display: 'grid',
@@ -38,11 +39,11 @@ const AssignmentStatsCards = () => {
             gap: '1rem',
             marginBottom: '1.5rem'
         }}>
-            <StatCard icon="👥" value="315" label="Total Members" color="#a855f7" />
-            <StatCard icon="✅" value="280" label="Assigned" color="#22c1e6" />
-            <StatCard icon="⏳" value="35" label="Unassigned" color="#f59e0b" alert={true} />
-            <StatCard icon="🏘️" value="42" label="Total Cells" color="#eff3c1" />
-            <StatCard icon="⚠️" value="3" label="At Capacity" color="#ef4444" />
+            <StatCard icon="👥" value={loading ? '—' : String(d.total_members ?? 0)} label="Total Members" color="#a855f7" />
+            <StatCard icon="✅" value={loading ? '—' : String(d.assigned ?? 0)} label="Assigned" color="#22c1e6" />
+            <StatCard icon="⏳" value={loading ? '—' : String(d.unassigned ?? 0)} label="Unassigned" color="#f59e0b" alert={true} />
+            <StatCard icon="🏘️" value={loading ? '—' : String(d.total_cells ?? 0)} label="Total Cells" color="#eff3c1" />
+            <StatCard icon="⚠️" value={loading ? '—' : String(d.at_capacity ?? 0)} label="At Capacity" color="#ef4444" />
         </div>
     );
 };

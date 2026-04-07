@@ -1,10 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import CellStatsCards from '../components/cells/CellStatsCards';
 import CellsList from '../components/cells/CellsList';
 import CreateCellModal from '../components/cells/CreateCellModal';
+import api from '../../services/api';
 
 const CellsDashboard = () => {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [cells, setCells] = useState([]);
+    const [stats, setStats] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    const fetchCells = useCallback(async (search = '') => {
+        try {
+            setLoading(true);
+            const res = await api.get('get_cells.php', { params: { search } });
+            if (res.success) {
+                setCells(res.data.cells);
+                setStats(res.data.stats);
+            }
+        } catch (err) {
+            console.error('Failed to fetch cells:', err);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    useEffect(() => { fetchCells(); }, [fetchCells]);
+
+    const handleCellCreated = () => {
+        setIsCreateModalOpen(false);
+        fetchCells();
+    };
 
     return (
         <div style={{ maxWidth: '1400px', margin: '0 auto', paddingBottom: '2rem' }}>
@@ -36,13 +62,13 @@ const CellsDashboard = () => {
             </div>
 
             {/* Statistics */}
-            <CellStatsCards />
+            <CellStatsCards stats={stats} loading={loading} />
 
             {/* Listing & Management */}
-            <CellsList />
+            <CellsList cells={cells} loading={loading} onSearch={fetchCells} />
 
             {/* Modals */}
-            {isCreateModalOpen && <CreateCellModal onClose={() => setIsCreateModalOpen(false)} />}
+            {isCreateModalOpen && <CreateCellModal onClose={() => setIsCreateModalOpen(false)} onCreated={handleCellCreated} />}
         </div>
     );
 };

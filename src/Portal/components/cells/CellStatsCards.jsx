@@ -31,13 +31,15 @@ const StatCard = ({ icon, value, label, subtext, color = 'var(--primary)' }) => 
     </div>
 );
 
-const CellStatsCards = () => {
-    // Mock Data
+const CellStatsCards = ({ stats: apiStats, loading }) => {
+    const s = apiStats || {};
+    const activePercent = s.total_cells ? Math.round((s.active_cells / s.total_cells) * 100) : 0;
+
     const stats = [
-        { icon: '🏘️', value: '42', label: 'Total Cells', subtext: '5 new this month', color: 'var(--text-color)' },
-        { icon: '✅', value: '38', label: 'Active Cells', subtext: '90% operational', color: 'var(--primary)' },
-        { icon: '👥', value: '315', label: 'Total Members', subtext: 'Avg. 8 per cell', color: 'var(--secondary)' },
-        { icon: '⚠️', value: '3', label: 'Needs Attention', subtext: 'Low attendance', color: '#f59e0b' },
+        { icon: '🏘️', value: loading ? '—' : String(s.total_cells ?? 0), label: 'Total Cells', color: 'var(--text-color)' },
+        { icon: '✅', value: loading ? '—' : String(s.active_cells ?? 0), label: 'Active Cells', subtext: `${activePercent}% operational`, color: 'var(--primary)' },
+        { icon: '👥', value: loading ? '—' : String(s.total_members_in_cells ?? 0), label: 'Total Members', subtext: `Avg. ${s.avg_per_cell ?? 0} per cell`, color: 'var(--secondary)' },
+        { icon: '⚠️', value: loading ? '—' : String(s.needs_attention ?? 0), label: 'Needs Attention', subtext: 'Low membership', color: '#f59e0b' },
     ];
 
     return (

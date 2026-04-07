@@ -216,12 +216,15 @@ const Sidebar = ({ isOpen, onClose }) => {
         { icon: Icons.Calendar, label: 'Calendar', path: '/portal/calendar' },
         {
             icon: Icons.Cells,
-            label: 'Cell Management',
+            label: 'Follow up & Cell Management',
             path: '/portal/cell-management',
             subItems: [
                 { label: 'Cells', path: '/portal/cells' },
                 { label: 'Assign Members', path: '/portal/cells/assign' },
-                { label: 'My Cells', path: '/portal/my-cell' }
+                { label: 'Cell Attendance', path: '/portal/cells/attendance' },
+                { label: 'Cell Analytics', path: '/portal/cells/analytics' },
+                { label: 'Follow-Ups', path: '/portal/followups' },
+                { label: 'My Cell', path: '/portal/my-cell' }
             ]
         },
         {

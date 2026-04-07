@@ -1,35 +1,27 @@
 import React, { useState } from 'react';
+import api from '../../../services/api';
 
-const NewCategoryModal = ({ onClose }) => {
-    const [formData, setFormData] = useState({
-        name: '',
-        color: 'var(--primary)'
-    });
+const NewCategoryModal = ({ onClose, onCreated }) => {
+    const [name, setName] = useState('');
+    const [submitting, setSubmitting] = useState(false);
+    const [error, setError] = useState(null);
 
-    const colors = [
-        'var(--primary)', // Cyan
-        'var(--secondary)', // Purple
-        '#f59e0b', // Orange
-        '#ef4444', // Red
-        '#4ade80', // Green
-        '#ec4899', // Pink
-        '#6366f1', // Indigo
-    ];
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-    };
-
-    const handleColorSelect = (color) => {
-        setFormData(prev => ({ ...prev, color }));
-    };
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Here you would typically call an API or update parent state
-        alert('Category creation simulated: ' + JSON.stringify(formData));
-        onClose();
+        if (!name.trim()) return;
+        setSubmitting(true);
+        setError(null);
+        try {
+            const res = await api.post('/create_meeting_type.php', { name: name.trim() });
+            if (res.success) {
+                if (onCreated) onCreated();
+                onClose();
+            }
+        } catch (err) {
+            setError(err.response?.data?.error || 'Failed to create meeting type');
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     const inputStyle = {
@@ -79,41 +71,21 @@ const NewCategoryModal = ({ onClose }) => {
                 </div>
 
                 <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1.5rem' }}>
+                    {error && (
+                        <div style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', borderRadius: '0.5rem', padding: '0.75rem', color: '#ef4444', fontSize: '0.85rem' }}>
+                            {error}
+                        </div>
+                    )}
                     <div>
                         <label style={labelStyle}>Category Name</label>
                         <input
                             type="text"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            placeholder="e.g. Special Events"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="e.g. Word Session, Prayer Meeting"
                             style={inputStyle}
                             required
                         />
-                    </div>
-
-                    <div>
-                        <label style={labelStyle}>Category Color</label>
-                        <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
-                            {colors.map(color => (
-                                <button
-                                    key={color}
-                                    type="button"
-                                    onClick={() => handleColorSelect(color)}
-                                    style={{
-                                        width: '32px',
-                                        height: '32px',
-                                        borderRadius: '50%',
-                                        background: color,
-                                        border: formData.color === color ? '3px solid white' : '2px solid transparent',
-                                        cursor: 'pointer',
-                                        boxShadow: formData.color === color ? '0 0 0 2px #22c1e6' : 'none',
-                                        transition: 'all 0.2s'
-                                    }}
-                                    aria-label={`Select color ${color}`}
-                                />
-                            ))}
-                        </div>
                     </div>
 
                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '0.5rem' }}>
@@ -125,15 +97,15 @@ const NewCategoryModal = ({ onClose }) => {
                             color: 'var(--text-muted)',
                             cursor: 'pointer'
                         }}>Cancel</button>
-                        <button type="submit" style={{
+                        <button type="submit" disabled={submitting} style={{
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
                             border: 'none',
-                            background: 'var(--primary)',
+                            background: submitting ? 'var(--text-muted)' : 'var(--primary)',
                             color: 'var(--bg-color)',
                             fontWeight: '600',
-                            cursor: 'pointer'
-                        }}>Create Category</button>
+                            cursor: submitting ? 'not-allowed' : 'pointer'
+                        }}>{submitting ? 'Creating...' : 'Create Category'}</button>
                     </div>
                 </form>
             </div>

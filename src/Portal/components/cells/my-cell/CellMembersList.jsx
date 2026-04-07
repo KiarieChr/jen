@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
 
-const CellMembersList = () => {
+const CellMembersList = ({ members: apiMembers = [] }) => {
     const [searchTerm, setSearchTerm] = useState('');
 
-    // Mock Data
-    const members = [
-        { id: 1, name: 'David Kim', role: 'Member', status: 'Active' },
-        { id: 2, name: 'Alice Wonder', role: 'Member', status: 'Active' },
-        { id: 3, name: 'Frank White', role: 'Member', status: 'Away' },
-        { id: 4, name: 'Grace Liu', role: 'Intern', status: 'Active' },
-        { id: 5, name: 'Henry Ford', role: 'Member', status: 'Active' },
-        { id: 6, name: 'Ivy Blue', role: 'Member', status: 'Active' },
-    ];
+    const members = apiMembers.map(m => ({
+        id: m.id,
+        name: `${m.first_name} ${m.last_name}`,
+        role: 'Member',
+        phone: m.phone_no
+    }));
 
     const filtered = members.filter(m => m.name.toLowerCase().includes(searchTerm.toLowerCase()));
 

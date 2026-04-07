@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import api from '../../../services/api';
 import NewCategoryModal from './NewCategoryModal';
 
@@ -10,21 +10,21 @@ const MeetingCategories = () => {
     // Color palette for categories
     const colors = ['var(--primary)', '#f59e0b', '#ef4444', '#4ade80', '#a855f7', '#ec4899', '#06b6d4'];
 
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await api.get('/get_meeting_types.php');
-                if (response.success) {
-                    setCategories(response.data.meeting_types || []);
-                }
-            } catch (err) {
-                console.error('Error fetching meeting types:', err);
-            } finally {
-                setLoading(false);
+    const fetchCategories = useCallback(async () => {
+        try {
+            setLoading(true);
+            const response = await api.get('/get_meeting_types.php');
+            if (response.success) {
+                setCategories(response.data.meeting_types || []);
             }
-        };
-        fetchCategories();
+        } catch (err) {
+            console.error('Error fetching meeting types:', err);
+        } finally {
+            setLoading(false);
+        }
     }, []);
+
+    useEffect(() => { fetchCategories(); }, [fetchCategories]);
 
     return (
         <div style={{
@@ -71,7 +71,12 @@ const MeetingCategories = () => {
                 </div>
             )}
 
-            {isModalOpen && <NewCategoryModal onClose={() => setIsModalOpen(false)} />}
+            {isModalOpen && (
+                <NewCategoryModal
+                    onClose={() => setIsModalOpen(false)}
+                    onCreated={() => { setIsModalOpen(false); fetchCategories(); }}
+                />
+            )}
         </div>
     );
 };

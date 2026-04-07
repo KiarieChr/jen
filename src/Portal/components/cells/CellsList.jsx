@@ -1,22 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-const CellsList = () => {
-    const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'table'
+const CellsList = ({ cells: apiCells = [], loading, onSearch }) => {
+    const [viewMode, setViewMode] = useState('grid');
     const [searchTerm, setSearchTerm] = useState('');
+    const debounceRef = useRef(null);
 
-    // Mock Data
-    const cells = [
-        { id: 1, name: 'Goshen Alpha', leader: 'John Doe', members: 12, location: 'Westlands', day: 'Wed 6pm', status: 'Active' },
-        { id: 2, name: 'Zion Youth', leader: 'Sarah Smith', members: 25, location: 'Kilimani', day: 'Fri 7pm', status: 'Active' },
-        { id: 3, name: 'Bethel Men', leader: 'Mike Jones', members: 8, location: 'CBD', day: 'Tue 7am', status: 'Inactive' },
-        { id: 4, name: 'Grace Women', leader: 'Mary Jane', members: 15, location: 'Ngong Rd', day: 'Thu 6pm', status: 'Active' },
-        { id: 5, name: 'Hope Kids', leader: 'Alice Wonder', members: 30, location: 'Main Hall', day: 'Sun 10am', status: 'Active' },
-    ];
+    // Map API data to display format
+    const cells = apiCells.map(c => ({
+        id: c.id,
+        name: c.name || c.code,
+        leader: c.leader_name || '—',
+        members: c.member_count,
+        location: c.location || '—',
+        day: c.meeting_day ? `${c.meeting_day}${c.meeting_time ? ' ' + c.meeting_time : ''}` : '—',
+        status: c.status === 1 ? 'Active' : 'Inactive'
+    }));
 
     const filteredCells = cells.filter(cell =>
         cell.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         cell.leader.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    useEffect(() => {
+        if (debounceRef.current) clearTimeout(debounceRef.current);
+        debounceRef.current = setTimeout(() => {
+            if (onSearch) onSearch(searchTerm);
+        }, 400);
+        return () => clearTimeout(debounceRef.current);
+    }, [searchTerm]);
 
     return (
         <div style={{

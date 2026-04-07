@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import MeetingStatsCards from '../components/meetings/MeetingStatsCards';
 import MeetingsList from '../components/meetings/MeetingsList';
 import MeetingCategories from '../components/meetings/MeetingCategories';
@@ -6,6 +6,11 @@ import CreateMeetingModal from '../components/meetings/CreateMeetingModal';
 
 const MeetingsDashboard = () => {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [refreshKey, setRefreshKey] = useState(0);
+
+    const handleCreated = useCallback(() => {
+        setRefreshKey(k => k + 1);
+    }, []);
 
     return (
         <div style={{ maxWidth: '1400px', margin: '0 auto', paddingBottom: '2rem' }}>
@@ -37,12 +42,17 @@ const MeetingsDashboard = () => {
             </div>
 
             {/* Content */}
-            <MeetingStatsCards />
-            <MeetingsList />
-            <MeetingCategories />
+            <MeetingStatsCards key={`stats-${refreshKey}`} />
+            <MeetingsList key={`list-${refreshKey}`} />
+            <MeetingCategories key={`cats-${refreshKey}`} />
 
             {/* Modal */}
-            {isCreateModalOpen && <CreateMeetingModal onClose={() => setIsCreateModalOpen(false)} />}
+            {isCreateModalOpen && (
+                <CreateMeetingModal
+                    onClose={() => setIsCreateModalOpen(false)}
+                    onCreated={handleCreated}
+                />
+            )}
         </div>
     );
 };

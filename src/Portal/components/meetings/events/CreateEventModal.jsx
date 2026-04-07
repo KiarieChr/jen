@@ -1,31 +1,64 @@
-import React, { useState, useContext } from 'react';
-import { EventContext } from '../../../../context/EventContext';
+import React, { useState } from 'react';
+import api from '../../../../services/api';
 
-const CreateEventModal = ({ onClose }) => {
-    const { addEvent } = useContext(EventContext);
+const EVENT_TYPES = [
+    { value: 'conference', label: 'Conference' },
+    { value: 'service', label: 'Service' },
+    { value: 'concert', label: 'Concert' },
+    { value: 'workshop', label: 'Workshop' },
+    { value: 'outreach', label: 'Outreach' },
+    { value: 'prayer', label: 'Prayer' },
+    { value: 'training', label: 'Training' },
+    { value: 'general', label: 'General' },
+];
+
+const CreateEventModal = ({ onClose, onCreated }) => {
     const [formData, setFormData] = useState({
         name: '',
-        category: 'Sunday Service',
+        type: 'conference',
         date: '',
         time: '',
         endDate: '',
         endTime: '',
         location: '',
         description: '',
-        rsvpRequired: false,
-        trackingAttendance: true,
-        onlineLink: ''
+        targetAttendees: '',
+        facilitationFee: '',
     });
+    const [submitting, setSubmitting] = useState(false);
+    const [error, setError] = useState('');
 
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        addEvent(formData);
-        onClose();
+        setSubmitting(true);
+        setError('');
+        try {
+            const res = await api.post('create_event.php', {
+                name: formData.name,
+                type: formData.type,
+                start_date: formData.date,
+                start_time: formData.time,
+                end_date: formData.endDate,
+                end_time: formData.endTime,
+                venue: formData.location,
+                description: formData.description,
+                target_attendees: formData.targetAttendees ? parseInt(formData.targetAttendees) : 0,
+                facilitation_fee: formData.facilitationFee ? parseFloat(formData.facilitationFee) : 0,
+            });
+            if (res.success) {
+                if (onCreated) onCreated();
+                onClose();
+            }
+        } catch (err) {
+            setError(err.response?.data?.error || 'Failed to create event');
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     const inputStyle = {
@@ -43,13 +76,6 @@ const CreateEventModal = ({ onClose }) => {
         color: 'var(--text-muted)',
         fontSize: '0.85rem',
         fontWeight: '500'
-    };
-
-    const checkboxStyle = {
-        accentColor: 'var(--primary)',
-        width: '1.2rem',
-        height: '1.2rem',
-        cursor: 'pointer'
     };
 
     return (
@@ -85,6 +111,12 @@ const CreateEventModal = ({ onClose }) => {
 
                 <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1rem' }}>
 
+                    {error && (
+                        <div style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', borderRadius: '0.5rem', padding: '0.75rem', color: '#ef4444', fontSize: '0.85rem' }}>
+                            {error}
+                        </div>
+                    )}
+
                     {/* Basic Info */}
                     <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1rem' }}>
                         <div>
@@ -92,13 +124,11 @@ const CreateEventModal = ({ onClose }) => {
                             <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="e.g. Easter Conference" style={inputStyle} required />
                         </div>
                         <div>
-                            <label style={labelStyle}>Category</label>
-                            <select name="category" value={formData.category} onChange={handleChange} style={inputStyle}>
-                                <option>Sunday Service</option>
-                                <option>Conference</option>
-                                <option>Concert</option>
-                                <option>Workshop</option>
-                                <option>Outreach</option>
+                            <label style={labelStyle}>Event Type</label>
+                            <select name="type" value={formData.type} onChange={handleChange} style={inputStyle}>
+                                {EVENT_TYPES.map(t => (
+                                    <option key={t.value} value={t.value}>{t.label}</option>
+                                ))}
                             </select>
                         </div>
                     </div>
@@ -133,23 +163,15 @@ const CreateEventModal = ({ onClose }) => {
                         <textarea name="description" value={formData.description} onChange={handleChange} placeholder="Event details..." style={{ ...inputStyle, minHeight: '80px', resize: 'vertical' }} />
                     </div>
 
-                    {/* Advanced Options */}
-                    <div style={{ background: 'var(--surface-2)', padding: '1rem', borderRadius: '0.5rem', border: '1px solid var(--border-color)' }}>
-                        <div style={{ color: 'var(--text-color)', fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.5rem' }}>Settings</div>
-                        <div style={{ display: 'flex', gap: '2rem' }}>
-                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                                <input type="checkbox" name="rsvpRequired" checked={formData.rsvpRequired} onChange={handleChange} style={checkboxStyle} />
-                                RSVP Required
-                            </label>
-                            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                                <input type="checkbox" name="trackingAttendance" checked={formData.trackingAttendance} onChange={handleChange} style={checkboxStyle} />
-                                Track Attendance
-                            </label>
+                    {/* Target & Fees */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                        <div>
+                            <label style={labelStyle}>Target Attendees</label>
+                            <input type="number" name="targetAttendees" value={formData.targetAttendees} onChange={handleChange} placeholder="e.g. 100" min="0" style={inputStyle} />
                         </div>
-
-                        <div style={{ marginTop: '1rem' }}>
-                            <label style={labelStyle}>Online Link (Optional)</label>
-                            <input type="url" name="onlineLink" value={formData.onlineLink} onChange={handleChange} placeholder="https://..." style={inputStyle} />
+                        <div>
+                            <label style={labelStyle}>Facilitation Fee</label>
+                            <input type="number" name="facilitationFee" value={formData.facilitationFee} onChange={handleChange} placeholder="0.00" min="0" step="0.01" style={inputStyle} />
                         </div>
                     </div>
 
@@ -162,15 +184,15 @@ const CreateEventModal = ({ onClose }) => {
                             color: 'var(--text-muted)',
                             cursor: 'pointer'
                         }}>Cancel</button>
-                        <button type="submit" style={{
+                        <button type="submit" disabled={submitting} style={{
                             padding: '0.75rem 1.5rem',
                             borderRadius: '0.5rem',
                             border: 'none',
-                            background: 'var(--primary)',
+                            background: submitting ? 'var(--text-muted)' : 'var(--primary)',
                             color: 'var(--bg-color)',
                             fontWeight: '600',
-                            cursor: 'pointer'
-                        }}>Publish Event</button>
+                            cursor: submitting ? 'not-allowed' : 'pointer'
+                        }}>{submitting ? 'Creating...' : 'Publish Event'}</button>
                     </div>
                 </form>
             </div>

@@ -1,7 +1,19 @@
 import React, { useState } from 'react';
 
+const EVENT_TYPE_CONFIG = {
+    conference: { label: 'Conference', color: '#22c1e6', bg: 'rgba(34, 193, 230, 0.15)' },
+    service: { label: 'Service', color: '#a855f7', bg: 'rgba(168, 85, 247, 0.15)' },
+    concert: { label: 'Concert', color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.15)' },
+    workshop: { label: 'Workshop', color: '#f97316', bg: 'rgba(249, 115, 22, 0.15)' },
+    outreach: { label: 'Outreach', color: '#ec4899', bg: 'rgba(236, 72, 153, 0.15)' },
+    prayer: { label: 'Prayer', color: '#6366f1', bg: 'rgba(99, 102, 241, 0.15)' },
+    training: { label: 'Training', color: '#14b8a6', bg: 'rgba(20, 184, 166, 0.15)' },
+    general: { label: 'General', color: '#9ca3af', bg: 'rgba(156, 163, 175, 0.15)' },
+};
+
 const AllEventsTable = ({ events = [], onCreateEvent }) => {
     const [searchTerm, setSearchTerm] = useState('');
+    const [typeFilter, setTypeFilter] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 
@@ -22,10 +34,15 @@ const AllEventsTable = ({ events = [], onCreateEvent }) => {
     };
 
     // Filter events
-    const filteredEvents = events.filter(event =>
-        (event.ename || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (event.venue || '').toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredEvents = events.filter(event => {
+        const matchesSearch = (event.ename || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (event.venue || '').toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesType = !typeFilter || (event.type || 'general') === typeFilter;
+        return matchesSearch && matchesType;
+    });
+
+    // Get unique types from data for dropdown
+    const availableTypes = [...new Set(events.map(e => e.type || 'general'))].sort();
 
     // Pagination
     const totalPages = Math.ceil(filteredEvents.length / itemsPerPage);
@@ -59,6 +76,24 @@ const AllEventsTable = ({ events = [], onCreateEvent }) => {
                 </h3>
 
                 <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                    <select
+                        value={typeFilter}
+                        onChange={(e) => { setTypeFilter(e.target.value); setCurrentPage(1); }}
+                        style={{
+                            padding: '0.5rem 1rem',
+                            borderRadius: '0.5rem',
+                            border: '1px solid var(--border-color)',
+                            background: 'var(--bg-color)',
+                            color: 'var(--text-color)',
+                            fontSize: '0.85rem',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        <option value="">All Types</option>
+                        {availableTypes.map(t => (
+                            <option key={t} value={t}>{(EVENT_TYPE_CONFIG[t]?.label) || t}</option>
+                        ))}
+                    </select>
                     <input
                         type="text"
                         placeholder="Search events..."
@@ -113,6 +148,16 @@ const AllEventsTable = ({ events = [], onCreateEvent }) => {
                                 textTransform: 'uppercase'
                             }}>
                                 Event Name
+                            </th>
+                            <th style={{
+                                padding: '0.75rem 1rem',
+                                textAlign: 'left',
+                                color: 'var(--text-muted)',
+                                fontWeight: '600',
+                                fontSize: '0.75rem',
+                                textTransform: 'uppercase'
+                            }}>
+                                Type
                             </th>
                             <th style={{
                                 padding: '0.75rem 1rem',
@@ -179,7 +224,7 @@ const AllEventsTable = ({ events = [], onCreateEvent }) => {
                     <tbody>
                         {paginatedEvents.length === 0 ? (
                             <tr>
-                                <td colSpan="7" style={{
+                                <td colSpan="8" style={{
                                     padding: '2rem',
                                     textAlign: 'center',
                                     color: 'var(--text-muted)'
@@ -198,6 +243,25 @@ const AllEventsTable = ({ events = [], onCreateEvent }) => {
                                 >
                                     <td style={{ padding: '0.75rem 1rem', color: 'var(--text-color)', fontWeight: '500' }}>
                                         {event.ename || 'Untitled'}
+                                    </td>
+                                    <td style={{ padding: '0.75rem 1rem' }}>
+                                        {(() => {
+                                            const t = event.type || 'general';
+                                            const cfg = EVENT_TYPE_CONFIG[t] || EVENT_TYPE_CONFIG.general;
+                                            return (
+                                                <span style={{
+                                                    padding: '0.2rem 0.6rem',
+                                                    borderRadius: '1rem',
+                                                    fontSize: '0.7rem',
+                                                    fontWeight: '600',
+                                                    background: cfg.bg,
+                                                    color: cfg.color,
+                                                    textTransform: 'capitalize'
+                                                }}>
+                                                    {cfg.label}
+                                                </span>
+                                            );
+                                        })()}
                                     </td>
                                     <td style={{ padding: '0.75rem 1rem', color: 'var(--text-muted)' }}>
                                         {event.venue || '-'}

@@ -1,10 +1,14 @@
 import React from 'react';
 
-const CellLeaderCard = () => {
-    // Mock Data
+const CellLeaderCard = ({ cell }) => {
+    const c = cell || {};
     const leadership = {
-        leader: { name: 'John Doe', role: 'Cell Leader', email: 'john@example.com', phone: '+254 700 000 000' },
-        assistant: { name: 'Jane Smith', role: 'Assistant Leader', email: 'jane@example.com' }
+        leader: {
+            name: c.leader_first_name ? `${c.leader_first_name} ${c.leader_last_name || ''}` : '—',
+            role: 'Cell Leader',
+            email: '',
+            phone: c.leader_phone || ''
+        },
     };
 
     return (
@@ -37,14 +41,14 @@ const CellLeaderCard = () => {
                     </button>
                 </div>
 
-                {/* Assistant */}
+                {/* Assistant placeholder */}
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', padding: '1rem', background: 'var(--surface-2)', borderRadius: '0.75rem' }}>
                     <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', color: 'var(--text-color)' }}>
-                        {leadership.assistant.name.charAt(0)}
+                        ?
                     </div>
                     <div style={{ flex: 1 }}>
-                        <div style={{ color: 'var(--text-color)', fontWeight: '500', fontSize: '0.9rem' }}>{leadership.assistant.name}</div>
-                        <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>{leadership.assistant.role}</div>
+                        <div style={{ color: 'var(--text-muted)', fontWeight: '500', fontSize: '0.9rem' }}>No assistant assigned</div>
+                        <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>Assistant Leader</div>
                     </div>
                 </div>
             </div>

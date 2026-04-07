@@ -15,19 +15,33 @@ import {
 
 // Event type configurations
 const EVENT_TYPES = {
-    service: {
-        icon: Music,
+    conference: {
+        icon: Users,
         color: 'primary',
         bgClass: 'bg-primary/10',
         textClass: 'text-primary',
         borderClass: 'border-primary/30',
     },
-    meeting: {
-        icon: Users,
+    service: {
+        icon: Music,
         color: 'purple',
         bgClass: 'bg-purple-500/10',
         textClass: 'text-purple-400',
         borderClass: 'border-purple-500/30',
+    },
+    concert: {
+        icon: Music,
+        color: 'amber',
+        bgClass: 'bg-amber-500/10',
+        textClass: 'text-amber-400',
+        borderClass: 'border-amber-500/30',
+    },
+    workshop: {
+        icon: BookOpen,
+        color: 'teal',
+        bgClass: 'bg-teal-500/10',
+        textClass: 'text-teal-400',
+        borderClass: 'border-teal-500/30',
     },
     outreach: {
         icon: Heart,
@@ -36,6 +50,13 @@ const EVENT_TYPES = {
         textClass: 'text-rose-400',
         borderClass: 'border-rose-500/30',
     },
+    prayer: {
+        icon: Sparkles,
+        color: 'indigo',
+        bgClass: 'bg-indigo-500/10',
+        textClass: 'text-indigo-400',
+        borderClass: 'border-indigo-500/30',
+    },
     training: {
         icon: BookOpen,
         color: 'amber',
@@ -43,12 +64,12 @@ const EVENT_TYPES = {
         textClass: 'text-amber-400',
         borderClass: 'border-amber-500/30',
     },
-    online: {
-        icon: Video,
-        color: 'emerald',
-        bgClass: 'bg-emerald-500/10',
-        textClass: 'text-emerald-400',
-        borderClass: 'border-emerald-500/30',
+    general: {
+        icon: Calendar,
+        color: 'slate',
+        bgClass: 'bg-slate-500/10',
+        textClass: 'text-slate-400',
+        borderClass: 'border-slate-500/30',
     },
     default: {
         icon: Calendar,

@@ -1,12 +1,14 @@
 import React from 'react';
 
-const CellGroupsPanel = ({ onAssign }) => {
-    const cells = [
-        { id: 1, name: 'Goshen Alpha', leader: 'John Doe', current: 12, max: 15, location: 'Westlands' },
-        { id: 2, name: 'Zion Youth', leader: 'Sarah Smith', current: 14, max: 15, location: 'Kilimani' },
-        { id: 3, name: 'Bethel Men', leader: 'Mike Jones', current: 8, max: 12, location: 'CBD' },
-        { id: 4, name: 'Grace Women', leader: 'Mary Jane', current: 15, max: 15, location: 'Ngong Rd' },
-    ];
+const CellGroupsPanel = ({ cells: apiCells = [], onAssign }) => {
+    const cells = apiCells.map(c => ({
+        id: c.id,
+        name: c.name || c.code,
+        leader: c.leader_name || '—',
+        current: c.member_count,
+        max: c.capacity || 15,
+        location: c.location || '—'
+    }));
 
     const getCapacityColor = (current, max) => {
         const ratio = current / max;
