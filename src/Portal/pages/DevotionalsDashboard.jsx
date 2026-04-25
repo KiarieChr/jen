@@ -105,6 +105,8 @@ const DevotionalModal = ({ devotional, onClose, onSave }) => {
         scripture_reference: devotional?.scripture_reference || '',
         scripture_text: devotional?.scripture_text || '',
         message: devotional?.message || '',
+        kingdom_insight: devotional?.kingdom_insight || '',
+        prayer: devotional?.prayer || '',
         author_id: devotional?.author?.id || '',
         featured_image: devotional?.featured_image || '',
         status: devotional?.status || 'draft'
@@ -142,10 +144,14 @@ const DevotionalModal = ({ devotional, onClose, onSave }) => {
         e.preventDefault();
         setSaving(true);
         try {
+            const token = localStorage.getItem('jen_access_token');
             const endpoint = devotional ? 'update_devotional.php' : 'add_devotional.php';
             const response = await fetch(`${API_URL}${endpoint}`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                },
                 body: JSON.stringify({ ...formData, id: devotional?.id })
             });
             const data = await response.json();
@@ -153,7 +159,7 @@ const DevotionalModal = ({ devotional, onClose, onSave }) => {
                 onSave();
                 onClose();
             } else {
-                alert(data.message || 'Failed to save devotional');
+                alert(data.error || data.message || 'Failed to save devotional');
             }
         } catch (err) {
             console.error('Error saving devotional:', err);
@@ -318,6 +324,30 @@ const DevotionalModal = ({ devotional, onClose, onSave }) => {
                             />
                         </div>
 
+                        <div>
+                            <label style={labelStyle}>Kingdom Insight</label>
+                            <textarea
+                                name="kingdom_insight"
+                                value={formData.kingdom_insight}
+                                onChange={handleChange}
+                                rows={3}
+                                style={inputStyle}
+                                placeholder="Enter Kingdom Insight (optional)"
+                            />
+                        </div>
+
+                        <div>
+                            <label style={labelStyle}>Prayer</label>
+                            <textarea
+                                name="prayer"
+                                value={formData.prayer}
+                                onChange={handleChange}
+                                rows={3}
+                                style={inputStyle}
+                                placeholder="Enter Prayer (optional)"
+                            />
+                        </div>
+
                         <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1rem' }}>
                             <div>
                                 <label style={labelStyle}>Featured Image URL</label>
@@ -406,10 +436,7 @@ const DevotionalsDashboard = () => {
     const fetchDevotionals = async () => {
         try {
             setLoading(true);
-            let url = `${API_URL}get_devotionals.php?limit=10&page=${currentPage}`;
-            if (statusFilter !== 'all') {
-                url += `&status=${statusFilter}`;
-            }
+            let url = `${API_URL}get_devotionals.php?limit=10&page=${currentPage}&status=${statusFilter}`;
             const response = await fetch(url);
             const data = await response.json();
 
@@ -440,16 +467,20 @@ const DevotionalsDashboard = () => {
         if (!window.confirm('Are you sure you want to delete this devotional?')) return;
 
         try {
+            const token = localStorage.getItem('jen_access_token');
             const response = await fetch(`${API_URL}delete_devotional.php`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                },
                 body: JSON.stringify({ id })
             });
             const data = await response.json();
             if (data.success) {
                 fetchDevotionals();
             } else {
-                alert(data.message || 'Failed to delete');
+                alert(data.error || data.message || 'Failed to delete');
             }
         } catch (err) {
             console.error('Error deleting:', err);

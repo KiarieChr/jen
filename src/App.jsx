@@ -7,6 +7,7 @@ import Sermons from './website/pages/Sermons';
 import Events from './website/pages/Events';
 import Contact from './website/pages/Contact';
 import Devotionals from './website/pages/Devotionals';
+import DevotionalDetails from './website/pages/DevotionalDetails';
 import Portal from './Portal/pages/Portal';
 import PortalLayout from './Portal/layout/PortalLayout';
 import Dashboard from './Portal/pages/Dashboard';
@@ -53,6 +54,7 @@ import EventRegistration from './website/pages/EventRegistration';
 import MeetingAttendance from './website/pages/MeetingAttendance';
 import ProtectedRoute from './components/ProtectedRoute';
 import AddMemberPage from './website/pages/AddMember';
+import PartnerPledge from './website/pages/PartnerPledge';
 
 // Placeholder Pages
 const Placeholder = ({ title }) => <h1 style={{ color: 'white' }}>{title}</h1>;
@@ -70,12 +72,14 @@ function App() {
               <Route path="/sermons" element={<Sermons />} />
               <Route path="/events" element={<Events />} />
               <Route path="/devotionals" element={<Devotionals />} />
+              <Route path="/devotionals/:slug" element={<DevotionalDetails />} />
               <Route path="/events/:eventId/register" element={<EventRegistration />} />
               <Route path="/meetings/:meetingId/attend" element={<MeetingAttendance />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Portal />} />
               <Route path="/portal" element={<Portal />} />
               <Route path="/give" element={<Give />} />
+              <Route path="/partner-give" element={<PartnerPledge />} />
               <Route path="/add-member" element={<AddMemberPage />} />
 
               {/* Authenticated Portal Routes */}
