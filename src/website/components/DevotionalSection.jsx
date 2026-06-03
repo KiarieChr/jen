@@ -82,8 +82,8 @@ const DevotionalSection = ({ devotionals: propDevotionals, loading: propLoading 
                 const response = await fetch(`${API_URL}get_devotionals.php?limit=3&status=published`);
                 const data = await response.json();
 
-                if (data.success && data.devotionals?.length > 0) {
-                    const formattedDevotionals = data.devotionals.map(dev => ({
+                if (data.success && data.data?.devotionals?.length > 0) {
+                    const formattedDevotionals = data.data.devotionals.map(dev => ({
                         id: dev.id,
                         title: dev.title,
                         verse: dev.scripture_text || 'Scripture text unavailable',

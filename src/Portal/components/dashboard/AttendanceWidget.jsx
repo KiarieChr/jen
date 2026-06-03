@@ -14,8 +14,8 @@ const AttendanceWidget = () => {
             try {
                 setLoading(true);
                 const response = await api.get('/get_my_attendance.php');
-                if (response.data.success) {
-                    setAttendanceData(response.data.data);
+                if (response.success) {
+                    setAttendanceData(response.data);
                 }
             } catch (err) {
                 console.error('Error fetching attendance:', err);

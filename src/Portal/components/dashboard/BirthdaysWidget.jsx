@@ -23,8 +23,8 @@ const BirthdaysWidget = () => {
             try {
                 setLoading(true);
                 const response = await api.get('/get_upcoming_birthdays.php');
-                if (response.data.success) {
-                    setBirthdayData(response.data.data);
+                if (response.success) {
+                    setBirthdayData(response.data);
                 }
             } catch (err) {
                 console.error('Error fetching birthdays:', err);

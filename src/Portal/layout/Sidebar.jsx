@@ -253,6 +253,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         },
         { icon: Icons.Media, label: 'Media & Sermons', path: '/portal/media' },
         { icon: Icons.Devotionals, label: 'Devotionals', path: '/portal/devotionals' },
+        { icon: Icons.Dashboard, label: 'Soul Winning', path: '/portal/evangelism' },
         {
             icon: Icons.Finance,
             label: 'Financial Management',
@@ -301,6 +302,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 { label: 'Sync Database', path: '/portal/sync-database', external: true }
             ]
         },
+        { icon: Icons.Members, label: 'Team Management', path: '/portal/team' },
     ];
 
     return (

@@ -26,8 +26,8 @@ const CellOverviewWidget = () => {
             try {
                 setLoading(true);
                 const response = await api.get('/get_my_cell.php');
-                if (response.data.success) {
-                    setCellData(response.data.data);
+                if (response.success) {
+                    setCellData(response.data);
                 }
             } catch (err) {
                 console.error('Error fetching cell data:', err);

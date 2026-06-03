@@ -96,6 +96,7 @@ export const isAuthenticated = () => {
 /**
  * Update user profile
  * @param {Object} profileData - Profile data to update
+ * profileData may contain: first_name, last_name, phone_no, dob, location, bio, email
  */
 export const updateProfile = async (profileData) => {
   const response = await api.put('/auth/profile.php', profileData);
@@ -105,6 +106,35 @@ export const updateProfile = async (profileData) => {
   }
 
   throw new Error(response.error || 'Failed to update profile');
+};
+
+/**
+ * Upload profile picture
+ * @param {File} file - Image file to upload
+ * @returns {Promise<{ avatar_url: string }>}
+ */
+export const uploadAvatar = async (file) => {
+  const formData = new FormData();
+  formData.append('avatar', file);
+
+  // Use raw axios with multipart headers (not the default JSON instance)
+  const token = localStorage.getItem('jen_access_token');
+  const { API_BASE_URL } = await import('./api');
+  const response = await fetch(`${API_BASE_URL}auth/upload-avatar.php`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  const data = await response.json();
+
+  if (data.success) {
+    return data.data;
+  }
+
+  throw new Error(data.error || 'Failed to upload avatar');
 };
 
 /**
@@ -146,6 +176,7 @@ export default {
   getCurrentUser,
   isAuthenticated,
   updateProfile,
+  uploadAvatar,
   changePassword,
   requestPasswordReset,
 };

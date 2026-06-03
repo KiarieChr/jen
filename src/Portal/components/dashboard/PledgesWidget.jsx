@@ -10,8 +10,8 @@ const PledgesWidget = () => {
             try {
                 setLoading(true);
                 const response = await api.get('/get_my_pledges.php');
-                if (response.data.success) {
-                    setPledgesData(response.data.data);
+                if (response.success) {
+                    setPledgesData(response.data);
                 }
             } catch (err) {
                 console.error('Error fetching pledges:', err);

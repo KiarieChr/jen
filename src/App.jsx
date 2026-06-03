@@ -55,6 +55,8 @@ import MeetingAttendance from './website/pages/MeetingAttendance';
 import ProtectedRoute from './components/ProtectedRoute';
 import AddMemberPage from './website/pages/AddMember';
 import PartnerPledge from './website/pages/PartnerPledge';
+import TeamManagement from './Portal/pages/TeamManagement';
+import EvangelismDashboard from './Portal/pages/EvangelismDashboard';
 
 // Placeholder Pages
 const Placeholder = ({ title }) => <h1 style={{ color: 'white' }}>{title}</h1>;
@@ -132,6 +134,8 @@ function App() {
 
                 <Route path="users" element={<UsersDashboard />} />
                 <Route path="users/account" element={<MyAccountDashboard />} />
+                <Route path="team" element={<TeamManagement />} />
+                <Route path="evangelism" element={<EvangelismDashboard />} />
                 <Route path="roles" element={<Placeholder title="Roles & Permissions" />} />
               </Route>
             </Routes>

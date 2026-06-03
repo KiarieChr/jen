@@ -195,10 +195,10 @@ const Devotionals = () => {
                 const data = await response.json();
 
                 if (data.success) {
-                    setDevotionals(data.devotionals || []);
-                    setPagination(data.pagination || {});
+                    setDevotionals(data.data.devotionals || []);
+                    setPagination(data.data.pagination || {});
                 } else {
-                    setError(data.message || 'Failed to load devotionals');
+                    setError(data.error || 'Failed to load devotionals');
                 }
             } catch (err) {
                 console.error('Error fetching devotionals:', err);

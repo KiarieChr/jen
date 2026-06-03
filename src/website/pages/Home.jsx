@@ -6,6 +6,11 @@ import AnnouncementsSection from '../components/AnnouncementsSection';
 import SermonsSection from '../components/SermonsSection';
 import EventsSection from '../components/EventsSection';
 import PartnerSection from '../components/PartnerSection';
+import VisionMission from '../components/VisionMission';
+import StatsSection from '../components/StatsSection';
+import ValuesSection from '../components/ValuesSection';
+import SpheresOfInfluence from '../components/SpheresOfInfluence';
+import TeamSection from '../components/TeamSection';
 import Footer from '../components/Footer';
 import { API_BASE_URL as API_URL } from '../../services/api';
 
@@ -34,6 +39,11 @@ const Home = () => {
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             <Navbar />
             <Hero data={homeData?.hero} />
+            <StatsSection />
+            <VisionMission />
+            <ValuesSection />
+            <SpheresOfInfluence />
+            <TeamSection />
             <DevotionalSection />
             <AnnouncementsSection
                 announcements={homeData?.announcements}

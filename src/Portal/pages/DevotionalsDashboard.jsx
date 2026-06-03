@@ -121,7 +121,7 @@ const DevotionalModal = ({ devotional, onClose, onSave }) => {
                 const response = await fetch(`${API_URL}get_devotional_authors.php`);
                 const data = await response.json();
                 if (data.success) {
-                    setAuthors(data.authors || []);
+                    setAuthors(data.data.authors || []);
                 }
             } catch (err) {
                 console.error('Error fetching authors:', err);
@@ -441,10 +441,10 @@ const DevotionalsDashboard = () => {
             const data = await response.json();
 
             if (data.success) {
-                setDevotionals(data.devotionals || []);
-                setPagination(data.pagination || {});
+                setDevotionals(data.data.devotionals || []);
+                setPagination(data.data.pagination || {});
             } else {
-                setError(data.message || 'Failed to load devotionals');
+                setError(data.error || 'Failed to load devotionals');
             }
         } catch (err) {
             console.error('Error fetching devotionals:', err);

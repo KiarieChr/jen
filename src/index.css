@@ -12,6 +12,7 @@ html[data-theme="dark"] {
 
   /* Default Dark Mode Variables (Portal Theme) */
   --bg-color: #120D20;
+  --background: #120D20;
   /* Deep Purple/Black */
   --surface-1: #1A1625;
   /* Card Background */

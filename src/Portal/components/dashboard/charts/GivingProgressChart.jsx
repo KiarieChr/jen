@@ -1,15 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../../../../services/api';
 
 const GivingProgressChart = () => {
-    const data = [
-        { label: 'Q1', fulfilled: 80, pledged: 100 },
-        { label: 'Q2', fulfilled: 45, pledged: 90 },
-        { label: 'Q3', fulfilled: 95, pledged: 100 },
-        { label: 'Q4', fulfilled: 0, pledged: 100 },
-    ];
+    const [progressData, setProgressData] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProgress = async () => {
+            try {
+                setLoading(true);
+                const response = await api.get('/get_my_pledges.php');
+                if (response.success) {
+                    setProgressData(response.data.quarterly_progress || []);
+                }
+            } catch (err) {
+                console.error('Error fetching giving progress:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProgress();
+    }, []);
 
     // Max height for bars
-    const maxVal = 100;
+    const maxVal = Math.max(...progressData.map(d => Math.max(d.fulfilled, d.pledged)), 1000);
+
+    if (loading) {
+        return (
+            <div style={{ background: 'var(--surface-1)', borderRadius: '1rem', padding: '1.5rem', border: '1px solid var(--border-color)', height: '220px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ color: 'var(--text-muted)' }}>Loading...</div>
+            </div>
+        );
+    }
 
     return (
         <div style={{
@@ -33,9 +55,9 @@ const GivingProgressChart = () => {
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', height: '180px', paddingBottom: '1rem' }}>
-                {data.map((item, i) => (
+                {progressData.map((item, i) => (
                     <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', flex: 1 }}>
-                        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '4px', height: '100%' }}>
+                        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '4px', height: '100%', width: '100%', justifyContent: 'center' }}>
                             {/* Pledged Bar (Background/Ghost) */}
                             <div style={{
                                 width: '12px',

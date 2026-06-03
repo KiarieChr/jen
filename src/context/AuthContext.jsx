@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
-import { login as loginApi, logout as logoutApi, getCurrentUser, isAuthenticated as checkAuth } from '../services/authService';
+import { login as loginApi, logout as logoutApi, getCurrentUser, isAuthenticated as checkAuth, updateProfile as updateProfileApi, uploadAvatar as uploadAvatarApi } from '../services/authService';
 import { clearTokens, getAccessToken } from '../services/api';
 
 export const AuthContext = createContext();
@@ -107,6 +107,34 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
+    // Update profile fields
+    const updateProfile = useCallback(async (profileData) => {
+        const result = await updateProfileApi(profileData);
+        // Refresh user from server to keep context in sync
+        try {
+            const response = await getCurrentUser();
+            setUser(response.user);
+            setPermissions(response.permissions || []);
+        } catch (e) {
+            console.warn('Could not refresh user after profile update:', e);
+        }
+        return result;
+    }, []);
+
+    // Upload avatar
+    const uploadAvatar = useCallback(async (file) => {
+        const result = await uploadAvatarApi(file);
+        // Refresh user so profile_picture updates everywhere
+        try {
+            const response = await getCurrentUser();
+            setUser(response.user);
+            setPermissions(response.permissions || []);
+        } catch (e) {
+            console.warn('Could not refresh user after avatar upload:', e);
+        }
+        return result;
+    }, []);
+
     // Clear error
     const clearError = useCallback(() => {
         setError(null);
@@ -124,6 +152,8 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         refreshUser,
+        updateProfile,
+        uploadAvatar,
         clearError,
 
         // Permission helpers

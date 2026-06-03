@@ -18,9 +18,9 @@ const DevotionalDetails = () => {
                 const data = await response.json();
 
                 if (data.success) {
-                    setDevotional(data.devotional);
+                    setDevotional(data.data.devotional);
                 } else {
-                    setError(data.message || 'Devotional not found');
+                    setError(data.error || 'Devotional not found');
                 }
             } catch (err) {
                 console.error('Error fetching devotional:', err);
