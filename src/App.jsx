@@ -2,12 +2,15 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './website/pages/Home';
 import About from './website/pages/About';
+import TeamMemberDetails from './website/pages/TeamMemberDetails';
 import Give from './website/pages/Give';
 import Sermons from './website/pages/Sermons';
 import Events from './website/pages/Events';
 import Contact from './website/pages/Contact';
 import Devotionals from './website/pages/Devotionals';
 import DevotionalDetails from './website/pages/DevotionalDetails';
+import Talks from './website/pages/Talks';
+import Blogs from './website/pages/Blogs';
 import Portal from './Portal/pages/Portal';
 import PortalLayout from './Portal/layout/PortalLayout';
 import Dashboard from './Portal/pages/Dashboard';
@@ -55,8 +58,11 @@ import MeetingAttendance from './website/pages/MeetingAttendance';
 import ProtectedRoute from './components/ProtectedRoute';
 import AddMemberPage from './website/pages/AddMember';
 import PartnerPledge from './website/pages/PartnerPledge';
+import Partners from './website/pages/Partners';
 import TeamManagement from './Portal/pages/TeamManagement';
 import EvangelismDashboard from './Portal/pages/EvangelismDashboard';
+import Membership from './website/pages/Membership';
+import FloatingContactWidget from './website/components/FloatingContactWidget';
 
 // Placeholder Pages
 const Placeholder = ({ title }) => <h1 style={{ color: 'white' }}>{title}</h1>;
@@ -71,8 +77,13 @@ function App() {
               {/* Public Website Routes */}
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/about/team/:id" element={<TeamMemberDetails />} />
               <Route path="/sermons" element={<Sermons />} />
+              <Route path="/talks" element={<Talks />} />
+              <Route path="/blogs" element={<Blogs />} />
               <Route path="/events" element={<Events />} />
+              <Route path="/partners" element={<Partners />} />
+              <Route path="/membership" element={<Membership />} />
               <Route path="/devotionals" element={<Devotionals />} />
               <Route path="/devotionals/:slug" element={<DevotionalDetails />} />
               <Route path="/events/:eventId/register" element={<EventRegistration />} />
@@ -80,6 +91,8 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Portal />} />
               <Route path="/portal" element={<Portal />} />
+              <Route path="/cells" element={<Portal />} />
+              <Route path="/dockets" element={<Portal />} />
               <Route path="/give" element={<Give />} />
               <Route path="/partner-give" element={<PartnerPledge />} />
               <Route path="/add-member" element={<AddMemberPage />} />
@@ -139,6 +152,7 @@ function App() {
                 <Route path="roles" element={<Placeholder title="Roles & Permissions" />} />
               </Route>
             </Routes>
+            <FloatingContactWidget />
           </Router>
         </EventProvider>
       </AuthProvider>

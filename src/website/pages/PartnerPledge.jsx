@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { usePaystackPayment } from 'react-paystack';
@@ -23,6 +23,24 @@ const PartnerPledge = () => {
     const [mpesaPhone, setMpesaPhone] = useState('');
     const [mpesaStatus, setMpesaStatus] = useState(''); // '' | 'waiting' | 'done' | 'failed'
 
+    // Toast State & Effect
+    const [showToast, setShowToast] = useState(false);
+    useEffect(() => {
+        if (message.text) {
+            setShowToast(true);
+            const timer = setTimeout(() => {
+                setShowToast(false);
+            }, 4000);
+            return () => clearTimeout(timer);
+        }
+    }, [message]);
+
+    // OTP States
+    const [showOtpForm, setShowOtpForm] = useState(false);
+    const [otpCode, setOtpCode] = useState('');
+    const [maskedEmail, setMaskedEmail] = useState('');
+    const [sessionToken, setSessionToken] = useState('');
+
     // New Pledge Form
     const [showNewPledgeForm, setShowNewPledgeForm] = useState(false);
     const [newPledge, setNewPledge] = useState({
@@ -44,19 +62,42 @@ const PartnerPledge = () => {
         e.preventDefault();
         setLoading(true);
         setMessage({ text: '', type: '' });
-        setHasSearched(true);
         try {
-            const res = await axios.post(`${API_URL}public_get_pledge.php`, { search_term: searchQuery });
+            const res = await axios.post(`${API_URL}public_send_otp.php`, { search_term: searchQuery });
             if (res.data.success) {
-                setPledges(res.data.data);
-                if (res.data.data.length === 0) {
-                    setMessage({ text: 'No pledges found for this email/phone.', type: 'error' });
-                }
+                setMaskedEmail(res.data.data.email);
+                setShowOtpForm(true);
+                setMessage({ text: 'A verification code has been sent to ' + res.data.data.email, type: 'success' });
             } else {
-                setMessage({ text: res.data.error || 'Failed to search pledges', type: 'error' });
+                setMessage({ text: res.data.error || 'Failed to request verification code', type: 'error' });
             }
         } catch (error) {
-            setMessage({ text: error.response?.data?.error || 'Failed to fetch pledges.', type: 'error' });
+            setMessage({ text: error.response?.data?.error || 'Failed to search details.', type: 'error' });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleVerifyOtp = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setMessage({ text: '', type: '' });
+        try {
+            const res = await axios.post(`${API_URL}public_verify_otp.php`, {
+                search_term: searchQuery,
+                otp_code: otpCode
+            });
+            if (res.data.success) {
+                setSessionToken(res.data.data.token);
+                setPledges(res.data.data.pledges);
+                setHasSearched(true);
+                setShowOtpForm(false);
+                setMessage({ text: 'Identity verified successfully! Welcome back.', type: 'success' });
+            } else {
+                setMessage({ text: res.data.error || 'Invalid verification code', type: 'error' });
+            }
+        } catch (error) {
+            setMessage({ text: error.response?.data?.error || 'Verification failed.', type: 'error' });
         } finally {
             setLoading(false);
         }
@@ -80,10 +121,10 @@ const PartnerPledge = () => {
                 });
                 setAmountToPay(newPledge.pledges_amount);
                 // Refresh the list to include the new pledge if they already searched
-                if (hasSearched && newPledge.email) {
+                if (hasSearched && newPledge.email && sessionToken) {
                     setSearchQuery(newPledge.email);
                     // Minimal re-fetch to update stats behind the scenes
-                    axios.post(`${API_URL}public_get_pledge.php`, { search_term: newPledge.email })
+                    axios.post(`${API_URL}public_get_pledge.php`, { search_term: newPledge.email, token: sessionToken })
                         .then(r => { if(r.data.success) setPledges(r.data.data); });
                 }
             } else {
@@ -116,8 +157,8 @@ const PartnerPledge = () => {
         if (result.success) {
             setMessage({ text: 'Payment successful and recorded! 🎉', type: 'success' });
             setSelectedPledge(null);
-            if (searchQuery) {
-                const r = await axios.post(`${API_URL}public_get_pledge.php`, { search_term: searchQuery });
+            if (searchQuery && sessionToken) {
+                const r = await axios.post(`${API_URL}public_get_pledge.php`, { search_term: searchQuery, token: sessionToken });
                 if (r.data.success) setPledges(r.data.data);
             }
         } else {
@@ -155,8 +196,8 @@ const PartnerPledge = () => {
             setMpesaStatus('done');
             setMessage({ text: 'M-Pesa payment received and recorded! 🎉', type: 'success' });
             setSelectedPledge(null);
-            if (searchQuery) {
-                const r = await axios.post(`${API_URL}public_get_pledge.php`, { search_term: searchQuery });
+            if (searchQuery && sessionToken) {
+                const r = await axios.post(`${API_URL}public_get_pledge.php`, { search_term: searchQuery, token: sessionToken });
                 if (r.data.success) setPledges(r.data.data);
             }
         } else {
@@ -168,39 +209,77 @@ const PartnerPledge = () => {
 
     return (
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#f8fafc' }}>
+            <style>{`
+                @keyframes fadeInUp {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                @keyframes pulseGlow {
+                    0%, 100% { box-shadow: 0 0 35px rgba(34, 193, 230, 0.35); }
+                    50% { box-shadow: 0 0 55px rgba(34, 193, 230, 0.7); }
+                }
+                @keyframes slowFloat {
+                    0%, 100% { transform: translateY(0) scale(1); opacity: 0.8; }
+                    50% { transform: translateY(-15px) scale(1.08); opacity: 1; }
+                }
+                @keyframes slideIn {
+                    from { transform: translateY(20px) scale(0.95); opacity: 0; }
+                    to { transform: translateY(0) scale(1); opacity: 1; }
+                }
+                .hero-fade-in {
+                    opacity: 0;
+                    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                }
+                .hero-pulse {
+                    animation: pulseGlow 3s infinite ease-in-out;
+                }
+                .hero-float {
+                    animation: slowFloat 8s infinite ease-in-out;
+                }
+                .toast-enter {
+                    animation: slideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                }
+            `}</style>
             <Navbar />
             
             {/* Premium Dark Hero Section */}
             <section style={{
-                background: '#120D20',
-                padding: '10rem 1rem 6rem',
+                background: 'linear-gradient(180deg, #120D20 0%, #0d091a 100%)',
+                padding: '0 1rem 3rem',
                 textAlign: 'center',
                 color: 'white',
                 position: 'relative',
                 overflow: 'hidden'
             }}>
-                <div style={{
-                    position: 'absolute',
-                    top: '-50%',
-                    left: '-20%',
-                    width: '70%',
-                    height: '150%',
-                    background: 'radial-gradient(circle, rgba(34, 193, 230, 0.05) 0%, transparent 70%)',
-                    zIndex: 0
-                }}></div>
+                <div 
+                    className="hero-float"
+                    style={{
+                        position: 'absolute',
+                        top: '-50%',
+                        left: '-20%',
+                        width: '70%',
+                        height: '150%',
+                        background: 'radial-gradient(circle, rgba(34, 193, 230, 0.05) 0%, transparent 70%)',
+                        zIndex: 0,
+                        pointerEvents: 'none'
+                    }}
+                ></div>
 
                 <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-                    <div style={{
-                        width: '80px',
-                        height: '80px',
-                        margin: '0 auto 2rem',
-                        background: 'radial-gradient(circle, #22c1e6 10%, rgba(34, 193, 230, 0) 70%)',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        boxShadow: '0 0 40px rgba(34, 193, 230, 0.4)'
-                    }}>
+                    <div 
+                        className="hero-pulse hero-fade-in"
+                        style={{
+                            width: '80px',
+                            height: '80px',
+                            margin: '0 auto 2rem',
+                            background: 'radial-gradient(circle, #22c1e6 10%, rgba(34, 193, 230, 0) 70%)',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            animationDelay: '0.1s'
+                        }}
+                    >
                         <div style={{
                             width: '50px',
                             height: '50px',
@@ -216,37 +295,49 @@ const PartnerPledge = () => {
                         </div>
                     </div>
 
-                    <span style={{
-                        background: 'rgba(34, 193, 230, 0.1)',
-                        color: '#22c1e6',
-                        padding: '0.5rem 1rem',
-                        borderRadius: '9999px',
-                        fontSize: '0.75rem',
-                        fontWeight: '700',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.05em',
-                        display: 'inline-block',
-                        marginBottom: '1.5rem'
-                    }}>
+                    <span 
+                        className="hero-fade-in"
+                        style={{
+                            background: 'rgba(34, 193, 230, 0.1)',
+                            color: '#22c1e6',
+                            padding: '0.5rem 1rem',
+                            borderRadius: '9999px',
+                            fontSize: '0.75rem',
+                            fontWeight: '700',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.05em',
+                            display: 'inline-block',
+                            marginBottom: '1.5rem',
+                            animationDelay: '0.2s'
+                        }}
+                    >
                         MY PLEDGES
                     </span>
 
-                    <h1 style={{
-                        fontSize: '3.5rem',
-                        fontWeight: '800',
-                        marginBottom: '1.5rem',
-                        lineHeight: 1.1
-                    }}>
+                    <h1 
+                        className="hero-fade-in"
+                        style={{
+                            fontSize: '3.5rem',
+                            fontWeight: '800',
+                            marginBottom: '1.5rem',
+                            lineHeight: 1.1,
+                            animationDelay: '0.35s'
+                        }}
+                    >
                         Manage Your Giving
                     </h1>
 
-                    <p style={{
-                        fontSize: '1.125rem',
-                        color: '#94a3b8',
-                        maxWidth: '600px',
-                        margin: '0 auto',
-                        lineHeight: 1.6
-                    }}>
+                    <p 
+                        className="hero-fade-in"
+                        style={{
+                            fontSize: '1.125rem',
+                            color: '#94a3b8',
+                            maxWidth: '600px',
+                            margin: '0 auto',
+                            lineHeight: 1.6,
+                            animationDelay: '0.5s'
+                        }}
+                    >
                         Track your contributions, fulfill your pledges securely via Paystack, or make a new commitment to support the vision.
                     </p>
                 </div>
@@ -271,53 +362,150 @@ const PartnerPledge = () => {
                     </div>
                 )}
 
+                {/* OTP Verification Form */}
+                {!selectedPledge && !showNewPledgeForm && showOtpForm && (
+                    <div style={{ 
+                        background: 'white', 
+                        padding: '2.5rem', 
+                        borderRadius: '24px', 
+                        boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.08)',
+                        border: '1px solid rgba(0, 0, 0, 0.03)',
+                        textAlign: 'center'
+                    }}>
+                        <div style={{ marginBottom: '2.5rem' }}>
+                            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✉️</div>
+                            <h2 style={{ fontSize: '1.75rem', fontWeight: '800', color: '#0f172a', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>Verify Your Email</h2>
+                            <p style={{ color: '#64748b', fontSize: '0.95rem', fontWeight: '500' }}>We sent a 6-digit verification code to <strong style={{ color: '#0f172a' }}>{maskedEmail}</strong>.</p>
+                        </div>
+                        
+                        <form onSubmit={handleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', maxWidth: '400px', margin: '0 auto' }}>
+                            <input 
+                                type="text" 
+                                placeholder="Enter 6-digit code" 
+                                value={otpCode}
+                                onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                                maxLength="6"
+                                style={{ 
+                                    padding: '1.1rem 1.4rem', 
+                                    borderRadius: '16px', 
+                                    border: '2px solid #e2e8f0', 
+                                    fontSize: '1.5rem', 
+                                    fontWeight: '800', 
+                                    textAlign: 'center', 
+                                    letterSpacing: '8px', 
+                                    outline: 'none', 
+                                    transition: 'all 0.2s ease' 
+                                }}
+                                onFocus={e => { e.target.style.borderColor = '#22c1e6'; e.target.style.boxShadow = '0 0 0 4px rgba(34, 193, 230, 0.15)'; }}
+                                onBlur={e => { e.target.style.borderColor = '#e2e8f0'; e.target.style.boxShadow = 'none'; }}
+                                required
+                            />
+                            
+                            <button 
+                                type="submit" 
+                                disabled={loading || otpCode.length < 6}
+                                style={{ 
+                                    padding: '1.1rem', 
+                                    background: 'linear-gradient(135deg, #120D20 0%, #22c1e6 100%)', 
+                                    color: 'white', 
+                                    border: 'none', 
+                                    borderRadius: '16px', 
+                                    fontWeight: '800', 
+                                    fontSize: '1rem', 
+                                    cursor: (loading || otpCode.length < 6) ? 'not-allowed' : 'pointer',
+                                    transition: 'all 0.2s ease',
+                                    boxShadow: '0 6px 20px rgba(34, 193, 230, 0.2)',
+                                    opacity: (loading || otpCode.length < 6) ? 0.6 : 1
+                                }}
+                            >
+                                {loading ? 'Verifying...' : 'Verify & View Pledges'}
+                            </button>
+                            
+                            <button 
+                                type="button"
+                                onClick={() => {
+                                    setShowOtpForm(false);
+                                    setOtpCode('');
+                                    setMessage({ text: '', type: '' });
+                                }}
+                                style={{ 
+                                    background: 'none', 
+                                    border: 'none', 
+                                    color: '#64748b', 
+                                    cursor: 'pointer', 
+                                    fontSize: '0.9rem', 
+                                    fontWeight: '600', 
+                                    textDecoration: 'underline' 
+                                }}
+                            >
+                                Change Email / Phone
+                            </button>
+                        </form>
+                    </div>
+                )}
+
                 {/* Main Content Area */}
-                {!selectedPledge && !showNewPledgeForm && (
-                    <div style={{ background: 'white', padding: '2.5rem', borderRadius: '16px', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01)' }}>
+                {!selectedPledge && !showNewPledgeForm && !showOtpForm && (
+                    <div style={{ 
+                        background: 'white', 
+                        padding: '2.5rem', 
+                        borderRadius: '24px', 
+                        boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.08)',
+                        border: '1px solid rgba(0, 0, 0, 0.03)'
+                    }}>
                         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-                            <h2 style={{ fontSize: '1.75rem', fontWeight: '800', color: '#0f172a', marginBottom: '0.5rem' }}>Find Your Pledges</h2>
-                            <p style={{ color: '#64748b' }}>Enter your email or phone number to securely access your pledge history.</p>
+                            <h2 style={{ fontSize: '2rem', fontWeight: '800', color: '#0f172a', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>Find Your Pledges</h2>
+                            <p style={{ color: '#64748b', fontSize: '1rem', fontWeight: '500' }}>Enter your email or phone number to securely access your pledge history.</p>
                         </div>
                         
                         <form onSubmit={handleSearch} style={{ display: 'flex', gap: '1rem', flexDirection: 'column' }}>
-                            <div style={{ display: 'flex', gap: '1rem' }}>
+                            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                                 <input 
                                     type="text" 
                                     placeholder="e.g. name@example.com or 0712345678" 
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    style={{ flex: 1, padding: '1rem 1.25rem', borderRadius: '12px', border: '1px solid #cbd5e1', fontSize: '1rem', outline: 'none', transition: 'border-color 0.2s', boxShadow: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.02)' }}
-                                    onFocus={e => e.target.style.borderColor = '#22c1e6'}
-                                    onBlur={e => e.target.style.borderColor = '#cbd5e1'}
+                                    style={{ 
+                                        flex: '1 1 300px', 
+                                        padding: '1.1rem 1.4rem', 
+                                        borderRadius: '16px', 
+                                        border: '2px solid #e2e8f0', 
+                                        fontSize: '1rem', 
+                                        outline: 'none', 
+                                        transition: 'all 0.2s ease', 
+                                        boxShadow: '0 2px 8px rgba(0,0,0,0.01)',
+                                        fontWeight: '500'
+                                    }}
+                                    onFocus={e => { e.target.style.borderColor = '#22c1e6'; e.target.style.boxShadow = '0 0 0 4px rgba(34, 193, 230, 0.15)'; }}
+                                    onBlur={e => { e.target.style.borderColor = '#e2e8f0'; e.target.style.boxShadow = 'none'; }}
                                     required
                                 />
                                 <button 
                                     type="submit" 
                                     disabled={loading}
                                     style={{ 
-                                        padding: '1rem 2rem', 
+                                        flex: '1 1 150px',
+                                        padding: '1.1rem 2rem', 
                                         backgroundColor: '#22c1e6', 
                                         color: 'white', 
                                         border: 'none', 
-                                        borderRadius: '12px', 
+                                        borderRadius: '16px', 
                                         cursor: loading ? 'not-allowed' : 'pointer',
                                         fontWeight: '700',
                                         fontSize: '1rem',
-                                        transition: 'background-color 0.2s, transform 0.1s',
-                                        boxShadow: '0 4px 6px -1px rgba(34, 193, 230, 0.2)',
+                                        transition: 'all 0.2s ease',
+                                        boxShadow: '0 6px 20px rgba(34, 193, 230, 0.3)',
                                         opacity: loading ? 0.7 : 1
                                     }}
-                                    onMouseDown={e => e.currentTarget.style.transform = 'scale(0.98)'}
-                                    onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
                                 >
-                                    {loading ? 'Searching...' : 'Search'}
+                                    {loading ? 'Searching...' : 'Search Pledges'}
                                 </button>
                             </div>
                         </form>
 
                         <div style={{ marginTop: '2.5rem', textAlign: 'center', position: 'relative' }}>
                             <div style={{ position: 'absolute', top: '50%', left: '0', right: '0', height: '1px', background: '#e2e8f0', zIndex: 0 }}></div>
-                            <span style={{ background: 'white', padding: '0 1rem', color: '#94a3b8', fontSize: '0.875rem', fontWeight: '500', position: 'relative', zIndex: 1 }}>Or start fresh</span>
+                            <span style={{ background: 'white', padding: '0 1.25rem', color: '#94a3b8', fontSize: '0.875rem', fontWeight: '600', position: 'relative', zIndex: 1, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Or start fresh</span>
                         </div>
                         
                         <div style={{ marginTop: '1.5rem' }}>
@@ -325,20 +513,20 @@ const PartnerPledge = () => {
                                 onClick={() => setShowNewPledgeForm(true)}
                                 style={{ 
                                     width: '100%',
-                                    padding: '1rem 2rem', 
+                                    padding: '1.1rem 2rem', 
                                     backgroundColor: 'transparent', 
                                     color: '#0f172a', 
                                     border: '2px dashed #cbd5e1', 
-                                    borderRadius: '12px', 
+                                    borderRadius: '16px', 
                                     cursor: 'pointer',
-                                    fontWeight: '600',
+                                    fontWeight: '700',
                                     fontSize: '1rem',
-                                    transition: 'all 0.2s',
+                                    transition: 'all 0.25s ease',
                                 }}
-                                onMouseEnter={e => { e.target.style.borderColor = '#22c1e6'; e.target.style.color = '#22c1e6'; }}
-                                onMouseLeave={e => { e.target.style.borderColor = '#cbd5e1'; e.target.style.color = '#0f172a'; }}
+                                onMouseEnter={e => { e.target.style.borderColor = '#22c1e6'; e.target.style.color = '#22c1e6'; e.target.style.backgroundColor = 'rgba(34, 193, 230, 0.02)'; }}
+                                onMouseLeave={e => { e.target.style.borderColor = '#cbd5e1'; e.target.style.color = '#0f172a'; e.target.style.backgroundColor = 'transparent'; }}
                             >
-                                + Make a New Pledge
+                                ✨ Make a New Pledge Commitment
                             </button>
                         </div>
 
@@ -347,54 +535,75 @@ const PartnerPledge = () => {
                             <div style={{ marginTop: '3.5rem', animation: 'fadeIn 0.5s ease-in' }}>
                                 
                                 {/* Personal Statistics Dashboard */}
-                                <h3 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '1.5rem', color: '#0f172a' }}>Your Pledge Summary</h3>
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2.5rem' }}>
-                                    <div style={{ background: '#f8fafc', padding: '1.5rem', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
-                                        <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Pledged</div>
-                                        <div style={{ fontSize: '1.5rem', fontWeight: '800', color: '#0f172a', marginTop: '0.25rem' }}>KES {stats.totalPledged.toLocaleString()}</div>
+                                <h3 style={{ fontSize: '1.35rem', fontWeight: '800', marginBottom: '1.5rem', color: '#0f172a', letterSpacing: '-0.01em' }}>Your Pledge Summary</h3>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '2.5rem' }}>
+                                    <div style={{ background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)', padding: '1.5rem', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 4px 12px rgba(0,0,0,0.01)' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Pledged</span>
+                                            <span style={{ fontSize: '1.25rem' }}>💰</span>
+                                        </div>
+                                        <div style={{ fontSize: '1.75rem', fontWeight: '800', color: '#0f172a', marginTop: '0.5rem' }}>KES {stats.totalPledged.toLocaleString()}</div>
                                     </div>
-                                    <div style={{ background: '#ecfdf5', padding: '1.5rem', borderRadius: '12px', border: '1px solid #d1fae5' }}>
-                                        <div style={{ fontSize: '0.75rem', color: '#047857', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Redeemed</div>
-                                        <div style={{ fontSize: '1.5rem', fontWeight: '800', color: '#059669', marginTop: '0.25rem' }}>KES {stats.totalRedeemed.toLocaleString()}</div>
+                                    <div style={{ background: 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)', padding: '1.5rem', borderRadius: '16px', border: '1px solid #a7f3d0', boxShadow: '0 4px 12px rgba(16, 185, 129, 0.05)' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <span style={{ fontSize: '0.8rem', color: '#047857', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Redeemed</span>
+                                            <span style={{ fontSize: '1.25rem' }}>✅</span>
+                                        </div>
+                                        <div style={{ fontSize: '1.75rem', fontWeight: '800', color: '#059669', marginTop: '0.5rem' }}>KES {stats.totalRedeemed.toLocaleString()}</div>
                                     </div>
-                                    <div style={{ background: '#fff1f2', padding: '1.5rem', borderRadius: '12px', border: '1px solid #ffe4e6' }}>
-                                        <div style={{ fontSize: '0.75rem', color: '#be123c', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Pending</div>
-                                        <div style={{ fontSize: '1.5rem', fontWeight: '800', color: '#e11d48', marginTop: '0.25rem' }}>KES {stats.totalPending.toLocaleString()}</div>
+                                    <div style={{ background: 'linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)', padding: '1.5rem', borderRadius: '16px', border: '1px solid #fecaca', boxShadow: '0 4px 12px rgba(225, 29, 72, 0.05)' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <span style={{ fontSize: '0.8rem', color: '#be123c', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Pending</span>
+                                            <span style={{ fontSize: '1.25rem' }}>⏳</span>
+                                        </div>
+                                        <div style={{ fontSize: '1.75rem', fontWeight: '800', color: '#e11d48', marginTop: '0.5rem' }}>KES {stats.totalPending.toLocaleString()}</div>
                                     </div>
                                 </div>
 
-                                <h3 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '1rem', color: '#0f172a' }}>Active Commitments</h3>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                <h3 style={{ fontSize: '1.35rem', fontWeight: '800', marginBottom: '1.25rem', color: '#0f172a', letterSpacing: '-0.01em' }}>Active Commitments</h3>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                                     {pledges.map((p) => {
                                         const pct = p.pledges_amount > 0 ? Math.min(100, (p.total_redeemed / p.pledges_amount) * 100) : 0;
                                         const isComplete = parseFloat(p.remaining_balance) <= 0;
                                         
                                         return (
                                             <div key={p.id} style={{ 
-                                                padding: '1.5rem', 
+                                                padding: '1.75rem', 
                                                 border: '1px solid #e2e8f0', 
-                                                borderRadius: '12px', 
+                                                borderRadius: '18px', 
                                                 display: 'flex',
+                                                flexWrap: 'wrap',
+                                                gap: '1.5rem',
                                                 justifyContent: 'space-between',
                                                 alignItems: 'center',
                                                 background: isComplete ? '#f8fafc' : 'white',
-                                                transition: 'box-shadow 0.2s',
-                                            }}>
-                                                <div style={{ flex: 1, marginRight: '1rem' }}>
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
-                                                        <span style={{ fontWeight: '700', color: '#0f172a', fontSize: '1.125rem' }}>{p.purpose || 'General Pledge'}</span>
-                                                        {isComplete && <span style={{ background: '#d1fae5', color: '#065f46', fontSize: '0.7rem', padding: '0.15rem 0.5rem', borderRadius: '9999px', fontWeight: '600' }}>Fulfilled</span>}
+                                                boxShadow: '0 4px 15px rgba(0,0,0,0.02)',
+                                                transition: 'all 0.25s ease',
+                                            }}
+                                            className="pledge-list-card"
+                                            >
+                                                <div style={{ flex: '1 1 280px' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
+                                                        <span style={{ fontWeight: '800', color: '#0f172a', fontSize: '1.2rem', letterSpacing: '-0.01em' }}>{p.purpose || 'General Pledge'}</span>
+                                                        {isComplete ? (
+                                                            <span style={{ background: '#d1fae5', color: '#065f46', fontSize: '0.75rem', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontWeight: '700' }}>Fulfilled</span>
+                                                        ) : (
+                                                            <span style={{ background: '#e0f2fe', color: '#0369a1', fontSize: '0.75rem', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontWeight: '700' }}>In Progress</span>
+                                                        )}
                                                     </div>
                                                     
-                                                    <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.875rem', color: '#64748b', marginBottom: '0.75rem' }}>
-                                                        <span><strong style={{ color: '#334155' }}>Pledged:</strong> KES {parseFloat(p.pledges_amount).toLocaleString()}</span>
+                                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', fontSize: '0.9rem', color: '#64748b', marginBottom: '1rem' }}>
+                                                        <span><strong style={{ color: '#475569' }}>Pledged:</strong> KES {parseFloat(p.pledges_amount).toLocaleString()}</span>
                                                         <span><strong style={{ color: '#059669' }}>Paid:</strong> KES {parseFloat(p.total_redeemed).toLocaleString()}</span>
                                                         {!isComplete && <span><strong style={{ color: '#e11d48' }}>Remaining:</strong> KES {parseFloat(p.remaining_balance).toLocaleString()}</span>}
                                                     </div>
 
-                                                    {/* Progress Bar */}
-                                                    <div style={{ width: '100%', maxWidth: '300px', height: '6px', background: '#f1f5f9', borderRadius: '999px', overflow: 'hidden' }}>
-                                                        <div style={{ width: `${pct}%`, height: '100%', background: isComplete ? '#10b981' : '#22c1e6', borderRadius: '999px' }}></div>
+                                                    {/* Progress Bar Container */}
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                                        <div style={{ flex: 1, height: '8px', background: '#f1f5f9', borderRadius: '999px', overflow: 'hidden' }}>
+                                                            <div style={{ width: `${pct}%`, height: '100%', background: isComplete ? 'linear-gradient(90deg, #10b981, #059669)' : 'linear-gradient(90deg, #22c1e6, #06b6d4)', borderRadius: '999px', transition: 'width 0.5s ease-out' }}></div>
+                                                        </div>
+                                                        <span style={{ fontSize: '0.8rem', fontWeight: '700', color: isComplete ? '#059669' : '#06b6d4' }}>{pct.toFixed(0)}%</span>
                                                     </div>
                                                 </div>
                                                 
@@ -405,17 +614,20 @@ const PartnerPledge = () => {
                                                     }}
                                                     disabled={isComplete}
                                                     style={{ 
-                                                        padding: '0.75rem 1.5rem', 
-                                                        backgroundColor: isComplete ? '#e2e8f0' : '#10b981', 
+                                                        flex: '0 0 auto',
+                                                        padding: '0.85rem 1.75rem', 
+                                                        backgroundColor: isComplete ? '#cbd5e1' : '#10b981', 
                                                         color: isComplete ? '#94a3b8' : 'white', 
                                                         border: 'none', 
-                                                        borderRadius: '8px', 
+                                                        borderRadius: '12px', 
                                                         cursor: isComplete ? 'not-allowed' : 'pointer',
                                                         fontWeight: '700',
-                                                        boxShadow: isComplete ? 'none' : '0 4px 6px -1px rgba(16, 185, 129, 0.2)'
+                                                        fontSize: '0.95rem',
+                                                        transition: 'all 0.2s ease',
+                                                        boxShadow: isComplete ? 'none' : '0 4px 12px rgba(16, 185, 129, 0.25)',
                                                     }}
                                                 >
-                                                    {isComplete ? 'Complete' : 'Pay Now'}
+                                                    {isComplete ? 'Fulfilled' : 'Redeem Pledge'}
                                                 </button>
                                             </div>
                                         );
@@ -578,6 +790,49 @@ const PartnerPledge = () => {
             </div>
 
             <Footer />
+
+            {/* Floating Toast Notification */}
+            {showToast && message.text && (
+                <div style={{
+                    position: 'fixed',
+                    bottom: '24px',
+                    right: '24px',
+                    zIndex: 1100,
+                    background: message.type === 'success' 
+                        ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' 
+                        : 'linear-gradient(135deg, #e11d48 0%, #be123c 100%)',
+                    color: 'white',
+                    padding: '1.1rem 1.6rem',
+                    borderRadius: '16px',
+                    boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.85rem',
+                    fontWeight: '600',
+                    minWidth: '300px',
+                    maxWidth: '380px',
+                    border: '1px solid rgba(255,255,255,0.1)'
+                }}
+                className="toast-enter"
+                >
+                    <span style={{ fontSize: '1.25rem' }}>{message.type === 'success' ? '✅' : '⚠️'}</span>
+                    <div style={{ flex: 1, fontSize: '0.9rem', lineHeight: '1.4' }}>{message.text}</div>
+                    <button 
+                        onClick={() => setShowToast(false)}
+                        style={{
+                            background: 'none',
+                            border: 'none',
+                            color: 'white',
+                            cursor: 'pointer',
+                            fontSize: '1.3rem',
+                            opacity: 0.8,
+                            padding: '0 0 0 0.5rem',
+                            display: 'flex',
+                            alignItems: 'center'
+                        }}
+                    >×</button>
+                </div>
+            )}
         </div>
     );
 };

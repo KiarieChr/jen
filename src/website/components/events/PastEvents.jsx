@@ -2,47 +2,54 @@ import React, { useState, useEffect } from 'react';
 import { API_BASE_URL as API_URL } from '../../../services/api';
 
 const PastEventCard = ({ name, date_formatted, image, attendee_count }) => (
-    <div style={{
-        background: '#f8fafc',
-        borderRadius: '1rem',
+    <div className="past-event-card-new" style={{
+        background: 'rgba(26, 22, 37, 0.3)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        borderRadius: '1.25rem',
         overflow: 'hidden',
-        border: '1px solid rgba(0,0,0,0.05)'
+        border: '1px solid rgba(255, 255, 255, 0.05)',
+        transition: 'all 0.3s ease',
+        display: 'flex',
+        flexDirection: 'column'
     }}>
-        <div style={{ height: '200px', overflow: 'hidden', position: 'relative' }}>
+        <div style={{ height: '220px', overflow: 'hidden', position: 'relative' }}>
             <img
                 src={image || "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=1000&auto=format&fit=crop"}
                 alt={name}
+                className="past-event-card-img"
                 style={{
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
-                    filter: 'grayscale(100%)',
-                    transition: 'filter 0.3s'
+                    filter: 'grayscale(30%)',
+                    transition: 'all 0.5s ease'
                 }}
-                onMouseOver={(e) => e.target.style.filter = 'grayscale(0%)'}
-                onMouseOut={(e) => e.target.style.filter = 'grayscale(100%)'}
             />
             {attendee_count > 0 && (
                 <div style={{
                     position: 'absolute',
-                    bottom: '10px',
-                    right: '10px',
-                    background: 'rgba(0,0,0,0.7)',
-                    color: 'white',
-                    padding: '0.25rem 0.75rem',
+                    bottom: '12px',
+                    right: '12px',
+                    background: 'rgba(18, 13, 32, 0.8)',
+                    backdropFilter: 'blur(4px)',
+                    color: 'var(--secondary, #eff3c1)',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    padding: '0.3rem 0.8rem',
                     borderRadius: '9999px',
-                    fontSize: '0.75rem',
-                    fontWeight: '500'
+                    fontSize: '0.72rem',
+                    fontWeight: '700',
+                    letterSpacing: '0.02em'
                 }}>
-                    {attendee_count} attendees
+                    👥 {attendee_count} attendees
                 </div>
             )}
         </div>
-        <div style={{ padding: '1.5rem' }}>
-            <h4 style={{ fontSize: '1.1rem', fontWeight: '700', color: '#1e293b', marginBottom: '0.5rem', lineHeight: 1.3 }}>
+        <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
+            <h4 style={{ fontSize: '1.1rem', fontFamily: 'Playfair Display, serif', fontWeight: '700', color: '#ffffff', marginBottom: '0.75rem', lineHeight: 1.3 }}>
                 {name}
             </h4>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#94a3b8', fontSize: '0.85rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#94a3b8', fontSize: '0.85rem', marginTop: 'auto' }}>
                 <span>📅</span> {date_formatted}
             </div>
         </div>
@@ -89,7 +96,7 @@ const PastEvents = () => {
         return (
             <section style={{ padding: '2rem 0 6rem' }}>
                 <div className="container" style={{ maxWidth: '1000px', textAlign: 'center' }}>
-                    <p style={{ color: '#64748b' }}>Loading past events...</p>
+                    <p style={{ color: '#94a3b8' }}>Loading past events...</p>
                 </div>
             </section>
         );
@@ -100,16 +107,16 @@ const PastEvents = () => {
     }
 
     return (
-        <section style={{ padding: '2rem 0 6rem' }}>
-            <div className="container" style={{ maxWidth: '1000px' }}>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#120D20', marginBottom: '1.5rem' }}>
-                    Past Events
+        <section style={{ padding: '2rem 0 6rem', position: 'relative' }}>
+            <div className="container" style={{ maxWidth: '1000px', position: 'relative', zIndex: 2 }}>
+                <h2 style={{ fontSize: '1.8rem', fontFamily: 'Playfair Display, serif', fontWeight: '700', color: '#ffffff', marginBottom: '1.75rem' }}>
+                    Past Gatherings
                 </h2>
 
                 <div style={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                    gap: '1.5rem'
+                    gap: '2rem'
                 }}>
                     {events.map((event) => (
                         <PastEventCard key={event.id} {...event} />
@@ -117,29 +124,46 @@ const PastEvents = () => {
                 </div>
 
                 {hasMore && (
-                    <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+                    <div style={{ textAlign: 'center', marginTop: '3rem' }}>
                         <button
                             onClick={loadMore}
                             disabled={loading}
+                            className="load-more-btn-glow"
                             style={{
                                 background: 'transparent',
-                                border: '1px solid #120D20',
-                                padding: '0.6rem 2rem',
+                                border: '1.5px solid rgba(255,255,255,0.15)',
+                                padding: '0.75rem 2.25rem',
                                 borderRadius: '9999px',
-                                fontWeight: '600',
-                                color: '#120D20',
+                                fontWeight: '700',
+                                color: '#ffffff',
                                 cursor: loading ? 'not-allowed' : 'pointer',
                                 opacity: loading ? 0.6 : 1,
-                                transition: 'all 0.2s'
+                                transition: 'all 0.3s ease'
                             }}
-                            onMouseOver={(e) => { if (!loading) { e.target.style.background = '#120D20'; e.target.style.color = 'white'; } }}
-                            onMouseOut={(e) => { e.target.style.background = 'transparent'; e.target.style.color = '#120D20'; }}
                         >
-                            {loading ? 'Loading...' : 'Load More Events'}
+                            {loading ? 'Loading...' : 'Load More Past Events'}
                         </button>
                     </div>
                 )}
             </div>
+
+            <style>{`
+                .past-event-card-new:hover {
+                    transform: translateY(-6px);
+                    background: rgba(33, 28, 47, 0.5) !important;
+                    border-color: rgba(34, 193, 230, 0.2) !important;
+                    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+                }
+                .past-event-card-new:hover .past-event-card-img {
+                    filter: grayscale(0%) !important;
+                    transform: scale(1.04);
+                }
+                .load-more-btn-glow:hover {
+                    border-color: var(--primary, #22c1e6) !important;
+                    box-shadow: 0 0 15px rgba(34, 193, 230, 0.25) !important;
+                    color: var(--primary, #22c1e6) !important;
+                }
+            `}</style>
         </section>
     );
 };

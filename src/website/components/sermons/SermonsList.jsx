@@ -71,7 +71,7 @@ const SermonsList = () => {
     });
 
     return (
-        <section style={{ background: '#eff3c1', paddingBottom: '5rem' }}>
+        <section style={{ background: '#f8fafc', paddingBottom: '5rem' }}>
             <SermonsFilter
                 filter={filter}
                 setFilter={setFilter}

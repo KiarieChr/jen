@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
-import DevotionalSection from '../components/DevotionalSection';
-import AnnouncementsSection from '../components/AnnouncementsSection';
-import SermonsSection from '../components/SermonsSection';
-import EventsSection from '../components/EventsSection';
-import PartnerSection from '../components/PartnerSection';
-import VisionMission from '../components/VisionMission';
-import StatsSection from '../components/StatsSection';
-import ValuesSection from '../components/ValuesSection';
+import StrategicPlan from '../components/StrategicPlan';
 import SpheresOfInfluence from '../components/SpheresOfInfluence';
-import TeamSection from '../components/TeamSection';
+import ValuesSection from '../components/ValuesSection';
+import WhyChooseUsSection from '../components/WhyChooseUsSection';
+import FaqSection from '../components/FaqSection';
+import CtaSection from '../components/CtaSection';
 import Footer from '../components/Footer';
 import { API_BASE_URL as API_URL } from '../../services/api';
 
@@ -39,20 +35,12 @@ const Home = () => {
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             <Navbar />
             <Hero data={homeData?.hero} />
-            <StatsSection />
-            <VisionMission />
-            <ValuesSection />
+            <StrategicPlan />
             <SpheresOfInfluence />
-            <TeamSection />
-            <DevotionalSection />
-            <AnnouncementsSection
-                announcements={homeData?.announcements}
-                calendarSchedule={homeData?.calendar_schedule}
-                loading={loading}
-            />
-            <SermonsSection sermons={homeData?.sermons} loading={loading} />
-            <EventsSection event={homeData?.featured_event} loading={loading} />
-            <PartnerSection />
+            <ValuesSection />
+            <WhyChooseUsSection />
+            <FaqSection />
+            <CtaSection />
             <Footer />
         </div>
     );

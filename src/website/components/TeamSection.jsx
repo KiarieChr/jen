@@ -1,5 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { API_BASE_URL as API_URL } from '../../services/api';
+
+// Helper to get distinct portrait placeholders based on name/role
+const getMemberImage = (name, imageUrl) => {
+    if (imageUrl) {
+        return imageUrl.startsWith('http') ? imageUrl : `${API_URL.replace('api/', '')}${imageUrl}`;
+    }
+    const lowerName = String(name).toLowerCase();
+    if (lowerName.includes('benjamin')) {
+        return 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop'; // Benjamin (Director)
+    }
+    if (lowerName.includes('paul')) {
+        return 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600&auto=format&fit=crop'; // Paul (Deputy Director)
+    }
+    if (lowerName.includes('naomi')) {
+        return 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=600&auto=format&fit=crop'; // Naomi (Executive Secretary)
+    }
+    if (lowerName.includes('james')) {
+        return 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=600&auto=format&fit=crop'; // James (Media Director)
+    }
+    return 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=600&auto=format&fit=crop';
+};
 
 const TeamSection = () => {
     const [team, setTeam] = useState([]);
@@ -25,84 +47,305 @@ const TeamSection = () => {
     if (loading) return null; // Or a skeleton
     if (team.length === 0) return null;
 
+    // Filter duplicates if any (in case of double inserts)
+    const uniqueTeam = team.filter((member, index, self) =>
+        index === self.findIndex((m) => m.name === member.name && m.role === member.role)
+    );
+
     return (
-        <section style={{ padding: '100px 0', background: 'linear-gradient(to bottom, #0d0d0d, #120D20)' }}>
+        <section className="team-section-new">
+            {/* Glowing Accent Backgrounds */}
+            <div className="team-bg-glow-1"></div>
+            <div className="team-bg-glow-2"></div>
+
             <div className="container">
-                <div style={{ textAlign: 'center', marginBottom: '70px' }}>
-                    <h2 style={{ fontSize: '3.5rem', fontWeight: '800', color: 'white' }}>
-                        Our <span style={{ color: 'var(--primary)' }}>Organogram</span>
+                <div className="team-section-header">
+                    <span className="team-eyebrow">Our Leadership</span>
+                    <h2 className="team-title">
+                        Our <span>Leadership Structure</span>
                     </h2>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginTop: '10px' }}>
-                        The dedicated leadership of Jesus Enthroned Network
+                    <p className="team-subtitle">
+                        The dedicated leadership team of Jesus Enthroned Network, aligning sphere authority with Kingdom purpose.
                     </p>
                 </div>
 
-                <div style={{ 
-                    display: 'grid', 
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
-                    gap: '2.5rem' 
-                }}>
-                    {team.map((member, index) => (
-                        <div key={member.id} className="team-card" style={{
-                            background: 'rgba(255, 255, 255, 0.02)',
-                            borderRadius: '30px',
-                            padding: '30px',
-                            textAlign: 'center',
-                            border: '1px solid rgba(255, 255, 255, 0.05)',
-                            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                            position: 'relative',
-                            overflow: 'hidden'
-                        }}>
-                            <div style={{ 
-                                width: '180px', 
-                                height: '180px', 
-                                borderRadius: '50%', 
-                                margin: '0 auto 25px',
-                                padding: '8px',
-                                border: '2px solid var(--primary)',
-                                position: 'relative'
-                            }}>
-                                <img 
-                                    src={member.image_url ? (member.image_url.startsWith('http') ? member.image_url : `${API_URL.replace('api/', '')}${member.image_url}`) : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop'} 
-                                    alt={member.name} 
-                                    style={{ 
-                                        width: '100%', 
-                                        height: '100%', 
-                                        borderRadius: '50%', 
-                                        objectFit: 'cover' 
-                                    }} 
-                                />
-                            </div>
+                <div className="team-grid">
+                    {uniqueTeam.map((member) => (
+                        <Link 
+                            key={member.id} 
+                            to={`/about/team/${member.id}`} 
+                            className="team-card-link"
+                        >
+                            <div className="team-card-new">
+                                {/* Frame Container */}
+                                <div className="team-img-frame">
+                                    <img 
+                                        src={getMemberImage(member.name, member.image_url)} 
+                                        alt={member.name} 
+                                        className="team-member-img"
+                                    />
+                                    {/* View Info tag overlay */}
+                                    <div className="team-card-overlay">
+                                        <span>View Bio & Message →</span>
+                                    </div>
+                                </div>
 
-                            <h3 style={{ color: 'white', fontSize: '1.5rem', fontWeight: '700', marginBottom: '8px' }}>
-                                {member.name}
-                            </h3>
-                            <p style={{ color: 'var(--primary)', fontWeight: '600', fontSize: '0.95rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                                {member.role}
-                            </p>
-                            
-                            {member.bio && (
-                                <p style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '0.9rem', lineHeight: 1.6, marginTop: '15px' }}>
-                                    {member.bio}
-                                </p>
-                            )}
+                                <div className="team-card-content">
+                                    <h3 className="team-member-name">
+                                        {member.name}
+                                    </h3>
+                                    <p className="team-member-role">
+                                        {member.role}
+                                    </p>
+                                    
+                                    {member.bio && (
+                                        <p className="team-member-bio-snippet">
+                                            {member.bio.length > 95 ? `${member.bio.substring(0, 95)}...` : member.bio}
+                                        </p>
+                                    )}
 
-                            <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginTop: '20px' }}>
-                                {member.twitter_url && <a href={member.twitter_url} style={{ color: 'white', opacity: 0.5 }}><i className="bi bi-twitter-x"></i></a>}
-                                {member.facebook_url && <a href={member.facebook_url} style={{ color: 'white', opacity: 0.5 }}><i className="bi bi-facebook"></i></a>}
-                                {member.instagram_url && <a href={member.instagram_url} style={{ color: 'white', opacity: 0.5 }}><i className="bi bi-instagram"></i></a>}
-                                {member.linkedin_url && <a href={member.linkedin_url} style={{ color: 'white', opacity: 0.5 }}><i className="bi bi-linkedin"></i></a>}
+                                    <div className="team-member-action">
+                                        <span>Read Profile</span>
+                                        <svg viewBox="0 0 14 14" fill="none" className="profile-arrow-icon">
+                                            <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </div>
+
             <style>{`
-                .team-card:hover {
-                    transform: translateY(-10px);
-                    background: rgba(255, 255, 255, 0.05);
-                    border-color: var(--primary);
-                    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+                .team-section-new {
+                    padding: 96px 0;
+                    background: linear-gradient(180deg, #120D20 0%, #0d0a18 100%);
+                    position: relative;
+                    overflow: hidden;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                }
+
+                .team-bg-glow-1 {
+                    position: absolute;
+                    top: 20%;
+                    left: -10%;
+                    width: 400px;
+                    height: 400px;
+                    background: radial-gradient(circle, rgba(34, 193, 230, 0.06) 0%, transparent 70%);
+                    pointer-events: none;
+                    z-index: 1;
+                }
+
+                .team-bg-glow-2 {
+                    position: absolute;
+                    bottom: 10%;
+                    right: -10%;
+                    width: 350px;
+                    height: 350px;
+                    background: radial-gradient(circle, rgba(239, 243, 193, 0.04) 0%, transparent 70%);
+                    pointer-events: none;
+                    z-index: 1;
+                }
+
+                .team-section-header {
+                    text-align: center;
+                    margin-bottom: 64px;
+                    position: relative;
+                    z-index: 2;
+                }
+
+                .team-eyebrow {
+                    font-size: 11px;
+                    letter-spacing: 0.3em;
+                    text-transform: uppercase;
+                    color: var(--primary, #22c1e6);
+                    font-weight: 600;
+                    margin-bottom: 16px;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 12px;
+                    font-family: var(--font-sans), sans-serif;
+                }
+
+                .team-eyebrow::after {
+                    content: '';
+                    width: 40px;
+                    height: 1.5px;
+                    background: var(--primary, #22c1e6);
+                }
+
+                .team-title {
+                    font-family: 'Playfair Display', var(--font-sans), sans-serif;
+                    font-size: clamp(2rem, 4vw, 3.2rem);
+                    font-weight: 800;
+                    color: #ffffff;
+                    margin-bottom: 16px;
+                }
+
+                .team-title span {
+                    background: linear-gradient(to right, var(--primary, #22c1e6), var(--secondary, #eff3c1));
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+
+                .team-subtitle {
+                    font-size: 16px;
+                    color: var(--text-muted, #94a3b8);
+                    max-width: 600px;
+                    margin: 0 auto;
+                    line-height: 1.7;
+                }
+
+                .team-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                    gap: 32px;
+                    position: relative;
+                    z-index: 2;
+                }
+
+                .team-card-link {
+                    text-decoration: none;
+                    color: inherit;
+                    display: block;
+                }
+
+                .team-card-new {
+                    background: rgba(26, 22, 37, 0.4);
+                    backdrop-filter: blur(12px);
+                    -webkit-backdrop-filter: blur(12px);
+                    border: 1px solid rgba(255, 255, 255, 0.05);
+                    border-radius: 24px;
+                    overflow: hidden;
+                    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                .team-card-link:hover .team-card-new {
+                    transform: translateY(-8px);
+                    background: rgba(33, 28, 47, 0.6);
+                    border-color: rgba(34, 193, 230, 0.3);
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+                }
+
+                .team-img-frame {
+                    position: relative;
+                    aspect-ratio: 1;
+                    width: 180px;
+                    height: 180px;
+                    margin: 32px auto 0;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    border: 2px solid rgba(255, 255, 255, 0.1);
+                    transition: all 0.4s ease;
+                }
+
+                .team-card-link:hover .team-img-frame {
+                    border-color: var(--primary, #22c1e6);
+                    box-shadow: 0 0 20px rgba(34, 193, 230, 0.2);
+                }
+
+                .team-member-img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    transition: transform 0.6s ease;
+                }
+
+                .team-card-link:hover .team-member-img {
+                    transform: scale(1.08);
+                }
+
+                .team-card-overlay {
+                    position: absolute;
+                    inset: 0;
+                    background: rgba(18, 13, 32, 0.7);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                }
+
+                .team-card-link:hover .team-card-overlay {
+                    opacity: 1;
+                }
+
+                .team-card-overlay span {
+                    color: var(--primary, #22c1e6);
+                    font-size: 12px;
+                    font-weight: 700;
+                    letter-spacing: 0.05em;
+                }
+
+                .team-card-content {
+                    padding: 24px;
+                    text-align: center;
+                    display: flex;
+                    flex-direction: column;
+                    flex: 1;
+                }
+
+                .team-member-name {
+                    font-family: 'Playfair Display', var(--font-sans), sans-serif;
+                    color: #ffffff;
+                    font-size: 1.3rem;
+                    font-weight: 700;
+                    margin-bottom: 6px;
+                }
+
+                .team-member-role {
+                    font-size: 12px;
+                    font-weight: 700;
+                    letter-spacing: 0.1em;
+                    text-transform: uppercase;
+                    color: var(--primary, #22c1e6);
+                    margin-bottom: 16px;
+                }
+
+                .team-member-bio-snippet {
+                    font-size: 13.5px;
+                    color: var(--text-muted, #94a3b8);
+                    line-height: 1.6;
+                    margin-bottom: 24px;
+                    opacity: 0.85;
+                }
+
+                .team-member-action {
+                    margin-top: auto;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    font-size: 13px;
+                    font-weight: 600;
+                    color: var(--secondary, #eff3c1);
+                    transition: color 0.2s ease;
+                }
+
+                .team-card-link:hover .team-member-action {
+                    color: var(--primary, #22c1e6);
+                }
+
+                .profile-arrow-icon {
+                    width: 14px;
+                    height: 14px;
+                    transition: transform 0.25s ease;
+                }
+
+                .team-card-link:hover .profile-arrow-icon {
+                    transform: translateX(4px);
+                }
+
+                @media (max-width: 600px) {
+                    .team-grid {
+                        grid-template-columns: 1fr;
+                        padding: 0 4%;
+                    }
                 }
             `}</style>
         </section>

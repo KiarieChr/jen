@@ -4,6 +4,17 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { API_BASE_URL as API_URL } from '../../services/api';
 
+const formatImage = (img) => {
+    if (!img) return 'https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=2000&auto=format&fit=crop';
+    if (img.startsWith('http://') || img.startsWith('https://') || img.startsWith('data:') || img.startsWith('/')) {
+        return img;
+    }
+    if (img.includes('photo-') || img.startsWith('photo-')) {
+        return `https://images.unsplash.com/${img}`;
+    }
+    return img;
+};
+
 const DevotionalDetails = () => {
     const { slug } = useParams();
     const [devotional, setDevotional] = useState(null);
@@ -37,7 +48,7 @@ const DevotionalDetails = () => {
         return (
             <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
                 <Navbar />
-                <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#eff3c1' }}>
+                <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f8fafc' }}>
                     <div style={{ fontSize: '1.5rem', color: 'var(--text-muted)' }}>Loading devotional...</div>
                 </div>
                 <Footer />
@@ -49,7 +60,7 @@ const DevotionalDetails = () => {
         return (
             <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
                 <Navbar />
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#eff3c1' }}>
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#f8fafc' }}>
                     <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>⚠️</div>
                     <h2 style={{ color: 'var(--background)' }}>{error || 'Devotional Not Found'}</h2>
                     <Link to="/devotionals" style={{ marginTop: '1rem', color: 'var(--primary-hover)', textDecoration: 'underline' }}>
@@ -62,7 +73,7 @@ const DevotionalDetails = () => {
     }
 
     return (
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#eff3c1' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#f8fafc' }}>
             <Navbar />
             
             <div style={{ paddingTop: '80px', flex: 1 }}>
@@ -70,7 +81,7 @@ const DevotionalDetails = () => {
                 <div style={{ 
                     width: '100%', 
                     height: '400px', 
-                    backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8)), url(${devotional.featured_image || 'https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=2000&auto=format&fit=crop'})`,
+                    backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8)), url(${formatImage(devotional.featured_image)})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     display: 'flex',

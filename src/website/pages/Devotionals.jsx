@@ -4,39 +4,145 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { API_BASE_URL as API_URL } from '../../services/api';
 
+const formatImage = (img) => {
+    if (!img) return 'https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=1000&auto=format&fit=crop';
+    if (img.startsWith('http://') || img.startsWith('https://') || img.startsWith('data:') || img.startsWith('/')) {
+        return img;
+    }
+    if (img.includes('photo-') || img.startsWith('photo-')) {
+        return `https://images.unsplash.com/${img}`;
+    }
+    return img;
+};
+
 // Hero Component
 const DevotionalsHero = () => (
     <section style={{
-        background: 'linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=2000&auto=format&fit=crop")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        padding: '8rem 0 6rem',
+        background: 'linear-gradient(180deg, #120D20 0%, #0d091a 100%)',
+        padding: '0.5rem 1rem 5rem',
         color: 'white',
-        textAlign: 'center',
+        position: 'relative',
+        overflow: 'hidden',
         marginTop: '80px'
     }}>
-        <div className="container">
-            <span style={{
-                background: 'rgba(34, 193, 230, 0.2)',
-                color: 'var(--primary-hover)',
-                padding: '0.5rem 1rem',
-                borderRadius: '9999px',
-                fontSize: '0.875rem',
-                fontWeight: '600',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-                display: 'inline-block',
-                marginBottom: '1rem'
+        {/* Geometric Masked Background Glow */}
+        <div style={{
+            position: 'absolute',
+            right: 0,
+            bottom: 0,
+            width: '50%',
+            height: '100%',
+            background: 'linear-gradient(135deg, rgba(34, 193, 230, 0.08) 0%, transparent 100%)',
+            clipPath: 'polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%)',
+            zIndex: 0,
+            pointerEvents: 'none'
+        }}></div>
+
+        <div style={{
+            position: 'absolute',
+            top: '-30%',
+            left: '-10%',
+            width: '60%',
+            height: '160%',
+            background: 'radial-gradient(circle, rgba(34, 193, 230, 0.06) 0%, transparent 70%)',
+            zIndex: 0,
+            pointerEvents: 'none'
+        }}></div>
+
+        <div className="container" style={{ position: 'relative', zIndex: 1, maxWidth: '1100px', margin: '0 auto' }}>
+            <div className="hero-grid" style={{
+                display: 'grid',
+                gridTemplateColumns: '1.2fr 0.8fr',
+                gap: '3rem',
+                alignItems: 'center'
             }}>
-                📖 Daily Inspiration
-            </span>
-            <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', marginBottom: '1rem' }}>
-                Daily Devotionals
-            </h1>
-            <p style={{ fontSize: '1.25rem', maxWidth: '600px', margin: '0 auto', opacity: '0.9' }}>
-                Start your day with God's Word and be inspired by daily devotional messages from our ministry.
-            </p>
+                {/* Left Column: Text Content */}
+                <div style={{ textAlign: 'left' }}>
+                    <span style={{
+                        background: 'rgba(34, 193, 230, 0.1)',
+                        color: '#22c1e6',
+                        padding: '0.5rem 1rem',
+                        borderRadius: '9999px',
+                        fontSize: '0.75rem',
+                        fontWeight: '700',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                        display: 'inline-block',
+                        marginBottom: '1.5rem'
+                    }}>
+                        📖 Daily Inspiration
+                    </span>
+                    
+                    <h1 style={{
+                        fontSize: '3.75rem',
+                        fontWeight: '800',
+                        marginBottom: '1.5rem',
+                        lineHeight: 1.1,
+                        letterSpacing: '-0.02em'
+                    }}>
+                        Daily Devotionals
+                    </h1>
+                    
+                    <p style={{
+                        fontSize: '1.125rem',
+                        color: '#94a3b8',
+                        lineHeight: 1.6,
+                        margin: 0
+                    }}>
+                        Start your day with God's Word and be inspired by daily devotional messages from our ministry.
+                    </p>
+                </div>
+
+                {/* Right Column: Masked Image */}
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <div style={{
+                        position: 'relative',
+                        width: '100%',
+                        maxWidth: '350px',
+                        height: '240px',
+                        borderRadius: '24px',
+                        overflow: 'hidden',
+                        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)'
+                    }}>
+                        <img 
+                            src="https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=1000&auto=format&fit=crop" 
+                            alt="Holy Bible" 
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover'
+                            }}
+                        />
+                        <div style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            background: 'linear-gradient(45deg, rgba(18, 13, 32, 0.4) 0%, rgba(34, 193, 230, 0.2) 100%)',
+                            pointerEvents: 'none'
+                        }}></div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <style>{`
+            @media (max-width: 768px) {
+                .hero-grid {
+                    grid-template-columns: 1fr !important;
+                    gap: 2.5rem !important;
+                    text-align: center !important;
+                }
+                .hero-grid div {
+                    text-align: center !important;
+                }
+                h1 {
+                    font-size: 2.5rem !important;
+                }
+            }
+        `}</style>
     </section>
 );
 
@@ -57,7 +163,7 @@ const DevotionalCard = ({ devotional, featured = false }) => (
     >
         <div style={{ position: 'relative', height: featured ? '300px' : '200px' }}>
             <img
-                src={devotional.featured_image || `https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=1000&auto=format&fit=crop`}
+                src={formatImage(devotional.featured_image)}
                 alt={devotional.title}
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
@@ -194,9 +300,11 @@ const Devotionals = () => {
                 const response = await fetch(`${API_URL}get_devotionals.php?limit=9&page=${currentPage}`);
                 const data = await response.json();
 
+                console.log(data);
+
                 if (data.success) {
-                    setDevotionals(data.data.devotionals || []);
-                    setPagination(data.data.pagination || {});
+                    setDevotionals(data.devotionals || []);
+                    setPagination(data.pagination || {});
                 } else {
                     setError(data.error || 'Failed to load devotionals');
                 }
@@ -222,7 +330,7 @@ const Devotionals = () => {
             <DevotionalsHero />
 
             {/* Content wrapper */}
-            <div style={{ background: '#eff3c1', flex: 1, padding: '4rem 0' }}>
+            <div style={{ background: '#f8fafc', flex: 1, padding: '4rem 0' }}>
                 <div className="container">
                     {/* Error Message */}
                     {error && (
