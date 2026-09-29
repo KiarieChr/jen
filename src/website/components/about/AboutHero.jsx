@@ -104,7 +104,7 @@ const AboutHero = () => {
 
             <style>{`
                 .about-hero-section {
-                    padding: 40px 0 30px;
+                    padding: 10px 0 30px;
                     background-color: var(--background, #120D20);
                     color: var(--text, #ffffff);
                     position: relative;

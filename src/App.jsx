@@ -63,6 +63,9 @@ import TeamManagement from './Portal/pages/TeamManagement';
 import EvangelismDashboard from './Portal/pages/EvangelismDashboard';
 import Membership from './website/pages/Membership';
 import FloatingContactWidget from './website/components/FloatingContactWidget';
+import MerchandisePage from './website/MerchandisePage';
+import MerchandiseDashboard from './Portal/pages/merchandise/MerchandiseDashboard';
+import OrdersDashboard from './Portal/pages/merchandise/OrdersDashboard';
 
 // Placeholder Pages
 const Placeholder = ({ title }) => <h1 style={{ color: 'white' }}>{title}</h1>;
@@ -96,6 +99,7 @@ function App() {
               <Route path="/give" element={<Give />} />
               <Route path="/partner-give" element={<PartnerPledge />} />
               <Route path="/add-member" element={<AddMemberPage />} />
+              <Route path="/merchandise" element={<MerchandisePage />} />
 
               {/* Authenticated Portal Routes */}
               <Route path="/portal" element={
@@ -144,6 +148,10 @@ function App() {
                 <Route path="accounting/journal-entries" element={<JournalEntriesPage />} />
                 <Route path="accounting/payroll" element={<PayrollPage />} />
                 <Route path="accounting/audit-log" element={<AuditLogPage />} />
+
+                {/* Merchandise & Orders Routes */}
+                <Route path="merchandise" element={<MerchandiseDashboard />} />
+                <Route path="merchandise/orders" element={<OrdersDashboard />} />
 
                 <Route path="users" element={<UsersDashboard />} />
                 <Route path="users/account" element={<MyAccountDashboard />} />

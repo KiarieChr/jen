@@ -69,7 +69,7 @@ const EventsHero = () => {
             <style>{`
                 .events-hero-section {
                     padding: 80px 0 50px;
-                    background-color: #120D20;
+                    background: linear-gradient(135deg, rgba(18, 13, 32, 0.65 ) 0%, rgba(13, 9, 26, 0.59) 100% );
                     color: #ffffff;
                     position: relative;
                     overflow: hidden;
@@ -82,7 +82,7 @@ const EventsHero = () => {
                     inset: 0;
                     background: radial-gradient(circle at 20% 30%, rgba(34, 193, 230, 0.08) 0%, transparent 60%),
                                 radial-gradient(circle at 80% 80%, rgba(239, 243, 193, 0.04) 0%, transparent 60%);
-                    clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
+                    clip-path: polygon(0 15%, 100% 0, 100% 85%, 0% 100%);
                     pointer-events: none;
                     z-index: 1;
                     will-change: transform;

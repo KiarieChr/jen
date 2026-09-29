@@ -203,7 +203,7 @@ const Partners = () => {
             
             {/* Hero Section */}
             <section id="partners-hero" style={{
-                background: 'linear-gradient(180deg, #120D20 0%, #0d091a 100%)',
+                background: 'linear-gradient(235deg, rgba(18, 13, 32, 0.65 ) 0%, rgba(13, 9, 26, 0.59) 100%),url(/DSC_0048.JPG) center center',
                 padding: '0.5rem 1rem 5.5rem',
                 color: 'white',
                 position: 'relative',
@@ -217,7 +217,7 @@ const Partners = () => {
                     bottom: 0,
                     width: '50%',
                     height: '100%',
-                    background: 'linear-gradient(135deg, rgba(34, 193, 230, 0.08) 0%, transparent 100%),url()',
+                    background: 'linear-gradient(135deg, rgba(34, 193, 230, 0.38) 0%, transparent 100%)',
                     clipPath: 'polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%)',
                     zIndex: 0,
                     pointerEvents: 'none'

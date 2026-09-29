@@ -2,6 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { API_BASE_URL as API_URL } from '../../services/api';
 
+{/*
+  Event registration form
+  
+  Requirements 
+  Full Name,
+  Phone Number
+  Email Address
+  REsidence,
+  Geneder
+  Area Travel from
+  Guardian Telno
+*/}
+
 const EventRegistration = () => {
     const { eventId } = useParams();
     const navigate = useNavigate();
@@ -124,7 +137,7 @@ const EventRegistration = () => {
     const styles = {
         container: {
             minHeight: '100vh',
-            background: 'linear-gradient(135deg, #1A1625 0%, #2D1F47 50%, #1A1625 100%)',
+            background: 'linear-gradient(135deg,rgba(18, 13, 32, 0.78) 0%, rgba(13, 9, 26, 0.73) 100%),url(/DSC_0263.JPG) center center',
             padding: '2rem 1rem'
         },
         card: {
@@ -137,7 +150,7 @@ const EventRegistration = () => {
             overflow: 'hidden'
         },
         header: {
-            background: 'linear-gradient(135deg, #884ABA 0%, #6B3A9E 100%)',
+            background: 'linear-gradient(135deg, #120D20 0%, #120d20bc 100%)',
             padding: '2rem',
             textAlign: 'center'
         },
@@ -163,7 +176,7 @@ const EventRegistration = () => {
             width: '80px',
             height: '4px',
             borderRadius: '2px',
-            background: isCompleted ? '#22c1e6' : isActive ? '#884ABA' : 'rgba(255,255,255,0.2)',
+            background: isCompleted ? '#22c1e6' : isActive ? '#EFF3C1' : 'rgba(255,255,255,0.2)',
             transition: 'all 0.3s ease'
         }),
         formBody: {
@@ -239,7 +252,7 @@ const EventRegistration = () => {
         checkbox: {
             width: '20px',
             height: '20px',
-            accentColor: '#884ABA'
+            accentColor: '#22c1e6'
         },
         buttonRow: {
             display: 'flex',
@@ -250,7 +263,7 @@ const EventRegistration = () => {
         btnPrimary: {
             flex: 1,
             padding: '1rem',
-            background: 'linear-gradient(135deg, #884ABA 0%, #6B3A9E 100%)',
+            background: 'linear-gradient(135deg, #22c1e6 0%, #05b5dc 100%)',
             color: '#fff',
             border: 'none',
             borderRadius: '0.75rem',
@@ -383,7 +396,7 @@ const EventRegistration = () => {
                         {step === 1 && (
                             <div>
                                 <h3 style={styles.stepTitle}>
-                                    <span style={{ color: '#884ABA' }}>01</span> Personal Information
+                                    <span style={{ color: '#22c1e6' }}>01</span> Personal Information
                                 </h3>
                                 <div style={styles.formGrid}>
                                     <div style={styles.inputGroup}>
@@ -460,7 +473,7 @@ const EventRegistration = () => {
                         {step === 2 && (
                             <div>
                                 <h3 style={styles.stepTitle}>
-                                    <span style={{ color: '#884ABA' }}>02</span> Event Details
+                                    <span style={{ color: '#22c1e6' }}>02</span> Event Details
                                 </h3>
                                 <div style={styles.formGrid}>
                                     <div style={styles.formRow}>
@@ -525,7 +538,7 @@ const EventRegistration = () => {
                         {step === 3 && (
                             <div>
                                 <h3 style={styles.stepTitle}>
-                                    <span style={{ color: '#884ABA' }}>03</span> Additional Information
+                                    <span style={{ color: '#22c1e6' }}>03</span> Additional Information
                                 </h3>
                                 <div style={styles.formGrid}>
                                     <div style={styles.inputGroup}>

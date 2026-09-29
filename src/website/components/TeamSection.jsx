@@ -9,18 +9,18 @@ const getMemberImage = (name, imageUrl) => {
     }
     const lowerName = String(name).toLowerCase();
     if (lowerName.includes('benjamin')) {
-        return 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop'; // Benjamin (Director)
+        return '/DSC_0166.JPG'; // Benjamin (Director)
     }
     if (lowerName.includes('paul')) {
-        return 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600&auto=format&fit=crop'; // Paul (Deputy Director)
+        return '/DSC_0094.JPG'; // Paul (Deputy Director)
     }
     if (lowerName.includes('naomi')) {
-        return 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=600&auto=format&fit=crop'; // Naomi (Executive Secretary)
+        return '/DSC_0243.JPG'; // Naomi (Executive Secretary)
     }
     if (lowerName.includes('james')) {
-        return 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=600&auto=format&fit=crop'; // James (Media Director)
+        return '/DSC_0071.JPG'; // James (Media Director)
     }
-    return 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=600&auto=format&fit=crop';
+    return '/DSC_0065.JPG';
 };
 
 const TeamSection = () => {

@@ -51,6 +51,28 @@ const Hero = () => {
 
             {/* Gradient Overlay */}
             <div className="hero-gradient-overlay"></div>
+                <div style={{
+                    position: 'absolute',
+                    right: 0,
+                    bottom: 0,
+                    width: '50%',
+                    height: '100%',
+                    background: 'linear-gradient(135deg, rgba(34, 193, 230, 0.38) 0%, transparent 100%)',
+                    clipPath: 'polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%)',
+                    zIndex: 0,
+                    pointerEvents: 'none'
+                }}></div>
+
+                <div style={{
+                    position: 'absolute',
+                    top: '-30%',
+                    left: '-10%',
+                    width: '60%',
+                    height: '160%',
+                    background: 'radial-gradient(circle, rgba(34, 193, 230, 0.06) 0%, transparent 70%)',
+                    zIndex: 0,
+                    pointerEvents: 'none'
+                }}></div>
 
             {/* Animated Background Image */}
             <div className="hero-bg-image"></div>

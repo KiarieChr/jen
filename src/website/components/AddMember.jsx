@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { API_BASE_URL as API_URL } from '../../services/api';
 
+{/*
+ Add the member form for the login page
+    
+*/}
+
 const inputStyle = {
     width: '100%',
     padding: '0.75rem',
