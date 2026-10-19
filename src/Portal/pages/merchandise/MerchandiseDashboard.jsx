@@ -57,10 +57,11 @@ const MerchandiseDashboard = () => {
         
         if (product.variants && product.variants.length > 0) {
             setVariants(product.variants.map(v => ({
+                id: v.id,
                 color: v.color,
                 size: v.size,
                 price_adjustment: v.price,
-                stock: v.stock
+                stock: v.stock_quantity !== undefined ? v.stock_quantity : (v.stock || 10)
             })));
         } else {
             setVariants([{ color: '', size: '', price_adjustment: '0.00', stock: 10 }]);

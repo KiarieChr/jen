@@ -76,7 +76,7 @@ const CreateMeetingModal = ({ onClose, onCreated }) => {
             if (bannerFile) fd.append('banner', bannerFile);
 
             const res = await api.post('/create_meeting.php', fd, {
-                headers: { 'Content-Type': 'multipart/form-data' }
+                headers: { 'Content-Type': undefined }
             });
 
             if (res.success) {

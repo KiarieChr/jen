@@ -70,7 +70,7 @@ const MeetingsList = () => {
 
     // Attendance link generator
     const getAttendanceUrl = (meetingId) => {
-        return `${window.location.origin.replace(/:\d+$/, '')}/attend-meet.php?meeting_id=${meetingId}`;
+        return `${window.location.origin}/meetings/${meetingId}/attend`;
     };
 
     return (
