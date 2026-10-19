@@ -1,23 +1,30 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace(/\/$/, "") : 'http://localhost/jen/api';
 
-export const getImageUrl = (path) => {
-    if (!path) return '';
-    if (path.startsWith('http')) return path;
-    
-    // Check if there is an explicit uploads URL in env
+export const getFullImageUrl = (path) => {
+    if (!path) return 'https://via.placeholder.com/400x400?text=No+Image';
+    if (path.startsWith('http://') || path.startsWith('https://')) return path;
+
+    // Strip leading slashes and legacy '/jen/' prefix
+    const cleanPath = path.replace(/^\/+/, '').replace(/^jen\/+/, '');
+
+    // If explicit uploads URL is configured in environment
     if (import.meta.env.VITE_UPLOADS_URL) {
-        const base = import.meta.env.VITE_UPLOADS_URL.replace(/\/$/, "");
-        return `${base}${path.startsWith('/') ? '' : '/'}${path}`;
+        const uploadsBase = import.meta.env.VITE_UPLOADS_URL.replace(/\/+$/, '');
+        // Avoid duplicate "uploads/" in path
+        const subPath = cleanPath.replace(/^uploads\/+/, '');
+        return `${uploadsBase}/${subPath}`;
     }
 
-    // Fallback to deriving it from API_BASE_URL
-    try {
-        const url = new URL(API_BASE_URL);
-        return `${url.origin}${path.startsWith('/') ? '' : '/'}${path}`;
-    } catch (e) {
-        return path;
-    }
+    // Fallback to deriving base URL from VITE_API_URL or default domain
+    const apiBase = import.meta.env.VITE_API_URL 
+        ? import.meta.env.VITE_API_URL.replace(/\/api\/?$/, '').replace(/\/+$/, '') 
+        : 'https://jesusenthroned.royalsoftwares.co.ke';
+
+    const finalPath = cleanPath.startsWith('uploads/') ? cleanPath : `uploads/${cleanPath}`;
+    return `${apiBase}/${finalPath}`;
 };
+
+export const getImageUrl = getFullImageUrl;
 
 export const fetchProducts = async () => {
     try {

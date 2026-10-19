@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchProducts, createProduct, getImageUrl } from '../../../services/merchandiseApi';
+import { fetchProducts, createProduct, getImageUrl, getFullImageUrl } from '../../../services/merchandiseApi';
 
 const MerchandiseDashboard = () => {
     const [products, setProducts] = useState([]);
@@ -12,9 +12,18 @@ const MerchandiseDashboard = () => {
         name: '',
         description: '',
         base_price: '',
-        image: null
+        image: null,
+        image_url: ''
     });
-    const [variants, setVariants] = useState([{ color: '', size: '', price_adjustment: '0.00', stock: 10 }]);
+    const [variants, setVariants] = useState([{ 
+        color: '', 
+        size: '', 
+        price_adjustment: '0.00', 
+        stock: 10,
+        image_url: '',
+        image_file: null,
+        image_preview: ''
+    }]);
 
     useEffect(() => {
         loadProducts();
@@ -31,7 +40,15 @@ const MerchandiseDashboard = () => {
     };
 
     const handleAddVariant = () => {
-        setVariants([...variants, { color: '', size: '', price_adjustment: '0.00', stock: 10 }]);
+        setVariants([...variants, { 
+            color: '', 
+            size: '', 
+            price_adjustment: '0.00', 
+            stock: 10,
+            image_url: '',
+            image_file: null,
+            image_preview: ''
+        }]);
     };
 
     const handleRemoveVariant = (index) => {
@@ -46,13 +63,30 @@ const MerchandiseDashboard = () => {
         setVariants(newVariants);
     };
 
+    const handleVariantImageChange = (index, file) => {
+        if (!file) return;
+        const newVariants = [...variants];
+        newVariants[index].image_file = file;
+        newVariants[index].image_preview = URL.createObjectURL(file);
+        setVariants(newVariants);
+    };
+
+    const handleRemoveVariantImage = (index) => {
+        const newVariants = [...variants];
+        newVariants[index].image_file = null;
+        newVariants[index].image_url = '';
+        newVariants[index].image_preview = '';
+        setVariants(newVariants);
+    };
+
     const handleEditProduct = (product) => {
         setEditingProductId(product.id);
         setNewProduct({
             name: product.name,
             description: product.description,
             base_price: product.base_price,
-            image: null // Can't easily pre-populate file input, but we won't overwrite unless they pick a new one
+            image: null,
+            image_url: product.image_url || ''
         });
         
         if (product.variants && product.variants.length > 0) {
@@ -61,18 +95,37 @@ const MerchandiseDashboard = () => {
                 color: v.color,
                 size: v.size,
                 price_adjustment: v.price,
-                stock: v.stock_quantity !== undefined ? v.stock_quantity : (v.stock || 10)
+                stock: v.stock_quantity !== undefined ? v.stock_quantity : (v.stock || 10),
+                image_url: v.image_url || '',
+                image_file: null,
+                image_preview: ''
             })));
         } else {
-            setVariants([{ color: '', size: '', price_adjustment: '0.00', stock: 10 }]);
+            setVariants([{ 
+                color: '', 
+                size: '', 
+                price_adjustment: '0.00', 
+                stock: 10,
+                image_url: '',
+                image_file: null,
+                image_preview: ''
+            }]);
         }
         setIsAddModalOpen(true);
     };
 
     const handleOpenAddModal = () => {
         setEditingProductId(null);
-        setNewProduct({ name: '', description: '', base_price: '', image: null });
-        setVariants([{ color: '', size: '', price_adjustment: '0.00', stock: 10 }]);
+        setNewProduct({ name: '', description: '', base_price: '', image: null, image_url: '' });
+        setVariants([{ 
+            color: '', 
+            size: '', 
+            price_adjustment: '0.00', 
+            stock: 10,
+            image_url: '',
+            image_file: null,
+            image_preview: ''
+        }]);
         setIsAddModalOpen(true);
     };
 
@@ -91,18 +144,42 @@ const MerchandiseDashboard = () => {
         }
         
         const validVariants = variants.filter(v => v.color && v.size);
-        formData.append('variants', JSON.stringify(validVariants));
+        const serializedVariants = validVariants.map((v, idx) => {
+            let imageKey = null;
+            if (v.image_file instanceof File) {
+                imageKey = `variant_image_${idx}`;
+                formData.append(imageKey, v.image_file);
+            }
+            return {
+                id: v.id,
+                color: v.color,
+                size: v.size,
+                price_adjustment: v.price_adjustment,
+                stock: v.stock,
+                image_url: v.image_url || '',
+                image_key: imageKey
+            };
+        });
+        formData.append('variants', JSON.stringify(serializedVariants));
         
         const result = await createProduct(formData);
         if (result.success) {
             showToast(editingProductId ? "Product updated successfully!" : "Product added successfully!");
             setIsAddModalOpen(false);
             setEditingProductId(null);
-            setNewProduct({ name: '', description: '', base_price: '', image: null });
-            setVariants([{ color: '', size: '', price_adjustment: '0.00', stock: 10 }]);
+            setNewProduct({ name: '', description: '', base_price: '', image: null, image_url: '' });
+            setVariants([{ 
+                color: '', 
+                size: '', 
+                price_adjustment: '0.00', 
+                stock: 10,
+                image_url: '',
+                image_file: null,
+                image_preview: ''
+            }]);
             loadProducts();
         } else {
-            showToast("Failed to add product: " + result.error, "error");
+            showToast("Failed to save product: " + result.error, "error");
         }
     };
 
@@ -123,7 +200,7 @@ const MerchandiseDashboard = () => {
                 {products.map(product => (
                     <div key={product.id} className="admin-card">
                         <div className="admin-card-img-wrap">
-                            <img src={getImageUrl(product.image_url) || 'https://via.placeholder.com/300?text=No+Image'} alt={product.name} className="admin-card-img" />
+                            <img src={getFullImageUrl(product.image_url)} alt={product.name} className="admin-card-img" />
                         </div>
                         <div className="admin-card-body">
                             <h3 className="admin-card-title">{product.name}</h3>
@@ -133,6 +210,24 @@ const MerchandiseDashboard = () => {
                                     {product.variants?.length || 0} Variants
                                 </span>
                             </div>
+
+                            {/* Variant Preview Chips */}
+                            {product.variants && product.variants.length > 0 && (
+                                <div className="admin-card-variants-pills">
+                                    {product.variants.slice(0, 4).map((vr, vIdx) => (
+                                        <span key={vIdx} className="admin-variant-chip" title={`${vr.color} (${vr.size}) - Stock: ${vr.stock_quantity ?? vr.stock ?? 0}`}>
+                                            {vr.image_url && (
+                                                <img src={getFullImageUrl(vr.image_url)} alt="" className="admin-variant-chip-img" />
+                                            )}
+                                            <span>{vr.color} ({vr.size})</span>
+                                        </span>
+                                    ))}
+                                    {product.variants.length > 4 && (
+                                        <span className="admin-variant-chip-more">+{product.variants.length - 4}</span>
+                                    )}
+                                </div>
+                            )}
+
                             <button onClick={() => handleEditProduct(product)} className="admin-btn-secondary" style={{ width: '100%', marginTop: '15px' }}>
                                 Edit Product
                             </button>
@@ -146,7 +241,7 @@ const MerchandiseDashboard = () => {
                 )}
             </div>
 
-            {/* Add Product Modal */}
+            {/* Add / Edit Product Modal */}
             {isAddModalOpen && (
                 <div className="admin-modal-overlay">
                     <div className="admin-modal-backdrop" onClick={() => setIsAddModalOpen(false)}></div>
@@ -169,8 +264,17 @@ const MerchandiseDashboard = () => {
                                     <input type="number" step="0.01" value={newProduct.base_price} onChange={e => setNewProduct({...newProduct, base_price: e.target.value})} placeholder="4500.00" />
                                 </div>
                                 <div className="admin-form-group">
-                                    <label>Product Image</label>
-                                    <input type="file" accept="image/*" onChange={e => setNewProduct({...newProduct, image: e.target.files[0]})} />
+                                    <label>Main Product Image</label>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        {(newProduct.image || newProduct.image_url) && (
+                                            <img 
+                                                src={newProduct.image ? URL.createObjectURL(newProduct.image) : getFullImageUrl(newProduct.image_url)} 
+                                                alt="Preview" 
+                                                style={{ width: '42px', height: '42px', borderRadius: '8px', objectFit: 'cover', border: '1px solid rgba(255,255,255,0.2)' }} 
+                                            />
+                                        )}
+                                        <input type="file" accept="image/*" onChange={e => setNewProduct({...newProduct, image: e.target.files[0]})} />
+                                    </div>
                                 </div>
                             </div>
                             <div className="admin-form-row">
@@ -182,28 +286,105 @@ const MerchandiseDashboard = () => {
 
                             <div className="admin-variants-section">
                                 <div className="admin-variants-header">
-                                    <h3>Variants Builder (Color / Size)</h3>
+                                    <div>
+                                        <h3>Variants Builder (Image / Color / Size)</h3>
+                                        <p style={{ margin: '3px 0 0', fontSize: '11px', color: 'rgba(255,255,255,0.45)' }}>
+                                            Upload a unique image for each variant (or leave blank to use the main product image).
+                                        </p>
+                                    </div>
                                     <button onClick={handleAddVariant} className="admin-text-btn">+ Add Variant</button>
                                 </div>
                                 
                                 <div className="admin-variants-list">
-                                    {variants.map((v, idx) => (
-                                        <div key={idx} className="admin-variant-row">
-                                            <div className="variant-col">
-                                                <input type="text" placeholder="Color (e.g. Black)" value={v.color} onChange={e => handleVariantChange(idx, 'color', e.target.value)} />
+                                    {variants.map((v, idx) => {
+                                        const variantImgSrc = v.image_preview || (v.image_url ? getFullImageUrl(v.image_url) : '');
+                                        return (
+                                            <div key={idx} className="admin-variant-row">
+                                                {/* Variant Image Uploader */}
+                                                <div className="variant-col-img">
+                                                    <label className="variant-img-uploader" title={variantImgSrc ? "Change variant image" : "Upload variant image"}>
+                                                        <input 
+                                                            type="file" 
+                                                            accept="image/*" 
+                                                            style={{ display: 'none' }}
+                                                            onChange={e => {
+                                                                if (e.target.files && e.target.files[0]) {
+                                                                    handleVariantImageChange(idx, e.target.files[0]);
+                                                                }
+                                                            }} 
+                                                        />
+                                                        {variantImgSrc ? (
+                                                            <div className="variant-img-preview-wrap">
+                                                                <img src={variantImgSrc} alt={`Variant ${v.color}`} className="variant-img-thumb" />
+                                                                <span className="variant-img-edit-badge" title="Change">✎</span>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="variant-img-placeholder">
+                                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                                                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                                                                    <polyline points="21 15 16 10 5 21"/>
+                                                                </svg>
+                                                                <span className="variant-img-label">+Img</span>
+                                                            </div>
+                                                        )}
+                                                    </label>
+                                                    {variantImgSrc && (
+                                                        <button 
+                                                            type="button" 
+                                                            onClick={() => handleRemoveVariantImage(idx)} 
+                                                            className="variant-img-remove-btn" 
+                                                            title="Clear variant image"
+                                                        >
+                                                            ✕
+                                                        </button>
+                                                    )}
+                                                </div>
+
+                                                <div className="variant-col">
+                                                    <input 
+                                                        type="text" 
+                                                        placeholder="Color (e.g. Navy Blue)" 
+                                                        value={v.color} 
+                                                        onChange={e => handleVariantChange(idx, 'color', e.target.value)} 
+                                                    />
+                                                </div>
+                                                <div className="variant-col small">
+                                                    <input 
+                                                        type="text" 
+                                                        placeholder="Size (XL)" 
+                                                        value={v.size} 
+                                                        onChange={e => handleVariantChange(idx, 'size', e.target.value)} 
+                                                    />
+                                                </div>
+                                                <div className="variant-col small">
+                                                    <input 
+                                                        type="number" 
+                                                        step="0.01" 
+                                                        placeholder="+Price" 
+                                                        value={v.price_adjustment} 
+                                                        onChange={e => handleVariantChange(idx, 'price_adjustment', e.target.value)} 
+                                                    />
+                                                </div>
+                                                <div className="variant-col small">
+                                                    <input 
+                                                        type="number" 
+                                                        placeholder="Stock" 
+                                                        value={v.stock} 
+                                                        onChange={e => handleVariantChange(idx, 'stock', e.target.value)} 
+                                                    />
+                                                </div>
+                                                <button 
+                                                    type="button" 
+                                                    onClick={() => handleRemoveVariant(idx)} 
+                                                    className="variant-remove-btn" 
+                                                    title="Remove variant"
+                                                >
+                                                    ✕
+                                                </button>
                                             </div>
-                                            <div className="variant-col small">
-                                                <input type="text" placeholder="Size (XL)" value={v.size} onChange={e => handleVariantChange(idx, 'size', e.target.value)} />
-                                            </div>
-                                            <div className="variant-col small">
-                                                <input type="number" step="0.01" placeholder="+Price" value={v.price_adjustment} onChange={e => handleVariantChange(idx, 'price_adjustment', e.target.value)} />
-                                            </div>
-                                            <div className="variant-col small">
-                                                <input type="number" placeholder="Stock" value={v.stock} onChange={e => handleVariantChange(idx, 'stock', e.target.value)} />
-                                            </div>
-                                            <button onClick={() => handleRemoveVariant(idx)} className="variant-remove-btn">✕</button>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                                 </div>
                             </div>
                         </div>
@@ -381,6 +562,36 @@ const MerchandiseDashboard = () => {
                     font-style: italic;
                 }
 
+                .admin-card-variants-pills {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 6px;
+                    margin-top: 12px;
+                }
+                .admin-variant-chip {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    background: rgba(255, 255, 255, 0.05);
+                    border: 1px solid rgba(255, 255, 255, 0.08);
+                    padding: 3px 8px;
+                    border-radius: 12px;
+                    font-size: 11px;
+                    color: rgba(255, 255, 255, 0.7);
+                }
+                .admin-variant-chip-img {
+                    width: 14px;
+                    height: 14px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+                .admin-variant-chip-more {
+                    font-size: 10px;
+                    color: rgba(255, 255, 255, 0.4);
+                    align-self: center;
+                    font-weight: 600;
+                }
+
                 /* Modal */
                 .admin-modal-overlay {
                     position: fixed;
@@ -400,7 +611,7 @@ const MerchandiseDashboard = () => {
                 .admin-modal {
                     position: relative;
                     width: 100%;
-                    max-width: 700px;
+                    max-width: 780px;
                     background: #161226;
                     border-radius: 20px;
                     border: 1px solid rgba(255,255,255,0.1);
@@ -496,15 +707,93 @@ const MerchandiseDashboard = () => {
                 }
                 .admin-variant-row {
                     display: flex;
-                    gap: 15px;
+                    gap: 12px;
                     margin-bottom: 15px;
                     align-items: center;
+                }
+                .variant-col-img {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    flex-shrink: 0;
+                }
+                .variant-img-uploader {
+                    position: relative;
+                    width: 44px;
+                    height: 44px;
+                    border-radius: 8px;
+                    border: 1px dashed rgba(255, 255, 255, 0.25);
+                    background: rgba(255, 255, 255, 0.03);
+                    cursor: pointer;
+                    overflow: hidden;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.2s ease;
+                }
+                .variant-img-uploader:hover {
+                    border-color: #22c1e6;
+                    background: rgba(34, 193, 230, 0.08);
+                }
+                .variant-img-preview-wrap {
+                    position: relative;
+                    width: 100%;
+                    height: 100%;
+                }
+                .variant-img-thumb {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    display: block;
+                }
+                .variant-img-edit-badge {
+                    position: absolute;
+                    bottom: 2px;
+                    right: 2px;
+                    background: rgba(0, 0, 0, 0.7);
+                    color: #22c1e6;
+                    font-size: 10px;
+                    padding: 1px 3px;
+                    border-radius: 3px;
+                    line-height: 1;
+                }
+                .variant-img-placeholder {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    color: rgba(255, 255, 255, 0.4);
+                    gap: 2px;
+                }
+                .variant-img-label {
+                    font-size: 8px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+                .variant-img-remove-btn {
+                    background: rgba(239, 68, 68, 0.15);
+                    color: #ef4444;
+                    border: none;
+                    border-radius: 50%;
+                    width: 18px;
+                    height: 18px;
+                    font-size: 10px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0;
+                    transition: background 0.2s;
+                }
+                .variant-img-remove-btn:hover {
+                    background: rgba(239, 68, 68, 0.35);
                 }
                 .variant-col {
                     flex: 1;
                 }
                 .variant-col.small {
-                    flex: 0 0 100px;
+                    flex: 0 0 90px;
                 }
                 .variant-col input {
                     width: 100%;
@@ -530,6 +819,7 @@ const MerchandiseDashboard = () => {
                     display: flex;
                     align-items: center;
                     justify-content: center;
+                    flex-shrink: 0;
                 }
                 .variant-remove-btn:hover {
                     background: rgba(239, 68, 68, 0.2);

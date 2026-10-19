@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { fetchProducts, createOrder, getImageUrl } from '../services/merchandiseApi';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -8,6 +8,9 @@ const MerchandisePage = () => {
   const [cart, setCart] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedVariant, setSelectedVariant] = useState('');
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [touchStartX, setTouchStartX] = useState(null);
+  const [touchEndX, setTouchEndX] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [customerName, setCustomerName] = useState('');
   const [customerContact, setCustomerContact] = useState('');
@@ -18,9 +21,112 @@ const MerchandisePage = () => {
     fetchProducts().then(setProducts);
   }, []);
 
+  // TASK 1: Flattened image map across all variants with fallback to main product image
+  const galleryImages = useMemo(() => {
+    if (!selectedProduct) return [];
+
+    const images = [];
+    const fallbackUrl = selectedProduct.image_url || '';
+
+    if (selectedProduct.variants && selectedProduct.variants.length > 0) {
+      selectedProduct.variants.forEach(variant => {
+        if (Array.isArray(variant.images) && variant.images.length > 0) {
+          variant.images.forEach(img => {
+            images.push({
+              url: typeof img === 'string' ? img : img.url || fallbackUrl,
+              variantId: variant.id,
+              color: variant.color,
+              size: variant.size
+            });
+          });
+        } else if (variant.image_url) {
+          images.push({
+            url: variant.image_url,
+            variantId: variant.id,
+            color: variant.color,
+            size: variant.size
+          });
+        } else {
+          images.push({
+            url: fallbackUrl,
+            variantId: variant.id,
+            color: variant.color,
+            size: variant.size
+          });
+        }
+      });
+    } else if (fallbackUrl) {
+      images.push({
+        url: fallbackUrl,
+        variantId: null,
+        color: '',
+        size: ''
+      });
+    }
+
+    return images;
+  }, [selectedProduct]);
+
+  // TASK 3: When variant dropdown changes, snap to that variant's first image
+  const handleVariantChange = (variantId) => {
+    setSelectedVariant(variantId);
+    const targetIndex = galleryImages.findIndex(img => img.variantId == variantId);
+    if (targetIndex !== -1) {
+      setActiveImageIndex(targetIndex);
+    }
+  };
+
+  // TASK 2: Swipe / navigation handler syncing active index to variant dropdown
+  const goToImageIndex = (newIndex) => {
+    if (galleryImages.length === 0) return;
+    let targetIndex = newIndex;
+    if (targetIndex < 0) targetIndex = galleryImages.length - 1;
+    if (targetIndex >= galleryImages.length) targetIndex = 0;
+
+    setActiveImageIndex(targetIndex);
+
+    const newImage = galleryImages[targetIndex];
+    if (newImage && newImage.variantId && newImage.variantId != selectedVariant) {
+      setSelectedVariant(newImage.variantId);
+    }
+  };
+
+  const handlePrevImage = () => {
+    goToImageIndex(activeImageIndex - 1);
+  };
+
+  const handleNextImage = () => {
+    goToImageIndex(activeImageIndex + 1);
+  };
+
+  // Swipe gesture detection
+  const minSwipeDistance = 40;
+
+  const onTouchStart = (e) => {
+    setTouchEndX(null);
+    setTouchStartX(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEndX(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (touchStartX === null || touchEndX === null) return;
+    const distance = touchStartX - touchEndX;
+    if (distance > minSwipeDistance) {
+      handleNextImage(); // Swiped left -> next
+    } else if (distance < -minSwipeDistance) {
+      handlePrevImage(); // Swiped right -> prev
+    }
+    setTouchStartX(null);
+    setTouchEndX(null);
+  };
+
   const openModal = (product) => {
     setSelectedProduct(product);
-    setSelectedVariant(product.variants.length > 0 ? product.variants[0].id : '');
+    setSelectedVariant(product.variants && product.variants.length > 0 ? product.variants[0].id : '');
+    setActiveImageIndex(0);
     setQuantity(1);
   };
 
@@ -250,7 +356,78 @@ const MerchandisePage = () => {
                 <button onClick={() => setSelectedProduct(null)} className="merch-modal-close">✕</button>
                 
                 <div className="merch-modal-left">
-                    <img src={getImageUrl(selectedProduct.image_url) || 'https://via.placeholder.com/400?text=Merch'} alt={selectedProduct.name} className="merch-modal-img" />
+                    <div 
+                        className="merch-gallery-container"
+                        onTouchStart={onTouchStart}
+                        onTouchMove={onTouchMove}
+                        onTouchEnd={onTouchEnd}
+                    >
+                        {galleryImages.length > 1 && (
+                            <button 
+                                type="button" 
+                                onClick={handlePrevImage} 
+                                className="merch-gallery-arrow merch-gallery-prev"
+                                aria-label="Previous variant image"
+                            >
+                                ‹
+                            </button>
+                        )}
+
+                        <div className="merch-gallery-slide">
+                            <img 
+                                src={getImageUrl(galleryImages[activeImageIndex]?.url) || 'https://via.placeholder.com/400?text=Merch'} 
+                                alt={selectedProduct.name} 
+                                className="merch-modal-img" 
+                            />
+                        </div>
+
+                        {galleryImages.length > 1 && (
+                            <button 
+                                type="button" 
+                                onClick={handleNextImage} 
+                                className="merch-gallery-arrow merch-gallery-next"
+                                aria-label="Next variant image"
+                            >
+                                ›
+                            </button>
+                        )}
+
+                        {/* Tag displaying active variant color / size */}
+                        {galleryImages.length > 0 && galleryImages[activeImageIndex]?.color && (
+                            <div className="merch-gallery-tag">
+                                {galleryImages[activeImageIndex].color} {galleryImages[activeImageIndex].size ? `• ${galleryImages[activeImageIndex].size}` : ''}
+                            </div>
+                        )}
+
+                        {/* Dot indicators across all variant images */}
+                        {galleryImages.length > 1 && (
+                            <div className="merch-gallery-dots">
+                                {galleryImages.map((img, idx) => (
+                                    <span 
+                                        key={idx} 
+                                        onClick={() => goToImageIndex(idx)} 
+                                        className={`merch-gallery-dot ${idx === activeImageIndex ? 'active' : ''}`}
+                                        title={`${img.color} - ${img.size}`}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Thumbnail strip */}
+                    {galleryImages.length > 1 && (
+                        <div className="merch-gallery-thumbs">
+                            {galleryImages.map((img, idx) => (
+                                <div 
+                                    key={idx} 
+                                    onClick={() => goToImageIndex(idx)} 
+                                    className={`merch-thumb-wrap ${idx === activeImageIndex ? 'active' : ''}`}
+                                >
+                                    <img src={getImageUrl(img.url) || 'https://via.placeholder.com/400?text=Merch'} alt="" className="merch-thumb-img" />
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 <div className="merch-modal-right">
@@ -262,7 +439,7 @@ const MerchandisePage = () => {
                     <div className="merch-modal-form">
                         <div className="merch-form-group">
                             <label>Select Variant</label>
-                            <select value={selectedVariant} onChange={e => setSelectedVariant(e.target.value)} className="merch-input">
+                            <select value={selectedVariant} onChange={e => handleVariantChange(e.target.value)} className="merch-input">
                             {selectedProduct.variants.map(v => (
                                 <option key={v.id} value={v.id}>{v.color} - Size {v.size} (+Ksh {v.price})</option>
                             ))}
@@ -829,16 +1006,138 @@ const MerchandisePage = () => {
         .merch-modal-left {
             flex: 1;
             background: rgba(255,255,255,0.02);
-            padding: 40px;
+            padding: 30px 20px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             border-right: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+        }
+        .merch-gallery-container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: pan-y;
+            user-select: none;
+            padding-bottom: 25px;
+        }
+        .merch-gallery-slide {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 280px;
+        }
+        .merch-gallery-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(22, 18, 38, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            font-size: 24px;
+            line-height: 1;
+            cursor: pointer;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(5px);
+        }
+        .merch-gallery-arrow:hover {
+            background: var(--primary, #22c1e6);
+            border-color: var(--primary, #22c1e6);
+            color: #120D20;
+            transform: translateY(-50%) scale(1.1);
+        }
+        .merch-gallery-prev {
+            left: 5px;
+        }
+        .merch-gallery-next {
+            right: 5px;
+        }
+        .merch-gallery-tag {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(18, 13, 32, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary, #22c1e6);
+            backdrop-filter: blur(5px);
+            white-space: nowrap;
+        }
+        .merch-gallery-dots {
+            position: absolute;
+            bottom: 4px;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            justify-content: center;
+        }
+        .merch-gallery-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .merch-gallery-dot.active {
+            background: var(--primary, #22c1e6);
+            width: 18px;
+            border-radius: 4px;
+        }
+        .merch-gallery-thumbs {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            overflow-x: auto;
+            max-width: 100%;
+            padding: 4px;
+        }
+        .merch-thumb-wrap {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+            overflow: hidden;
+            cursor: pointer;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        .merch-thumb-wrap:hover, .merch-thumb-wrap.active {
+            border-color: var(--primary, #22c1e6);
+            transform: scale(1.05);
+        }
+        .merch-thumb-img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
         }
         .merch-modal-img {
             width: 100%;
-            max-width: 350px;
+            max-width: 320px;
+            max-height: 320px;
             object-fit: contain;
+            transition: opacity 0.2s ease;
         }
         .merch-modal-right {
             flex: 1;
